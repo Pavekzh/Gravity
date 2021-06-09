@@ -7,7 +7,7 @@ namespace Assets.Resources.Library
     {
         private static T instance;
 
-        public void Awake()
+        public virtual void Awake()
         {
             if (!instance)
             {

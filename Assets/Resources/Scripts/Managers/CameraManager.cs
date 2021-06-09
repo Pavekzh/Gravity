@@ -84,9 +84,7 @@ class CameraManager : Singleton<CameraManager>
     {
         if (OrbitDeltaAngle != Vector2.zero)
         {
-
             OrbitAngle += OrbitDeltaAngle;
-            Debug.Log(OrbitAngle);
 
             float r = RotationRadius * Mathf.Cos(Mathf.Deg2Rad * OrbitAngle.x);
             float y = origin.y + (RotationRadius * Mathf.Sin(Mathf.Deg2Rad * OrbitAngle.x));

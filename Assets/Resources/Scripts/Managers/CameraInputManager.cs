@@ -58,7 +58,7 @@ class CameraInputManager:Singleton<CameraInputManager>
     }
     private Vector3 ReadMovingInput()
     {
-        if (Input.touchCount == 1/* && UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId) == false*/)
+        if (Input.touchCount == 1 && UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId) == false)
         {
             Vector3 vector = new Vector3(Input.GetTouch(0).deltaPosition.x * movingSpeed.x, 0, -(Input.GetTouch(0).deltaPosition.y * movingSpeed.z));
             return vector;
@@ -68,7 +68,7 @@ class CameraInputManager:Singleton<CameraInputManager>
     private Vector2 ReadRotationInput()
     {
         Vector2 OrbitAngle = new Vector2();
-        if (Input.touchCount == 1 /*&& UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId) == false*/)
+        if (Input.touchCount == 1 && UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId) == false)
         {
             OrbitAngle.y = Input.GetTouch(0).deltaPosition.x * rotationSpeed;
             OrbitAngle.x = -(Input.GetTouch(0).deltaPosition.y * rotationSpeed);

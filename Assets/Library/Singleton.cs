@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 
-namespace Assets.Resources.Library
+namespace Assets.Library
 {
     public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {

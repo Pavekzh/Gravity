@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Assets.Resources.Library;
+using Assets.Library;
 
 class CameraManager : Singleton<CameraManager>
 {
@@ -16,7 +16,7 @@ class CameraManager : Singleton<CameraManager>
     [SerializeField] private float rotationRadius = 500;
     [SerializeField] private Vector3 origin;
     [SerializeField] private Vector2 orbitAngle;
-
+    //[SerializeField] private Camera Camera;
     public float RotationRadius
     {
         get

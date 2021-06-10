@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Assets.Resources.Library;
+using Assets.Library;
 
 
 public class GravityManager : Singleton<GravityManager>
@@ -9,7 +9,7 @@ public class GravityManager : Singleton<GravityManager>
     public float GravityRatio;
 
     public GameObject PlanetsObject;
-    public List<GravityObject> Objects = new List<GravityObject>();
+    public List<IGravityObject> Objects = new List<IGravityObject>();
 
 
     void Start()

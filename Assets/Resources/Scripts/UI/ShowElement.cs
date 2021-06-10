@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Assets.Resources.Library;
+using Assets.Library;
 
 public class ShowElement : MonoBehaviour
 {

@@ -16,7 +16,8 @@ class CameraManager : Singleton<CameraManager>
     [SerializeField] private float rotationRadius = 500;
     [SerializeField] private Vector3 origin;
     [SerializeField] private Vector2 orbitAngle;
-    //[SerializeField] private Camera Camera;
+    [SerializeField] private GameObject Camera;
+
     public float RotationRadius
     {
         get
@@ -96,18 +97,18 @@ class CameraManager : Singleton<CameraManager>
             float z = r * Mathf.Cos(Mathf.Deg2Rad * orbitAngle.y);
 
             Vector3 newPosition = new Vector3(OriginY.x - x, OriginY.y, OriginY.z - z);
-            transform.position = newPosition;
-            transform.LookAt(origin);
+            Camera.transform.position = newPosition;
+            Camera.transform.LookAt(origin);
         }
     }
 
     private void LocalOriginTranslate(Vector3 vector)
     {
-        this.origin.x -= vector.x * Mathf.Cos(Mathf.Deg2Rad * transform.rotation.eulerAngles.y);
-        this.origin.z += vector.x * Mathf.Sin(Mathf.Deg2Rad * transform.rotation.eulerAngles.y);
+        this.origin.x -= vector.x * Mathf.Cos(Mathf.Deg2Rad * Camera.transform.rotation.eulerAngles.y);
+        this.origin.z += vector.x * Mathf.Sin(Mathf.Deg2Rad * Camera.transform.rotation.eulerAngles.y);
 
-        this.origin.z += vector.z * Mathf.Cos(Mathf.Deg2Rad * transform.rotation.eulerAngles.y);
-        this.origin.x += vector.z * Mathf.Sin(Mathf.Deg2Rad * transform.rotation.eulerAngles.y);
+        this.origin.z += vector.z * Mathf.Cos(Mathf.Deg2Rad * Camera.transform.rotation.eulerAngles.y);
+        this.origin.x += vector.z * Mathf.Sin(Mathf.Deg2Rad * Camera.transform.rotation.eulerAngles.y);
 
         this.origin.y += vector.y;
     }
@@ -121,7 +122,6 @@ class CameraManager : Singleton<CameraManager>
 
         this.RotationRadius = R;
         this.OrbitAngle = new Vector2(Angle,OrbitAngle.y);
-
     }
     private void ResetRotation()
     {
@@ -135,8 +135,8 @@ class CameraManager : Singleton<CameraManager>
         float z = r * Mathf.Cos(Mathf.Deg2Rad * OrbitAngle.y);
 
         Vector3 newPosition = new Vector3(OriginY.x - x, OriginY.y, OriginY.z - z);
-        transform.position = newPosition;
-        transform.LookAt(origin);
+        Camera.transform.position = newPosition;
+        Camera.transform.LookAt(origin);
     }
 
 }

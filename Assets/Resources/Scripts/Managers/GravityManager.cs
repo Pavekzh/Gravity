@@ -11,7 +11,6 @@ public class GravityManager : Singleton<GravityManager>
     public GameObject PlanetsObject;
     public List<IGravityObject> Objects = new List<IGravityObject>();
 
-
     void Start()
     {
         if (PlanetsObject == null)

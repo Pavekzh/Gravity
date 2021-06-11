@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Assets.Library;
+using UnityEngine.UI;
 
 public class ShowElement : MonoBehaviour
 {
     [SerializeField] GameObject displayObject;
     [SerializeField] bool isDisplayed;
+    [SerializeField] Image changeImage;
+    [SerializeField] Sprite showSprite;
+    [SerializeField] Sprite hideSprite;
 
     void Start()
     {
@@ -14,6 +18,18 @@ public class ShowElement : MonoBehaviour
         {
             ErrorManager.Instance.ShowErrorMessage("Displayable object not set");
         }
+        if(changeImage != null)
+        {
+            if (isDisplayed == true)
+            {
+                Show();
+            }
+            else
+            {
+                Hide();
+            }
+        }
+
     }
     public void ChangeState()
     {
@@ -29,11 +45,19 @@ public class ShowElement : MonoBehaviour
     }    
     public void Show()
     {
+        if(changeImage != null)
+        {
+            changeImage.sprite = hideSprite;
+        }
         displayObject.SetActive(true);
         isDisplayed = true;
     }
     public void Hide()
     {
+        if (changeImage != null)
+        {
+            changeImage.sprite = showSprite;
+        }
         displayObject.SetActive(false);
         isDisplayed = false;
     }

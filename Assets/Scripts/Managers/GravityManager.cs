@@ -9,13 +9,17 @@ public class GravityManager : Singleton<GravityManager>
     public float GravityRatio;
 
     public GameObject PlanetsObject;
-    public List<IGravityObject> Objects = new List<IGravityObject>();
-
+    private List<GravityModule> objects = new List<GravityModule>();
+    void RefreshSettings()
+    {
+        objects = new List<GravityModule>();
+    }
     void Start()
     {
         if (PlanetsObject == null)
             ErrorManager.Instance.ShowErrorMessage("There is no Planets Storage-Object in scene");
+        SceneStateManager.Instance.OnSceneRefresh += RefreshSettings;
     }
-
+    public List<GravityModule> Objects { get => objects; set => objects = value; }
 }
 

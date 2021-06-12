@@ -7,10 +7,9 @@ using UnityEngine;
 
 namespace Assets.Library
 {
-    public interface IGravityObject
+    [Serializable]
+    public abstract class ModuleData
     {
-        float Mass { get;}
-        Vector3 Position { get; }
-        Vector3 Velocity { get; }
+        public abstract Type ModuleMonoBeheviour { get; }
     }
 }

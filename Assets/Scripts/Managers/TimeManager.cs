@@ -12,6 +12,10 @@ public class TimeManager : Singleton<TimeManager>
     public Binding<float> TimeBinding { get; private set; }
     [SerializeField]private float timeScale;
 
+    void RefreshSettings()
+    {
+        this.modules = new List<Module>();
+    }
     public void AddObserver(Module Module)
     {
         this.modules.Add(Module);
@@ -41,6 +45,7 @@ public class TimeManager : Singleton<TimeManager>
         defaultFixedDeltaTime = Time.fixedDeltaTime;
         TimeBinding = new Binding<float>();
         TimeBinding.ValueChanged += ResetTimeScale;
+        SceneStateManager.Instance.OnSceneRefresh += RefreshSettings;
     }
     private void ResetTimeScale(float value,object source)
     {

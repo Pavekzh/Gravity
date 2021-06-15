@@ -4,7 +4,7 @@ using System;
 
 namespace Assets.Library
 {
-    public abstract class Module : MonoBehaviour
+    public abstract class Module : MonoBehaviour,IReactPhysicsState
     {
         [SerializeField] Planet planet;
         public Planet Planet

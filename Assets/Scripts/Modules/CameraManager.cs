@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Assets.Library;
 
-class CameraManager : Singleton<CameraManager>
+class CameraManager : MonoBehaviour
 {
     [Header("Limiters")]
     [SerializeField] private float maxHeight;

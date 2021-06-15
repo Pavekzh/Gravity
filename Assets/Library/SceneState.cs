@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace Assets.Library
 {  
+    [Serializable]
     public class SceneState
     {
-        public List<PlanetData> PlanetsData { get; private set; }
+        public List<PlanetData> PlanetsData { get;  set; }
+        public SceneState() { }
         public SceneState(List<PlanetData> planets)
         {
             PlanetsData = planets;

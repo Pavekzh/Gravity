@@ -14,13 +14,13 @@ public class GravityModule : Module
     private Rigidbody Rigidbody;
     public override void Awake()
     {
-        base.Awake();
         Rigidbody = this.GetComponent<Rigidbody>();
         if (Rigidbody == null)
         {
-            ErrorManager.Instance.ShowErrorMessage("Gravity object must have Rigidbody component");
+            ErrorManager.Instance.ShowErrorMessage("Gravity object must have Rigidbody component",this);
         }   
-        GravityManager.Instance.Objects.Add(this);     
+        GravityManager.Instance.Objects.Add(this);
+        base.Awake();
     }
     private void FixedUpdate()
     {
@@ -61,7 +61,7 @@ public class GravityModule : Module
         GravityModuleData data = module as GravityModuleData;
         if (data == null)
         {
-            ErrorManager.Instance.ShowErrorMessage("ModuleData must be GravityModuleData");
+            ErrorManager.Instance.ShowErrorMessage("ModuleData must be GravityModuleData",this);
         }
         else
         {

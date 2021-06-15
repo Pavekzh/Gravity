@@ -17,8 +17,8 @@ public class GravityManager : Singleton<GravityManager>
     void Start()
     {
         if (PlanetsObject == null)
-            ErrorManager.Instance.ShowErrorMessage("There is no Planets Storage-Object in scene");
-        SceneStateManager.Instance.OnSceneRefresh += RefreshSettings;
+            ErrorManager.Instance.ShowErrorMessage("There is no Planets Storage-Object in scene",this);
+        SceneStateManager.Instance.SceneRefreshed += RefreshSettings;
     }
     public List<GravityModule> Objects { get => objects; set => objects = value; }
 }

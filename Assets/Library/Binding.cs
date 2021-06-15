@@ -6,14 +6,24 @@ using System.Threading.Tasks;
 
 namespace Assets.Library
 {
-    public delegate void ValueChanged<T>(T value,object source);
+    public delegate void ValueChangedHandler<T>(T value,object source);
+    public delegate bool ValidateValueCallback<T>(T value, object source);
     public class Binding<U>
     {
         public void ChangeValue(U value, Object source)
         {
-            ValueChanged?.Invoke(value, source);
+            if(ValidateValue != null)
+            {
+                if(ValidateValue.Invoke(value,source))
+                    ValueChanged?.Invoke(value, source);
+            }
+            else
+            {
+                ValueChanged?.Invoke(value, source);
+            }
         }
-        public event ValueChanged<U> ValueChanged;
+        public event ValueChangedHandler<U> ValueChanged;
+        public event ValidateValueCallback<U> ValidateValue;
     }
 
 }

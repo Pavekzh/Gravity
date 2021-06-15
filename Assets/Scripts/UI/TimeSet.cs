@@ -4,15 +4,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using System.Globalization;
+using TMPro;
 
 public class TimeSet : MonoBehaviour
 {
-    [SerializeField]private InputField inputField;
+    [SerializeField]private TMP_InputField inputField;
     void Start()
     {
         if(inputField == null)
         {
-            ErrorManager.Instance.ShowErrorMessage("InputField value not set");
+            ErrorManager.Instance.ShowErrorMessage("InputField value not set",this);
         }
         TimeManager.Instance.TimeBinding.ValueChanged += ValueChangedOutside;
     }
@@ -20,11 +21,11 @@ public class TimeSet : MonoBehaviour
     {
         try
         {
-            TimeManager.Instance.TimeBinding.ChangeValue(float.Parse(inputField.text), this);
+            TimeManager.Instance.TimeBinding.ChangeValue(float.Parse(inputField.text, new CultureInfo("en-US")), this);
         }
         catch(Exception ex)
         {
-            ErrorManager.Instance.ShowErrorMessage(ex.Message);
+            ErrorManager.Instance.ShowErrorMessage(ex.Message,this);
         }
     }
     public void ValueChangedOutside(float value,object source)
@@ -33,7 +34,23 @@ public class TimeSet : MonoBehaviour
         {
             string specifier = "G";
             CultureInfo culture = new CultureInfo("en-US");
-            inputField.text = value.ToString(specifier,culture);
+            string text = value.ToString(specifier,culture);
+
+            if (text.Length > 3)
+                inputField.text = text.Substring(0, 3);
+            else
+                inputField.text = text;
         }
+    }
+    private void OnEnable()
+    {
+        string specifier = "G";
+        CultureInfo culture = new CultureInfo("en-US");
+        string text = TimeManager.Instance.TimeScale.ToString(specifier, culture);
+
+        if (text.Length > 3)
+            inputField.text = text.Substring(0, 3);
+        else
+            inputField.text = text;
     }
 }

@@ -10,12 +10,14 @@ namespace Assets.Library
     [Serializable]
     public class PlanetData
     {
+        public PlanetData() { }
         public PlanetData(List<ModuleData> modules,string name)
         {
             Modules = modules;
             Name = name;
         }
-        public List<ModuleData> Modules { get; private set; }
-        public string Name { get; private set; }
+        public List<ModuleData> Modules { get;  set; }
+        public string Name { get;  set; }
+
     }
 }

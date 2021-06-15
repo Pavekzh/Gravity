@@ -3,18 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using Assets.Library;
 
+
 public class SceneStateManager : Singleton<SceneStateManager>
 {
     public List<Planet> Planets { get; private set; }
 
-    public delegate void SceneRefresh();
-    public event SceneRefresh OnSceneRefresh;
+    public delegate void SceneRefreshHandler();
+    public event SceneRefreshHandler SceneRefreshed;
 
     public override void Awake()
     {
         base.Awake();
         Planets = new List<Planet>();
-        this.OnSceneRefresh += RefreshSettings;
+        this.SceneRefreshed += RefreshSettings;
     }
     public SceneState GetState()
     {
@@ -28,11 +29,7 @@ public class SceneStateManager : Singleton<SceneStateManager>
     }
     public void RefreshScene(SceneState state)
     {
-        OnSceneRefresh?.Invoke();
-        foreach(Transform child in GravityManager.Instance.PlanetsObject.transform)
-        {
-            GameObject.Destroy(child.gameObject);
-        }
+        ClearScene();
         foreach(PlanetData planet in state.PlanetsData)
         {
             PlanetBuilder builder = new PlanetBuilder(planet);
@@ -42,5 +39,13 @@ public class SceneStateManager : Singleton<SceneStateManager>
     private void RefreshSettings()
     {
         Planets = new List<Planet>();
+    }
+    public void ClearScene()
+    {
+        SceneRefreshed?.Invoke();
+        foreach (Transform child in GravityManager.Instance.PlanetsObject.transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
     }
 }

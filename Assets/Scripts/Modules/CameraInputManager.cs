@@ -8,8 +8,9 @@ public enum InputMode
     Moving,
     Rotation
 }
-class CameraInputManager:Singleton<CameraInputManager>
+class CameraInputManager:MonoBehaviour
 {
+    [SerializeField] private CameraManager cameraManager;
     [SerializeField] private bool isControlLocked;
     [SerializeField] private InputMode inputMode;
     [SerializeField] private float zoomSpeed;
@@ -27,13 +28,13 @@ class CameraInputManager:Singleton<CameraInputManager>
         {
             if(InputMode == InputMode.Moving)
             {
-                CameraManager.Instance.Moving(ReadMovingInput());
+                cameraManager.Moving(ReadMovingInput());
             }
             else if (InputMode == InputMode.Rotation)
             {
-                CameraManager.Instance.Rotation(ReadRotationInput());
+                cameraManager.Rotation(ReadRotationInput());
             }
-            CameraManager.Instance.Zoom(ReadZoomInput());
+            cameraManager.Zoom(ReadZoomInput());
         }
     }
     private float ReadZoomInput()

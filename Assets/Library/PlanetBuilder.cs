@@ -14,7 +14,7 @@ namespace Assets.Library
             GameObject baseObject = Resources.Load<GameObject>("Prefabs/BasePlanet");
             if(baseObject == null)
             {
-                ErrorManager.Instance.ShowErrorMessage("BasePlanet prefab was not found");
+                ErrorManager.Instance.ShowErrorMessage("BasePlanet prefab was not found",this);
             }
             GameObject planetObject = GameObject.Instantiate(baseObject, parent);
             planetObject.name = Data.Name;
@@ -25,7 +25,7 @@ namespace Assets.Library
                 Module module = planetObject.AddComponent(moduleData.ModuleMonoBeheviour) as Module;
                 if(module == null)
                 {
-                    ErrorManager.Instance.ShowErrorMessage("Module must inherit Module type");
+                    ErrorManager.Instance.ShowErrorMessage("Module must inherit Module type",this);
                 }
                 module.SetModule(moduleData);
                 module.Planet = planet; 

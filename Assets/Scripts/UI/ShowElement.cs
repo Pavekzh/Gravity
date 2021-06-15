@@ -8,28 +8,16 @@ public class ShowElement : MonoBehaviour
 {
     [SerializeField] GameObject displayObject;
     [SerializeField] bool isDisplayed;
-    [SerializeField] Image changeImage;
-    [SerializeField] Sprite showSprite;
-    [SerializeField] Sprite hideSprite;
-
-    void Start()
+    private void Start()
     {
-        if(displayObject == null)
+        if (isDisplayed)
         {
-            ErrorManager.Instance.ShowErrorMessage("Displayable object not set");
+            displayObject.SetActive(true);
         }
-        if(changeImage != null)
+        else
         {
-            if (isDisplayed == true)
-            {
-                Show();
-            }
-            else
-            {
-                Hide();
-            }
+            displayObject.SetActive(false);
         }
-
     }
     public void ChangeState()
     {
@@ -45,19 +33,11 @@ public class ShowElement : MonoBehaviour
     }    
     public void Show()
     {
-        if(changeImage != null)
-        {
-            changeImage.sprite = hideSprite;
-        }
         displayObject.SetActive(true);
         isDisplayed = true;
     }
     public void Hide()
     {
-        if (changeImage != null)
-        {
-            changeImage.sprite = showSprite;
-        }
         displayObject.SetActive(false);
         isDisplayed = false;
     }

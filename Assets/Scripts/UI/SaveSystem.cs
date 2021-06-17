@@ -8,13 +8,32 @@ using System.IO;
 public class SaveSystem:MonoBehaviour
 {
     private SceneState quickSave;
+    [SerializeField] string savesDirectory;
     [SerializeField] string filePath;
+    [SerializeField] SceneStateManager sceneStateSystem;
+
+    public string SavesDirectory
+    {
+        get
+        {
+#if UNITY_EDITOR
+            return Application.dataPath + savesDirectory;
+#elif UNITY_ANDROID || UNITY_IOS
+            return Application.persistentDataPath + savesDirectory;
+#endif
+        }
+    }
+    public string FilePath
+    {
+        get => SavesDirectory + "/" + filePath + ".xml";
+        set => filePath = value;
+    }
 
     public void QuickSave()
     {
         try
         {
-            quickSave = SceneStateManager.Instance.GetState();
+            quickSave = sceneStateSystem.GetState();
         }
         catch(System.Exception ex)
         {
@@ -27,23 +46,29 @@ public class SaveSystem:MonoBehaviour
         try
         {
             if (quickSave != null)
-                SceneStateManager.Instance.RefreshScene(quickSave);
+                sceneStateSystem.RefreshScene(quickSave);
         }
         catch (System.Exception ex)
         {
             ErrorManager.Instance.ShowErrorMessage(ex.Message, this);
         }
     }
+
     public void SaveToFile()
     {
         try
         {
-            SceneState state = SceneStateManager.Instance.GetState();
-            XmlSerializer serializer = new XmlSerializer(typeof(SceneState));
-            using (FileStream file = new FileStream(filePath, FileMode.OpenOrCreate))
+            if(filePath != "")
             {
-                serializer.Serialize(file, state);
+                SceneState state = sceneStateSystem.GetState();
+                XmlSerializer serializer = new XmlSerializer(typeof(SceneState));            
+                File.Delete(FilePath);
+                using (FileStream file = new FileStream(FilePath, FileMode.OpenOrCreate))
+                {
+                    serializer.Serialize(file, state);
+                }
             }
+
         }
         catch (System.Exception ex)
         {
@@ -55,62 +80,36 @@ public class SaveSystem:MonoBehaviour
     {
         try
         {
-            SceneState state;
-            XmlSerializer serializer = new XmlSerializer(typeof(SceneState));
-            using (FileStream file = new FileStream(filePath, FileMode.OpenOrCreate))
+            if(filePath != "")
             {
-                state = serializer.Deserialize(file) as SceneState;
-                if (state == null)
+                SceneState state;
+                XmlSerializer serializer = new XmlSerializer(typeof(SceneState));
+                using (FileStream file = new FileStream(FilePath, FileMode.OpenOrCreate))
                 {
-                    ErrorManager.Instance.ShowErrorMessage("File have invalid format or doesn't exist", this);
-                }
-                else
-                {
-                    SceneStateManager.Instance.RefreshScene(state);
+                    state = serializer.Deserialize(file) as SceneState;
+                    if (state == null)
+                    {
+                        ErrorManager.Instance.ShowErrorMessage("File have invalid format or doesn't exist", this);
+                    }
+                    else
+                    {
+                        sceneStateSystem.RefreshScene(state);
+                    }
                 }
             }
+
         }
         catch (System.Exception ex)
         {
             ErrorManager.Instance.ShowErrorMessage(ex.Message, this);
         }
     }
-    public void SaveToFile(string path)
+
+    public void DeleteFile()
     {
         try
         {
-            this.filePath = path;
-            SceneState state = SceneStateManager.Instance.GetState();
-            XmlSerializer serializer = new XmlSerializer(typeof(SceneState));
-            using (FileStream file = new FileStream(path, FileMode.OpenOrCreate))
-            {
-                serializer.Serialize(file, state);
-            }
-        }
-        catch (System.Exception ex)
-        {
-            ErrorManager.Instance.ShowErrorMessage(ex.Message, this);
-        }
-    }
-    public void LoadFromFile(string path)
-    {
-        try
-        {
-            this.filePath = path;
-            SceneState state;
-            XmlSerializer serializer = new XmlSerializer(typeof(SceneState));
-            using (FileStream file = new FileStream(path, FileMode.OpenOrCreate))
-            {
-                state = serializer.Deserialize(file) as SceneState;
-                if (state == null)
-                {
-                    ErrorManager.Instance.ShowErrorMessage("File have invalid format or doesn't exist", this);
-                }
-                else
-                {
-                    SceneStateManager.Instance.RefreshScene(state);
-                }
-            }
+            File.Delete(FilePath);
         }
         catch (System.Exception ex)
         {

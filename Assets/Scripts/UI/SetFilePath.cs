@@ -2,24 +2,20 @@
 using System.Collections;
 using TMPro;
 
-public class SaveAsFile : MonoBehaviour
+public class SetFilePath : MonoBehaviour
 {
     [SerializeField] TMP_InputField inputField;
     [SerializeField] SaveSystem saveSytem;
-    [SerializeField] string savesDirectory;
+
     public string FilePath
     {
         get
         {
-            string text = inputField.text;
-#if UNITY_EDITOR
-            return Application.dataPath + savesDirectory+ "/" + text + ".xml";
-#elif UNITY_ANDROID || UNITY_IOS
-            return Application.persistentDataPath + savesDirectory+ "/" + text + ".xml";
-#endif
+            return inputField.text;
         }
     }
     bool isPathValid = false;
+
     private void Start()
     {
         if(inputField == null)
@@ -31,11 +27,11 @@ public class SaveAsFile : MonoBehaviour
             ErrorManager.Instance.ShowErrorMessage("SaveSystem property not set",this);
         }
     }
-    public void Save()
+    public void SetPath()
     {
         if (isPathValid)
         {
-            saveSytem.SaveToFile(FilePath);
+            saveSytem.FilePath = FilePath;
         }
     }
     public void ValueChanged()

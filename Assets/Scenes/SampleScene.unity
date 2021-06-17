@@ -1392,7 +1392,7 @@ GameObject:
   - component: {fileID: 163255810}
   - component: {fileID: 163255809}
   m_Layer: 5
-  m_Name: SelectPath
+  m_Name: SetPath
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1800,7 +1800,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   saveSystem: {fileID: 929912827}
   container: {fileID: 1794373420}
-  savesDirectory: 
   extension: .xml
   imageBoxSize: 130
   margin: 10
@@ -2520,12 +2519,23 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 492327556}
-        m_MethodName: Save
+        m_MethodName: SetPath
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 929912827}
+        m_MethodName: SaveToFile
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -2591,7 +2601,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputField: {fileID: 1104815506}
   saveSytem: {fileID: 929912827}
-  savesDirectory: 
 --- !u!1 &532710671
 GameObject:
   m_ObjectHideFlags: 0
@@ -2673,8 +2682,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 303572659}
-        m_MethodName: LoadFile
+      - m_Target: {fileID: 929912827}
+        m_MethodName: LoadFromFile
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3281,7 +3290,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_BoundingSphereOverride: {x: 5, y: -7, z: 5, w: 1.3e-44}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -3783,7 +3792,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87e994c2d120a964e89bf1fda0a9b33e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  filePath: Saves/NewScene.xml
+  savesDirectory: 
+  filePath: NewScene
+  sceneStateSystem: {fileID: 929912828}
 --- !u!114 &929912828
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4673,7 +4684,7 @@ GameObject:
   - component: {fileID: 1138250113}
   - component: {fileID: 1138250112}
   m_Layer: 5
-  m_Name: LoadFile
+  m_Name: SelectFile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5306,8 +5317,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 303572659}
+      - m_Target: {fileID: 929912827}
         m_MethodName: DeleteFile
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 303572659}
+        m_MethodName: Reload
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -4,8 +4,8 @@ using TMPro;
 
 public class FileSelect : MonoBehaviour
 {
-    private SelectFilePanel panel;
-    public SelectFilePanel Panel
+    private SelectFilePath panel;
+    public SelectFilePath Panel
     {
         get => panel;
         set

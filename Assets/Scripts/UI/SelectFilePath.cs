@@ -6,13 +6,15 @@ using TMPro;
 using UnityEngine.UI;
 
 
-public class SelectFilePanel : MonoBehaviour
+public class SelectFilePath : MonoBehaviour
 {
-    public delegate void SelectedFileChangedHandler(object sender);
+    public delegate void SelectedFileChangedHandler(object sender);    
     public event SelectedFileChangedHandler SelectedFileChanged;
+    private string selectedFile;
+
     [SerializeField] SaveSystem saveSystem;
+
     [SerializeField] RectTransform container;
-    [SerializeField] string savesDirectory;
     [SerializeField] string extension;
     [SerializeField] float imageBoxSize;
     [SerializeField] float margin;
@@ -23,19 +25,7 @@ public class SelectFilePanel : MonoBehaviour
     [SerializeField] GameObject imagePrefab;
     [SerializeField] GameObject labelPrefab;
 
-    private string selectedFile;
 
-    public string SavesDirectory
-    {
-        get
-        {
-#if UNITY_EDITOR
-            return Application.dataPath + savesDirectory;
-#elif UNITY_ANDROID || UNITY_IOS
-            return Application.persistentDataPath + savesDirectory;
-#endif
-        }
-    }
     private void Start()
     {
         if(fileViewPrefab == null)
@@ -67,17 +57,49 @@ public class SelectFilePanel : MonoBehaviour
             ErrorManager.Instance.ShowErrorMessage("LabelPrefab must contain TMP_Text component",this);
         }
     }
+
     public void SelectFile(string filePath,object sender)
     {
         this.selectedFile = filePath;
         SelectedFileChanged?.Invoke(sender);
+        saveSystem.FilePath = filePath;
+    }
+
+    private void AddFileView(string filePath,RectTransform panelRectTransform,float offset)
+    {
+        
+
+        GameObject fileView = GameObject.Instantiate(fileViewPrefab, container);
+        GameObject imageObj = GameObject.Instantiate(imagePrefab, fileView.transform);
+        GameObject labelObj = GameObject.Instantiate(labelPrefab, fileView.transform);
+
+        Image image = imageObj.GetComponent<Image>();
+        TMP_Text label = labelObj.GetComponent<TMP_Text>();
+        RectTransform rectTransfrom = fileView.GetComponent<RectTransform>();
+        FileSelect fileSelect = imageObj.GetComponent<FileSelect>();
+
+        fileSelect.FilePath = filePath;
+        fileSelect.Panel = this;
+        image.sprite = fileImage;
+        image.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, imageBoxSize);
+        image.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, imageBoxSize);
+        label.text = filePath;
+        rectTransfrom.anchoredPosition = new Vector2((imageBoxSize / 2) + offset, -(panelRectTransform.rect.height / 2));
+    }
+
+    public void ClosePanel()
+    {
+        foreach(Transform child in container.transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
     }
     public void OpenPanel()
     {
         string[] files = null;
         try
         {
-            files = Directory.GetFiles(SavesDirectory, "*" + extension);
+            files = Directory.GetFiles(saveSystem.SavesDirectory, "*" + extension);
         }
         catch(IOException ex)
         {
@@ -102,61 +124,17 @@ public class SelectFilePanel : MonoBehaviour
             float offset = 0;
             for (int i = 0; i < files.Length; i++)
             {
-                AddFileView(files[i], panelRect, offset);
+                AddFileView(Path.GetFileNameWithoutExtension(files[i]), panelRect, offset);
                 offset += imageBoxSize + margin;
             }         
             selectedFile = files[0];
         }
 
     }
-    private void AddFileView(string filePath,RectTransform panelRectTransform,float offset)
-    {
-        GameObject fileView = GameObject.Instantiate(fileViewPrefab, container);
-        GameObject imageObj = GameObject.Instantiate(imagePrefab, fileView.transform);
-        GameObject labelObj = GameObject.Instantiate(labelPrefab, fileView.transform);
 
-        Image image = imageObj.GetComponent<Image>();
-        TMP_Text label = labelObj.GetComponent<TMP_Text>();
-        RectTransform rectTransfrom = fileView.GetComponent<RectTransform>();
-        FileSelect fileSelect = imageObj.GetComponent<FileSelect>();
-
-        fileSelect.FilePath = filePath;
-        fileSelect.Panel = this;
-        image.sprite = fileImage;
-        image.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, imageBoxSize);
-        image.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, imageBoxSize);
-        label.text = filePath.Replace($"{SavesDirectory}/", "").Replace($"{extension}", "");
-        rectTransfrom.anchoredPosition = new Vector2((imageBoxSize / 2) + offset, -(panelRectTransform.rect.height / 2));
-    }
-    public void ClosePanel()
-    {
-        foreach(Transform child in container.transform)
-        {
-            GameObject.Destroy(child.gameObject);
-        }
-    }
-    public void LoadFile()
-    {
-        if(selectedFile != null)
-        {
-            saveSystem.LoadFromFile(selectedFile);      
-        }
-    }
     public void Reload()
     {
         ClosePanel();
         OpenPanel();
-    }
-    public void DeleteFile()
-    {
-        try
-        {
-            File.Delete(selectedFile);
-        }
-        catch(System.Exception ex)
-        {
-            ErrorManager.Instance.ShowErrorMessage(ex.Message,this);
-        }
-        Reload();
     }
 }

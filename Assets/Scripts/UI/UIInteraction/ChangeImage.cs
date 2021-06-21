@@ -8,7 +8,7 @@ public class ChangeImage : MonoBehaviour
     [SerializeField] protected Sprite defaultState;
     [SerializeField] protected Sprite changedState;
     [SerializeField] protected bool isDefaultState = true;
-    // Use this for initialization
+
     void Start()
     {
         if(imageField != null)
@@ -24,7 +24,7 @@ public class ChangeImage : MonoBehaviour
         }
 
     }
-    public void ChangeState()
+    public virtual void ChangeState()
     {
         if(imageField != null)
         {
@@ -41,7 +41,7 @@ public class ChangeImage : MonoBehaviour
         }
 
     }
-    public void ChangeState(bool isDefaultState)
+    public virtual void ChangeState(bool isDefaultState)
     {
         this.isDefaultState = isDefaultState;
         if(imageField != null)

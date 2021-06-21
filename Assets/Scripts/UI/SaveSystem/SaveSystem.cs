@@ -5,62 +5,44 @@ using Assets.Library;
 using System.Xml.Serialization;
 using System.IO;
 
+
 public class SaveSystem:MonoBehaviour
 {
-    private SceneState quickSave;
     [SerializeField] string savesDirectory;
+    [SerializeField] string defaulFilePath = "NewScene";
+    [SerializeField] FilePathProvider pathProvider;
     [SerializeField] string filePath;
-    [SerializeField] SceneStateManager sceneStateSystem;
-
     public string SavesDirectory
     {
         get
         {
 #if UNITY_EDITOR
-            return Application.dataPath + savesDirectory;
+            return Application.dataPath +"/"+ savesDirectory;
 #elif UNITY_ANDROID || UNITY_IOS
-            return Application.persistentDataPath + savesDirectory;
+            return Application.persistentDataPath +"/"+ savesDirectory;
 #endif
         }
     }
-    public string FilePath
-    {
-        get => SavesDirectory + "/" + filePath + ".xml";
-        set => filePath = value;
-    }
 
-    public void QuickSave()
-    {
-        try
-        {
-            quickSave = sceneStateSystem.GetState();
-        }
-        catch(System.Exception ex)
-        {
-            ErrorManager.Instance.ShowErrorMessage(ex.Message, this);
-        }
+    public string FilePath { get => filePath; set => filePath = value; }
 
-    }
-    public void LoadQuickSave()
+    private void Start()
     {
-        try
-        {
-            if (quickSave != null)
-                sceneStateSystem.RefreshScene(quickSave);
-        }
-        catch (System.Exception ex)
-        {
-            ErrorManager.Instance.ShowErrorMessage(ex.Message, this);
-        }
+        if (pathProvider != null)
+            pathProvider.PathChanged += PathChanged;
+        else
+            ErrorManager.Instance.ShowErrorMessage("PathProvider has not set", this);
+
+        FilePath = SavesDirectory +"/"+ defaulFilePath + ".xml";
     }
 
     public void SaveToFile()
     {
         try
         {
-            if(filePath != "")
+            if(FilePath != "")
             {
-                SceneState state = sceneStateSystem.GetState();
+                SceneState state = SceneStateManager.Instance.GetState();
                 XmlSerializer serializer = new XmlSerializer(typeof(SceneState));            
                 File.Delete(FilePath);
                 using (FileStream file = new FileStream(FilePath, FileMode.OpenOrCreate))
@@ -80,7 +62,7 @@ public class SaveSystem:MonoBehaviour
     {
         try
         {
-            if(filePath != "")
+            if(FilePath != "")
             {
                 SceneState state;
                 XmlSerializer serializer = new XmlSerializer(typeof(SceneState));
@@ -93,7 +75,7 @@ public class SaveSystem:MonoBehaviour
                     }
                     else
                     {
-                        sceneStateSystem.RefreshScene(state);
+                        SceneStateManager.Instance.RefreshScene(state);
                     }
                 }
             }
@@ -104,16 +86,25 @@ public class SaveSystem:MonoBehaviour
             ErrorManager.Instance.ShowErrorMessage(ex.Message, this);
         }
     }
-
     public void DeleteFile()
     {
         try
         {
             File.Delete(FilePath);
+            pathProvider.Init(SavesDirectory, ".xml");
         }
         catch (System.Exception ex)
         {
             ErrorManager.Instance.ShowErrorMessage(ex.Message, this);
         }
+    }
+    public void InitPathProvider()
+    {
+        pathProvider.Init(this.SavesDirectory, ".xml");
+    }
+
+    private void PathChanged(string path,object sender)
+    {
+        this.FilePath = path;
     }
 }

@@ -11,6 +11,33 @@ public class SceneStateManager : Singleton<SceneStateManager>
     public delegate void SceneRefreshHandler();
     public event SceneRefreshHandler SceneRefreshed;
 
+    private SceneState quickSave;
+
+    public void QuickSave()
+    {
+        try
+        {
+            quickSave = this.GetState();
+        }
+        catch (System.Exception ex)
+        {
+            ErrorManager.Instance.ShowErrorMessage(ex.Message, this);
+        }
+
+    }
+    public void LoadQuickSave()
+    {
+        try
+        {
+            if (quickSave != null)
+                this.RefreshScene(quickSave);
+        }
+        catch (System.Exception ex)
+        {
+            ErrorManager.Instance.ShowErrorMessage(ex.Message, this);
+        }
+    }
+
     public override void Awake()
     {
         base.Awake();

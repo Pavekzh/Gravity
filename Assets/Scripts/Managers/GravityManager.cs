@@ -6,8 +6,11 @@ using Assets.Library;
 
 public class GravityManager : Singleton<GravityManager>
 {
-    public float GravityRatio;
-    public GameObject PlanetsObject;
+    [SerializeField]private float gravityRatio;
+    [SerializeField] private GameObject planetsObject;
+
+    public float GravityRatio { get => gravityRatio; }
+    public GameObject PlanetsObject { get => planetsObject; }
 
     private List<GravityModule> objects = new List<GravityModule>();
     void RefreshSettings()

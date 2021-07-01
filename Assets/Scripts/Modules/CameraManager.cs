@@ -66,7 +66,7 @@ class CameraManager : MonoBehaviour
 
     public void Zoom(float DeltaDistance)
     {
-        if(DeltaDistance != 0)
+        if(DeltaDistance != 0 && ControlLocked == false)
         {
             RotationRadius -= DeltaDistance * (rotationRadius / DefaultRadius);
             ResetRotation();
@@ -74,7 +74,7 @@ class CameraManager : MonoBehaviour
     }
     public void Moving(Vector3 Vector)
     {
-        if (Vector != Vector3.zero)
+        if (Vector != Vector3.zero && ControlLocked == false)
         {
             Vector = Vector * (rotationRadius / DefaultRadius);
             LocalOriginTranslate(Vector);
@@ -83,7 +83,7 @@ class CameraManager : MonoBehaviour
     }
     public void Rotation(Vector2 OrbitDeltaAngle)
     {
-        if (OrbitDeltaAngle != Vector2.zero)
+        if (OrbitDeltaAngle != Vector2.zero && ControlLocked == false)
         {
             OrbitAngle += OrbitDeltaAngle;
 

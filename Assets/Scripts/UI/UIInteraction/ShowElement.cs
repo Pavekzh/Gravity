@@ -4,41 +4,57 @@ using UnityEngine;
 using Assets.Library;
 using UnityEngine.UI;
 
-public class ShowElement : MonoBehaviour
+public class ShowElement : ElementStateChanger
 {
     [SerializeField] GameObject displayObject;
-    [SerializeField] bool isDisplayed;
+    [SerializeField] State state = State.Default;
+
+    public override State State { get => state; set => state = value; }
+
     private void Start()
     {
-        if (isDisplayed)
+        if (state == State.Changed)
         {
             displayObject.SetActive(true);
         }
-        else
+        else if(state == State.Default)
         {
             displayObject.SetActive(false);
         }
     }
-    public void ChangeState()
+    public override void ChangeState()
     {
-        if(isDisplayed == true)
+        if(State == State.Changed)
         {
             this.Hide();
         }
-        else
+        else if (State == State.Default)
         {
             this.Show();
         }
 
     }    
+    public override void ChangeState(State state)
+    {
+        this.State = state;
+        if(state == State.Default)
+        {
+            this.Show();
+
+        }
+        else if(state == State.Changed)
+        {
+            this.Hide();
+        }
+    }
     public void Show()
     {
         displayObject.SetActive(true);
-        isDisplayed = true;
+        State = State.Changed;
     }
     public void Hide()
     {
         displayObject.SetActive(false);
-        isDisplayed = false;
+        State = State.Default;
     }
 }

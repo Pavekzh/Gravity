@@ -4,12 +4,12 @@ using Assets.Library;
 
 public class TimeChangeImage : ChangeImage,IReactPhysicsState
 {
-
     // Use this for initialization
-    void Start()
+    protected override void Start()
     {
         TimeRefreshed();
         TimeManager.Instance.TimeSettingsRefreshed += TimeRefreshed;
+        base.Start();
     }
     private void TimeRefreshed()
     {
@@ -19,13 +19,11 @@ public class TimeChangeImage : ChangeImage,IReactPhysicsState
     {
         if(state == true)
         {
-            imageField.sprite = defaultState;
-            isDefaultState = true;
+            ChangeState(State.Default);
         }
         else
         {
-            imageField.sprite = changedState;
-            isDefaultState = false;
+            ChangeState(State.Changed);
         }
     }
 }

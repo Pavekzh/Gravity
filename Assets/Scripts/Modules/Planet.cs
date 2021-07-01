@@ -9,6 +9,7 @@ public class Planet : MonoBehaviour
 {
     [SerializeField]private List<Module> modules;
     public List<Module> Modules { get => modules; set => modules = value; }
+    public string Name { get => gameObject.name; set => gameObject.name = value; }
 
     private void Awake()
     {
@@ -24,5 +25,19 @@ public class Planet : MonoBehaviour
         }
         PlanetData data = new PlanetData(modulesData,gameObject.name);
         return data;
+    }
+    public void DisablePhysicsModules()
+    {
+        foreach(Module module in Modules)
+        {
+            module.UpdatePhysicsState(false);
+        }
+    }
+    public void EnablePhysicsModules()
+    {
+        foreach (Module module in Modules)
+        {
+            module.UpdatePhysicsState(true);
+        }
     }
 }

@@ -7,8 +7,8 @@ using Assets.Library;
 public class GravityManager : Singleton<GravityManager>
 {
     public float GravityRatio;
-
     public GameObject PlanetsObject;
+
     private List<GravityModule> objects = new List<GravityModule>();
     void RefreshSettings()
     {

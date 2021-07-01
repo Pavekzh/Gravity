@@ -7,7 +7,8 @@ namespace Assets.Library
     {
         public delegate void PathChangedHandler(string path, object sender);
         public abstract event PathChangedHandler PathChanged;
-        public abstract void Init(string sourceDirectory,string extension);
+        public abstract string Directory { get; set; }
+        public abstract string FileExtension { get; set; }
     }
 }
 

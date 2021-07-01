@@ -7,10 +7,13 @@ public class SelectFilePath : FilePathProvider
     [SerializeField] DirectoryPresenter directoryPresenter;
 
     public override event PathChangedHandler PathChanged;
+    public override string Directory { get; set; }
+    public override string FileExtension { get; set; }
 
-    public override void Init(string sourceDirectory, string extension)
+    private void Awake()
     {
-        directoryPresenter.OpenPanel(sourceDirectory, extension);
+        directoryPresenter.Directory = Directory;
+        directoryPresenter.FileExtension = FileExtension;
     }
     public void SelectPath(string path,object sender)
     {

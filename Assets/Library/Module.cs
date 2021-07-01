@@ -16,8 +16,11 @@ namespace Assets.Library
                 planet.Modules.Add(this);
             }
         }
-
-        public abstract void UpdatePhysicsState(bool State);
+        public virtual bool IsPhysicsActive { get; private set; } = false;
+        public virtual void UpdatePhysicsState(bool State)
+        {
+            IsPhysicsActive = State;
+        }
         public virtual void Awake()
         {
             TimeManager.Instance.AddObserver(this);

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3852130856753710691}
   - component: {fileID: 3019609495913263128}
   - component: {fileID: 6226291705993771983}
+  - component: {fileID: 9077936107525570733}
   m_Layer: 5
   m_Name: FileButton
   m_TagString: Untagged
@@ -141,9 +142,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a17fc84cb4692ca48890970a76b90f92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StateChanger: {fileID: 9077936107525570733}
+  filePath: C:/Users/MAIN/Documents/Gravity/Assets/Saves\Xer.xml
+  selectSystem: {fileID: 0}
+--- !u!114 &9077936107525570733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4539620304807355259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc448647d1473fc4aa681ef45dc175cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   imageField: {fileID: 3852130856753710691}
   defaultState: {fileID: 21300000, guid: f16704b3bac34334d915ab4845ed12c4, type: 3}
   changedState: {fileID: 21300000, guid: d23c43aa7fc92234ea0fb4adeed18a53, type: 3}
-  isDefaultState: 1
-  filePath: C:/Users/MAIN/Documents/Gravity/Assets/Saves\Xer.xml
-  selectSystem: {fileID: 0}
+  state: 0

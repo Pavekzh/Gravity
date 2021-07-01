@@ -18,33 +18,41 @@ public class GravityModule : Module
         if (Rigidbody == null)
         {
             ErrorManager.Instance.ShowErrorMessage("Gravity object must have Rigidbody component",this);
-        }   
+        }
         GravityManager.Instance.Objects.Add(this);
         base.Awake();
     }
     private void FixedUpdate()
     {
-        Vector3 force = ComputeForce(GravityManager.Instance.Objects, GravityManager.Instance.GravityRatio);
-        Rigidbody.AddForce(force * Time.fixedDeltaTime, ForceMode.Impulse);
+        if (IsPhysicsActive)
+        {
+            Vector3 force = ComputeForce(GravityManager.Instance.Objects, GravityManager.Instance.GravityRatio);
+            Rigidbody.AddForce(force * Time.fixedDeltaTime, ForceMode.Impulse);
+        }
     }
     public Vector3 ComputeForce(IEnumerable<GravityModule> Environment, float GravityRatio)
     {
         Vector3 force = Vector3.zero;
         foreach (GravityModule obj in Environment)
         {
-            float distance = Vector3.Distance(Position, obj.Position);
-            if (distance != 0)
+            if (obj.IsPhysicsActive)
             {
-                float forceValue = GravityRatio * (Mass * obj.Mass) / (distance * distance);
+                float distance = Vector3.Distance(Position, obj.Position);
+                if (distance != 0)
+                {
+                    float forceValue = GravityRatio * (Mass * obj.Mass) / (distance * distance);
 
-                Vector3 forceDirection = (obj.Position - Position).normalized;
-                force += forceDirection * forceValue;
+                    Vector3 forceDirection = (obj.Position - Position).normalized;
+                    force += forceDirection * forceValue;
+                }
             }
+
         }
         return force;
     }
     public override void UpdatePhysicsState(bool state)
     {
+        base.UpdatePhysicsState(state);
         if(state == false && Rigidbody.isKinematic == false)
         {
             savedVelocity = Rigidbody.velocity;
@@ -68,11 +76,18 @@ public class GravityModule : Module
             Rigidbody.mass = data.Mass;
             Rigidbody.velocity = data.Velocity;
             transform.position = data.Position;
+            savedVelocity = data.Velocity;
         }
     }
     public override ModuleData GetModuleData()
     {
-        GravityModuleData moduleData = new GravityModuleData(this.Mass,this.Position,this.Velocity);
+        GravityModuleData moduleData;
+        if (this.IsPhysicsActive)
+            moduleData = new GravityModuleData(this.Mass,this.Position,this.Velocity);
+        else
+            moduleData = new GravityModuleData(this.Mass, this.Position, this.savedVelocity);
+
+
         return moduleData;
     }
 }

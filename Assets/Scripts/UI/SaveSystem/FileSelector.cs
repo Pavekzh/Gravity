@@ -3,10 +3,13 @@ using System.Collections;
 using TMPro;
 using Assets.Library;
 
-public class FileSelector : ChangeImage
+public class FileSelector : MonoBehaviour
 {
+    [SerializeField] private ElementStateChanger StateChanger;
     [SerializeField] private string filePath;
     [SerializeField] private SelectFilePath selectSystem;
+
+    private State state = State.Default;
     public SelectFilePath SelectSystem
     {
         get => selectSystem;
@@ -28,43 +31,23 @@ public class FileSelector : ChangeImage
         selectSystem.PathChanged += this.SelectedFileChanged;
     }
 
-    public override void ChangeState()
+    public void ChangeState()
     {
 
-        if (isDefaultState)
+        if (state == State.Changed)
         {
-            if (imageField != null)
-                imageField.sprite = changedState;
-
-            Select();
-            isDefaultState = false;
+            state = State.Default;
+            StateChanger.ChangeState(State.Default);
         }
-        else
+        else if(state == State.Default)
         {
-            if (imageField != null)
-                imageField.sprite = defaultState;
-
-            isDefaultState = true;
+            state = State.Changed;
+            StateChanger.ChangeState(State.Changed);
+            Select();
         }
 
     }
-    public override void ChangeState(bool isDefaultState)
-    {
-        this.isDefaultState = isDefaultState;
 
-        if (isDefaultState)
-        {
-            if (imageField != null)
-                imageField.sprite = defaultState;
-        }
-        else
-        {
-            Select();
-            if (imageField != null)
-                imageField.sprite = changedState;
-        }
-
-    }
     private void Select()
     {
         SelectSystem.SelectPath(FilePath, this);
@@ -73,7 +56,7 @@ public class FileSelector : ChangeImage
     {
         if (sender != (object)this)
         {
-            this.ChangeState(true);
+            this.StateChanger.ChangeState(State.Default);
         }
     }
 }

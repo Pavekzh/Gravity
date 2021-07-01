@@ -1,56 +1,58 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using Assets.Library;
 
-public class ChangeImage : MonoBehaviour
+public class ChangeImage : ElementStateChanger
 {
     [SerializeField] protected Image imageField;
     [SerializeField] protected Sprite defaultState;
     [SerializeField] protected Sprite changedState;
-    [SerializeField] protected bool isDefaultState = true;
+    [SerializeField] protected State state = State.Default;
 
-    void Start()
+    public override State State { get => state; set => state = value; }
+    protected virtual void Start()
     {
         if(imageField != null)
         {
-            if (isDefaultState)
+            if (state == State.Default)
             {
                 imageField.sprite = defaultState;
             }
-            else
+            else if(state == State.Changed)
             {
                 imageField.sprite = changedState;
             }
         }
 
     }
-    public virtual void ChangeState()
+    public override void ChangeState()
     {
         if(imageField != null)
         {
-            if (isDefaultState)
+            if (state == State.Default)
             {
                 imageField.sprite = changedState;
-                isDefaultState = false;
+                state = State.Changed;
             }
-            else
+            else if(state == State.Changed)
             {
                 imageField.sprite = defaultState;
-                isDefaultState = true;
+                state = State.Default;
             }
         }
 
     }
-    public virtual void ChangeState(bool isDefaultState)
-    {
-        this.isDefaultState = isDefaultState;
+    public override void ChangeState(State state)
+    { 
+        this.state = state;
         if(imageField != null)
         {
-            if (isDefaultState)
+            if (state == State.Default)
             {
                 imageField.sprite = defaultState;
             }
-            else
+            else if(state == State.Changed)
             {
                 imageField.sprite = changedState;
             }

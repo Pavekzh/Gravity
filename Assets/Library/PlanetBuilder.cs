@@ -9,7 +9,7 @@ namespace Assets.Library
         {
             Data = data;
         }
-        public GameObject CreatePlanet(Transform parent)
+        public Planet CreatePlanet(Transform parent)
         {
             GameObject baseObject = Resources.Load<GameObject>("Prefabs/BasePlanet");
             if(baseObject == null)
@@ -30,7 +30,7 @@ namespace Assets.Library
                 module.SetModule(moduleData);
                 module.Planet = planet; 
             }
-            return planetObject;
+            return planet;
         }
     }
 }

@@ -11,9 +11,11 @@ public class TimeManager : Singleton<TimeManager>
 
     public Binding<float> TimeBinding { get; private set; }
     [SerializeField] private float timeScale;
-    [SerializeField] private bool physicsEnabled = true;
+    [SerializeField] private bool isPhysicsEnabled = true;
     [SerializeField] private float maxTimeScale = 2;
+
     public float TimeScale { get => timeScale; }
+    public bool IsPhysicsEnabled { get => isPhysicsEnabled; }
 
     public event SceneStateManager.SceneRefreshHandler TimeSettingsRefreshed;
     void RefreshSettings()
@@ -24,7 +26,7 @@ public class TimeManager : Singleton<TimeManager>
     public void AddObserver(IReactPhysicsState Module)
     {
         this.modules.Add(Module);
-        Module.UpdatePhysicsState(this.physicsEnabled);
+        Module.UpdatePhysicsState(this.isPhysicsEnabled);
     }
     public void RemoveObserver(IReactPhysicsState Module)
     {
@@ -46,7 +48,7 @@ public class TimeManager : Singleton<TimeManager>
     }
     public void ChangePhysicsState()
     {
-        if (physicsEnabled)
+        if (isPhysicsEnabled)
         {
             TimeBinding.ChangeValue(0, this);
             LocalStopPhysics();
@@ -79,7 +81,7 @@ public class TimeManager : Singleton<TimeManager>
         TimeBinding.ValueChanged += ResetTimeScale;
         TimeBinding.ValidateValue += ValidateTimeChanges;
         SceneStateManager.Instance.SceneRefreshed += RefreshSettings;
-        if(physicsEnabled == false)
+        if(isPhysicsEnabled == false)
         {
             LocalStopPhysics();
         }
@@ -124,7 +126,7 @@ public class TimeManager : Singleton<TimeManager>
             module.UpdatePhysicsState(false);
         }
         timeScale = 0;
-        physicsEnabled = false;
+        isPhysicsEnabled = false;
     }
     //method used when time resume by setting TimeScale not to 0
     private void LocalResumePhysics()
@@ -134,7 +136,7 @@ public class TimeManager : Singleton<TimeManager>
             module.UpdatePhysicsState(true);
         }
         timeScale = Time.timeScale;
-        physicsEnabled = true;
+        isPhysicsEnabled = true;
     }
 
 }

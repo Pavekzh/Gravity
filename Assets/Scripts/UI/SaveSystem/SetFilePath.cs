@@ -14,8 +14,13 @@ public class SetFilePath : FilePathProvider
             return directoryPath +"/"+ inputField.text + extension;
         }
     }
+
+    public override string FileExtension { get => extension; set => extension = value; }
+    public override string Directory { get => directoryPath; set => directoryPath = value; }
+
     private string directoryPath;
     private string extension;
+
 
     public override event PathChangedHandler PathChanged;
     private void Start()
@@ -31,10 +36,5 @@ public class SetFilePath : FilePathProvider
         {
             PathChanged?.Invoke(FilePath,this);
         }
-    }
-    public override void Init(string sourceDirectory,string extension)
-    {
-        this.directoryPath = sourceDirectory;
-        this.extension = extension;
     }
 }

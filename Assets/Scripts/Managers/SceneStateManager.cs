@@ -6,11 +6,12 @@ using Assets.Library;
 
 public class SceneStateManager : Singleton<SceneStateManager>
 {
+    [SerializeField] SaveSystemXML saveSystem;
+    [SerializeField] SaveSystemXML loadSystem;
     public List<Planet> Planets { get; private set; }
 
     public delegate void SceneRefreshHandler();
     public event SceneRefreshHandler SceneRefreshed;
-
     private SceneState quickSave;
 
     public void QuickSave()
@@ -35,6 +36,22 @@ public class SceneStateManager : Singleton<SceneStateManager>
         catch (System.Exception ex)
         {
             ErrorManager.Instance.ShowErrorMessage(ex.Message, this);
+        }
+    }
+    public void SaveToFile()
+    {
+        saveSystem.SaveToFile(GetState());
+    }
+    public void LoadFromFile()
+    {
+        SceneState state =  loadSystem.LoadFromFile(typeof(SceneState)) as SceneState;
+        if (state == null)
+        {
+            ErrorManager.Instance.ShowErrorMessage("File have invalid format or doesn't exist", this);
+        }
+        else
+        {
+            this.RefreshScene(state);
         }
     }
 

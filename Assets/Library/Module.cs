@@ -6,8 +6,8 @@ namespace Assets.Library
 {
     public abstract class Module : MonoBehaviour,IReactPhysicsState
     {
-        [SerializeField] Planet planet;
-        public Planet Planet
+        [SerializeField]protected Planet planet;
+        public virtual Planet Planet
         {
             get => planet;
             set

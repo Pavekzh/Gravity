@@ -2,38 +2,27 @@
 using System.Collections;
 using Assets.Library;
 
-public class MoveElement : ElementStateChanger
+public class MoveElement : StateChanger
 {
     [SerializeField] RectTransform rectTransform;
     [SerializeField] Vector2 movedPosition;
     [SerializeField] Vector2 defaultPosition;
     [SerializeField] State state = State.Default;
 
-    public override State State { get => State; set => state = value; }
-    public override void ChangeState()
+    public override State State
     {
-        if (state == State.Default)
+        get { return state; }
+        set
         {
-            rectTransform.anchoredPosition = movedPosition;
-            state = State.Changed;
+            state = value;
+            if (value == State.Default)
+            {
+                rectTransform.anchoredPosition = defaultPosition;
+            }
+            else if (value == State.Changed)
+            {
+                rectTransform.anchoredPosition = movedPosition;
+            }
         }
-        else if(state == State.Changed)
-        {
-            rectTransform.anchoredPosition = defaultPosition;
-            state = State.Default;
-        }
-    }
-    public override void ChangeState(State state)
-    {
-        this.state = state;
-        if (state == State.Default)
-        {
-            rectTransform.anchoredPosition = defaultPosition;
-        }
-        else if(state == State.Changed)
-        {
-            rectTransform.anchoredPosition = movedPosition;         
-        }
-        
     }
 }

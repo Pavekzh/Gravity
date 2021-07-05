@@ -6,16 +6,16 @@ using Assets.Library;
 class CameraManager : MonoBehaviour
 {
     [Header("Limiters")]
-    [SerializeField] private float maxHeight;
-    [SerializeField] private float minXAngle;
-    [SerializeField] private float maxXAngle;
-    [SerializeField] private float minRotationRadius;
+    [SerializeField] private float maxRadius = 100;
+    [SerializeField] private float minXAngle = 0;
+    [SerializeField] private float maxXAngle = 89.99f;
+    [SerializeField] private float minRotationRadius = 1;
 
 
     [Header("Start data")]
-    [SerializeField] private float rotationRadius = 500;
+    [SerializeField] private float rotationRadius = 10;
     [SerializeField] private Vector3 origin;
-    [SerializeField] private Vector2 orbitAngle;
+    [SerializeField] private Vector2 orbitAngle = new Vector2(60,0);
     [SerializeField] private GameObject Camera;
 
     public float RotationRadius
@@ -28,13 +28,13 @@ class CameraManager : MonoBehaviour
         {
             if (value >= minRotationRadius)
             {
-                if (value <= maxHeight || maxHeight == 0)
+                if (value <= maxRadius || maxRadius == 0)
                 {
                     rotationRadius = value;
                 }
                 else
                 {
-                    rotationRadius = maxHeight;
+                    rotationRadius = maxRadius;
                 }
             }
             else
@@ -57,7 +57,7 @@ class CameraManager : MonoBehaviour
     }
     public bool ControlLocked { get; set; } = false;
 
-    private const float DefaultRadius = 300;
+    public const float DefaultRadius = 20;
 
     private void Start()
     {

@@ -9,6 +9,17 @@ public class GravityModule : Module
     public float Mass { get { return Rigidbody.mass; } }
     public Vector3 Velocity { get { return Rigidbody.velocity; } }
     public Vector3 Position { get { return transform.position; } }
+    public override Planet Planet
+    {
+        get => planet;
+        set
+        {
+            value.GravityModule = this;
+            planet = value;
+            planet.Modules.Add(this);
+
+        }
+    }
 
     private Vector3 savedVelocity;
     private Rigidbody Rigidbody;
@@ -89,5 +100,12 @@ public class GravityModule : Module
 
 
         return moduleData;
+    }
+    public void AddVelocity(Vector3 velocity)
+    {
+        if (IsPhysicsActive)
+            Rigidbody.AddForce(velocity, ForceMode.VelocityChange);
+        else
+            savedVelocity += velocity;
     }
 }

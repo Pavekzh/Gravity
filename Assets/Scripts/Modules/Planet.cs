@@ -4,12 +4,14 @@ using UnityEngine;
 using Assets.Library;
 using System;
 
-[Serializable]
 public class Planet : MonoBehaviour
 {
-    [SerializeField]private List<Module> modules;
+    [SerializeField] private GravityModule gravityModule;
+    [SerializeField] private List<Module> modules;
+
     public List<Module> Modules { get => modules; set => modules = value; }
     public string Name { get => gameObject.name; set => gameObject.name = value; }
+    public GravityModule GravityModule { get => gravityModule; set => gravityModule = value; } 
 
     private void Awake()
     {

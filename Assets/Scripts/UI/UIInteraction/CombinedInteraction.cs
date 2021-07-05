@@ -3,41 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using Assets.Library;
 
-public class CombinedInteraction : ElementStateChanger
+public class CombinedInteraction : StateChanger
 {
-    [SerializeField] List<ElementStateChanger> interactors;
+    [SerializeField] List<StateChanger> interactors;
     [SerializeField] State state;
 
-    public override State State { get => state; set => state = value; }
-
-    public override void ChangeState()
+    public override State State
     {
-        if(State == State.Default)
+        get { return state; }
+        set
         {
-            foreach(ElementStateChanger stateChanger in interactors)
+            state = value;
+            foreach (StateChanger stateChanger in interactors)
             {
-                stateChanger.ChangeState(State.Changed);
-
+                stateChanger.State = value;
             }
-            state = State.Changed;
         }
-        else if(State == State.Changed)
-        {
-            foreach (ElementStateChanger stateChanger in interactors)
-            {
-                stateChanger.ChangeState(State.Default);
-
-            }
-            state = State.Default;
-        }
-    }
-    public override void ChangeState(State state)
-    {
-        foreach (ElementStateChanger stateChanger in interactors)
-        {
-            stateChanger.ChangeState(state);
-
-        }
-        this.state = state;
     }
 }

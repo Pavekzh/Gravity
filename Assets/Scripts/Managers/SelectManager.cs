@@ -9,6 +9,7 @@ public class SelectManager : Singleton<SelectManager>
 
     public Planet SelectedObject { get; private set; }
 
+    [SerializeField] Planet defaultSelectedObject;
     [SerializeField] bool isSelectionEnabled;
     [SerializeField] string planetsLayer;
     [SerializeField] float selectSphereRadius;
@@ -16,6 +17,7 @@ public class SelectManager : Singleton<SelectManager>
     int layerMask;
     private void Start()
     {
+        SelectObject(defaultSelectedObject, this);
         layerMask = 1 << LayerMask.NameToLayer(planetsLayer);
     }
     public void SelectObject(Planet planet,object sender)

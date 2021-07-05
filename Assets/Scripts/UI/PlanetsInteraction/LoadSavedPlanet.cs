@@ -3,12 +3,12 @@ using System.Collections;
 using Assets.Library;
 public class LoadSavedPlanet : MonoBehaviour
 {
-    [SerializeField] ElementStateChanger uiChanger;
+    [SerializeField] StateChanger uiChanger;
     [SerializeField] MoveSelectedPlanet moveSystem;
     [SerializeField] SaveSystemXML saveSystem;
     [SerializeField] string filePath;
 
-    public ElementStateChanger UIChanger { get => uiChanger; set => uiChanger = value; }
+    public StateChanger UIChanger { get => uiChanger; set => uiChanger = value; }
     public MoveSelectedPlanet MoveSystem { get => moveSystem; set => moveSystem = value; }
     public SaveSystemXML SaveSystem { get => saveSystem; set => saveSystem = value; }
     public string FilePath { get => filePath; set => filePath = value; }
@@ -27,7 +27,7 @@ public class LoadSavedPlanet : MonoBehaviour
     }
     public void ViewPressed()
     {
-        uiChanger.ChangeState(State.Default);
+        uiChanger.State = State.Default;
         SaveSystem.FilePath = FilePath;
         PlanetData planetData = SaveSystem.LoadFromFile(typeof(PlanetData)) as PlanetData;
         if (planetData != null)

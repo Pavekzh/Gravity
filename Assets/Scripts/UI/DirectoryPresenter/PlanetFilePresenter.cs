@@ -7,7 +7,7 @@ using TMPro;
 
 public class PlanetFilePresenter : FilePresenter
 {
-    [SerializeField] ElementStateChanger UIChanger;
+    [SerializeField] StateChanger UIChanger;
     [SerializeField] MoveSelectedPlanet moveSystem;
     [SerializeField] SaveSystemXML saveSystem;
     [SerializeField] LoadSavedPlanet loader;

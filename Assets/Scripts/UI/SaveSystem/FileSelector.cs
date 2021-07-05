@@ -3,9 +3,9 @@ using System.Collections;
 using TMPro;
 using Assets.Library;
 
-public class FileSelector : MonoBehaviour
+public class FileSelector : StateChanger
 {
-    [SerializeField] private ElementStateChanger StateChanger;
+    [SerializeField] private StateChanger StateChanger;
     [SerializeField] private string filePath;
     [SerializeField] private SelectFilePath selectSystem;
 
@@ -25,27 +25,27 @@ public class FileSelector : MonoBehaviour
     }
 
     public string FilePath { get => filePath; set => filePath = value; }
+    public override State State
+    {
+        get { return state; }
+        set
+        {
+            state = value;
+            StateChanger.State = value;
+            if(value == State.Changed)
+            {
+                Select();
+            }
+        }
+    }
 
     private void Start()
     {
         selectSystem.PathChanged += this.SelectedFileChanged;
     }
-
-    public void ChangeState()
+    private void OnDestroy()
     {
-
-        if (state == State.Changed)
-        {
-            state = State.Default;
-            StateChanger.ChangeState(State.Default);
-        }
-        else if(state == State.Default)
-        {
-            state = State.Changed;
-            StateChanger.ChangeState(State.Changed);
-            Select();
-        }
-
+        selectSystem.PathChanged -= this.SelectedFileChanged;
     }
 
     private void Select()
@@ -56,7 +56,8 @@ public class FileSelector : MonoBehaviour
     {
         if (sender != (object)this)
         {
-            this.StateChanger.ChangeState(State.Default);
+            this.StateChanger.State = State.Default;
+            this.state = State.Default;
         }
     }
 }

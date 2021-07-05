@@ -13,9 +13,9 @@ class CameraInputManager:MonoBehaviour
     [SerializeField] private CameraManager cameraManager;
     [SerializeField] private bool isControlLocked;
     [SerializeField] private InputMode inputMode;
-    [SerializeField] private float zoomSpeed;
-    [SerializeField] private float rotationSpeed;
-    [SerializeField] private Vector3 movingSpeed;
+    [SerializeField] private float zoomSpeed = 0.5f;
+    [SerializeField] private float rotationSpeed = 1;
+    [SerializeField] private Vector3 movingSpeed = new Vector3(0.05f,0.05f,0.05f);
 
     public InputMode InputMode { get => inputMode; set => inputMode = value; }
     public bool IsControlLocked { get => isControlLocked; set => isControlLocked = value; }

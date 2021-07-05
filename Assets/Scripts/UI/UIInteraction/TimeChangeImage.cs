@@ -19,11 +19,11 @@ public class TimeChangeImage : ChangeImage,IReactPhysicsState
     {
         if(state == true)
         {
-            ChangeState(State.Default);
+            State = State.Default;
         }
         else
         {
-            ChangeState(State.Changed);
+            State = State.Changed;
         }
     }
 }

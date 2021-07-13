@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Assets.Library;
+using System.Linq;
 
 public class SelectManager : Singleton<SelectManager>
 {
@@ -17,7 +18,11 @@ public class SelectManager : Singleton<SelectManager>
     int layerMask;
     private void Start()
     {
-        SelectObject(defaultSelectedObject, this);
+        if (defaultSelectedObject != null)
+            SelectObject(defaultSelectedObject, this);
+        else
+            SelectObject(SceneStateManager.Instance.Planets.FirstOrDefault(), this);
+
         layerMask = 1 << LayerMask.NameToLayer(planetsLayer);
     }
     public void SelectObject(Planet planet,object sender)

@@ -33,6 +33,10 @@ public class SaveSystemXML:MonoBehaviour
             pathProvider.Directory = this.Directory;
             pathProvider.FileExtension = ".xml";
             pathProvider.PathChanged += PathChanged;
+            if(!System.IO.Directory.Exists(Directory))
+            {
+                System.IO.Directory.CreateDirectory(Directory);
+            }
         }
         else
             ErrorManager.Instance.ShowWarningMessage("PathProvider has not set", this);

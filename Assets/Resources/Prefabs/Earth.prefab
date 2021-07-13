@@ -242,4 +242,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 376c0c26c159080409416f58dd7843d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gravityModule: {fileID: 9195725793225852360}
   modules: []

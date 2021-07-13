@@ -5,11 +5,12 @@ using UnityEngine.EventSystems;
 
 public class PlanetKicker : StateChanger
 {
+    [SerializeField] ManipulatorView manipulator;
     [SerializeField] bool isKickEnabled;
     [SerializeField] new Camera camera;
     [SerializeField] CameraManager cameraManager;
-    [SerializeField] float vectorPower;
-    [SerializeField] [Range(0.000001f, 1)] float kickForce;
+    [SerializeField] float vectorPower = 1.2f;
+    [SerializeField] float kickForce = 1;
 
     public override State State
     {
@@ -26,11 +27,14 @@ public class PlanetKicker : StateChanger
             {
                 isKickEnabled = true;
                 cameraManager.ControlLocked = true;
+                manipulator.SetActive(true);
             }
             else
             {
                 isKickEnabled = false;
                 cameraManager.ControlLocked = false;
+                manipulator.SetActive(false);
+
             }
 
         }
@@ -44,48 +48,64 @@ public class PlanetKicker : StateChanger
         else
             State = State.Default;
     }
-    private Vector3 VectorPow(Vector3 vector,float power)
-    {
-        return new Vector3(Mathf.Pow(vector.x,power), Mathf.Pow(vector.y, power), Mathf.Pow(vector.z, power));
-    }
     private void Update()
     {
-        if (isKickEnabled)
+        if (isKickEnabled && SelectManager.Instance.SelectedObject != null)
         {
-            if (Input.touchCount == 1 && SelectManager.Instance.SelectedObject != null)
+            if (Input.touchCount == 1)
             {
                 if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
                 {
                     controllLock = true;
-                    Debug.Log("Controll locked");
+                    Debug.Log("Control locked");
                 }
                 if (!controllLock)
                 {
-                    Vector3 directVector = Vector3.zero;
-                    Vector3 objPosition = camera.WorldToScreenPoint(SelectManager.Instance.SelectedObject.GravityModule.Position);
-
-                    Vector3 touchPosition = Input.GetTouch(0).position;
-                    Vector3 directPoint = objPosition - touchPosition;
-                    directPoint = directPoint.normalized * Mathf.Pow(directPoint.magnitude, vectorPower);
-                    directPoint = new Vector3(directPoint.x, 0, directPoint.y);
-                    directVector = directPoint + SelectManager.Instance.SelectedObject.GravityModule.Position;
-
-                    float pxForStandardForce = Screen.width * kickForce;
-                    directVector = (directVector / pxForStandardForce) * (cameraManager.RotationRadius / CameraManager.DefaultRadius);
-                    if (Input.GetTouch(0).phase == TouchPhase.Ended)
+                    Ray ray = camera.ScreenPointToRay(Input.GetTouch(0).position);
+                    Plane plane = new Plane(Vector3.up, Vector3.zero);
+                    float distance;
+                    if (plane.Raycast(ray,out distance))
                     {
-                        SelectManager.Instance.SelectedObject.GravityModule.AddVelocity(directVector);
+                        float zoomFactor = cameraManager.RotationRadius / CameraManager.DefaultRadius;
+
+                        Vector3 touchPoint = ray.GetPoint(distance);
+                        Vector3 objPoint = SelectManager.Instance.SelectedObject.GravityModule.Position;
+                        Vector3 direct = objPoint - touchPoint;
+
+                        direct = direct.normalized * Mathf.Pow(direct.magnitude, vectorPower);
+                        direct = direct * zoomFactor * kickForce;
+                        if (Input.GetTouch(0).phase == TouchPhase.Ended)
+                        {
+                            SelectManager.Instance.SelectedObject.GravityModule.Velocity = direct;
+                        }
+                        manipulator.SetManipulator(objPoint, objPoint + direct, touchPoint);
                     }
-                    Debug.DrawLine(SelectManager.Instance.SelectedObject.GravityModule.Position, SelectManager.Instance.SelectedObject.GravityModule.Position + directVector,Color.red);
+
                 }
                 else
                 {
                     if(Input.GetTouch(0).phase == TouchPhase.Ended)
                     {
                         controllLock = false;
-                        Debug.Log("Controll unlocked");
+                        Debug.Log("Control unlocked");
                     }
                 }
+            }
+            else
+            {
+
+                float zoomFactor = cameraManager.RotationRadius / CameraManager.DefaultRadius;
+                Vector3 obj = SelectManager.Instance.SelectedObject.GravityModule.Position;
+                Vector3 direct = SelectManager.Instance.SelectedObject.GravityModule.Velocity;
+                Vector3 touch = Vector3.zero;
+                if (direct != Vector3.zero)
+                {
+                    touch = direct / zoomFactor / kickForce;
+                    touch = touch.normalized * Mathf.Pow(touch.magnitude, 1 / vectorPower);
+                    touch = obj - touch;
+
+                }
+                manipulator.SetManipulator(obj, obj + direct, touch);
             }
         }
     }

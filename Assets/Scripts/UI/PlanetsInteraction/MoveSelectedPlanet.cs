@@ -7,15 +7,18 @@ public class MoveSelectedPlanet : MonoBehaviour
     [SerializeField] new Camera camera;
     [SerializeField] CameraManager cameraManager;
 
+    bool cameraStateBefore;
     public void EnableMoving()
     {
         isMovingEnabled = true;
+        cameraStateBefore = cameraManager.ControlLocked;
         cameraManager.ControlLocked = true;
+
     }
     public void DisableMoving()
     {
         isMovingEnabled = false;
-        cameraManager.ControlLocked = false;
+        cameraManager.ControlLocked = cameraStateBefore;
     }
     void Update()
     {

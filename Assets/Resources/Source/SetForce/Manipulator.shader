@@ -1,4 +1,4 @@
-﻿Shader "Custom/SingleColor"
+﻿Shader "Custom/Manipulator"
 {
 	Properties
 	{
@@ -11,7 +11,6 @@
 		Color[_Color]
 		ZWrite On
 
-		// Во время прохода ничего не делаем 
 		Pass {}
 
 	}

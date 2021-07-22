@@ -12,7 +12,6 @@ public class CircleDrawer : MonoBehaviour
         renderer.positionCount = pointsCount;
         CreatePoints();
     }
-
     public void CreatePoints()
     {
         Keyframe[] keys = new Keyframe[pointsCount];

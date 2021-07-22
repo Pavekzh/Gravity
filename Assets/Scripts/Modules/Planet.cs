@@ -4,11 +4,12 @@ using UnityEngine;
 using Assets.Library;
 using System;
 
-public class Planet : MonoBehaviour
+public class Planet : MonoBehaviour,UICustomizableObject
 {
     [SerializeField] private GravityModule gravityModule;
     [SerializeField] private List<Module> modules;
 
+    public IList<IModulePresenter> Presenters { get; set; }
     public List<Module> Modules { get => modules; set => modules = value; }
     public string Name { get => gameObject.name; set => gameObject.name = value; }
     public GravityModule GravityModule { get => gravityModule; set => gravityModule = value; } 
@@ -16,6 +17,7 @@ public class Planet : MonoBehaviour
     private void Awake()
     {
         modules = new List<Module>();
+        Presenters = new List<IModulePresenter>();
         SceneStateManager.Instance.Planets.Add(this);
     }
     public PlanetData GetPlanetData()

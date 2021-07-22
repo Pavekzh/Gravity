@@ -40,8 +40,5 @@ public class PlanetFilePresenter : FilePresenter
 
         return container.GetComponent<RectTransform>();
     }
-    public void PointerDown(PointerEventData eventData)
-    {
 
-    }
 }

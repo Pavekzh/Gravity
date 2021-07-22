@@ -15,7 +15,7 @@ public class ErrorManager : Singleton<ErrorManager>
         panelStateSwitcher.Show();
         messageBox.text =sender.ToString() +":"+ Message;
     }
-    public void ShowWarningMessage(string Message,Object sender)
+    public void ShowWarningMessage(string Message,System.Object sender)
     {
         Debug.LogWarning(sender.ToString() + ":" + Message);
     }

@@ -2042,7 +2042,7 @@ PrefabInstance:
     - target: {fileID: 4244487814362066647, guid: 553aa7d7fb679404c8f18622662406e9,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -8.7
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4244487814362066647, guid: 553aa7d7fb679404c8f18622662406e9,
         type: 3}
@@ -2098,7 +2098,12 @@ PrefabInstance:
         type: 3}
       propertyPath: modulePresenter
       value: 
-      objectReference: {fileID: 2048635036}
+      objectReference: {fileID: 0}
+    - target: {fileID: 9195725793225852360, guid: 553aa7d7fb679404c8f18622662406e9,
+        type: 3}
+      propertyPath: modulePresenterBuilder
+      value: 
+      objectReference: {fileID: 425523538}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 553aa7d7fb679404c8f18622662406e9, type: 3}
 --- !u!1 &337746028
@@ -2479,6 +2484,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 425523537}
+  - component: {fileID: 425523538}
   m_Layer: 0
   m_Name: Planets
   m_TagString: Untagged
@@ -2501,6 +2507,33 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &425523538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 425523536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc26b3d816b8a984a88bb25b65b29b30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emptyPrefab: {fileID: 5420828811351475175, guid: 9b1f36ae3b99f9946b114a3d9ac834aa,
+    type: 3}
+  moduleLabelPrefab: {fileID: 3575698515241855516, guid: 47f6406616b83034bbe70ff4276eb41e,
+    type: 3}
+  shortViewPrefab: {fileID: 7132091647988348868, guid: 3cd14378b35bf9d45a349cc4eb5c6d5f,
+    type: 3}
+  inputFieldPrefab: {fileID: 2343868682358620763, guid: 5f70ea3374e7d9242a2e4dc376d1e1fa,
+    type: 3}
+  propertyLabelPrefab: {fileID: 337151262331049450, guid: 801b19b8085ee7c45b9dfc697765ba07,
+    type: 3}
+  lineLabelPrefab: {fileID: 7117521412519580339, guid: fe44e5e248cc0ab4580103ef34bcc15f,
+    type: 3}
+  startMargin: 10
+  propertiesMargin: 10
+  lineMargin: 5
 --- !u!1 &442142915
 GameObject:
   m_ObjectHideFlags: 0
@@ -3497,7 +3530,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdaa4d91d657ed840a11821040c42c27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultSelectedObject: {fileID: 0}
+  defaultSelectedObject: {fileID: 2048635036}
   isSelectionEnabled: 1
   planetsLayer: Planets
   selectSphereRadius: 1
@@ -7324,6 +7357,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gravityRatio: 10
   planetsObject: {fileID: 425523536}
+  defaultModPresenterBuilder: {fileID: 425523538}
 --- !u!1 &1850105604
 GameObject:
   m_ObjectHideFlags: 0
@@ -8035,39 +8069,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!1 &2048635035 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 917655656420383940, guid: 553aa7d7fb679404c8f18622662406e9,
+--- !u!114 &2048635036 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9195725793225852354, guid: 553aa7d7fb679404c8f18622662406e9,
     type: 3}
   m_PrefabInstance: {fileID: 315811842}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2048635036
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2048635035}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18fe01798b94dc94580bfa7c83a51673, type: 3}
+  m_Script: {fileID: 11500000, guid: 376c0c26c159080409416f58dd7843d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  emptyPrefab: {fileID: 5420828811351475175, guid: 9b1f36ae3b99f9946b114a3d9ac834aa,
-    type: 3}
-  moduleLabelPrefab: {fileID: 3575698515241855516, guid: 47f6406616b83034bbe70ff4276eb41e,
-    type: 3}
-  shortViewPrefab: {fileID: 7132091647988348868, guid: 3cd14378b35bf9d45a349cc4eb5c6d5f,
-    type: 3}
-  inputFieldPrefab: {fileID: 2343868682358620763, guid: 5f70ea3374e7d9242a2e4dc376d1e1fa,
-    type: 3}
-  propertyLabelPrefab: {fileID: 337151262331049450, guid: 801b19b8085ee7c45b9dfc697765ba07,
-    type: 3}
-  lineLabelPrefab: {fileID: 7117521412519580339, guid: fe44e5e248cc0ab4580103ef34bcc15f,
-    type: 3}
-  startMargin: 10
-  propertiesMargin: 10
-  lineMargin: 5
 --- !u!1 &2069656478
 GameObject:
   m_ObjectHideFlags: 0

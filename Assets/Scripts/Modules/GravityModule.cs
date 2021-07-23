@@ -85,6 +85,9 @@ public class GravityModule : Module
 
     private void InitModulePresenter()
     {
+        if (modulePresenterBuilder == null)
+            modulePresenterBuilder = GravityManager.Instance.DefaultModPresenterBuilder;
+
         modulePresenterBuilder.ResetSettings();
 
         modulePresenterBuilder.ModuleName = this.GetType().Name;

@@ -8,7 +8,9 @@ public class GravityManager : Singleton<GravityManager>
 {
     [SerializeField]private float gravityRatio;
     [SerializeField] private GameObject planetsObject;
+    [SerializeField] private ModulePresenterBuilder defaultModPresenterBuilder;
 
+    public ModulePresenterBuilder DefaultModPresenterBuilder { get => defaultModPresenterBuilder; }
     public float GravityRatio { get => gravityRatio; }
     public GameObject PlanetsObject { get => planetsObject; }
 
@@ -19,8 +21,12 @@ public class GravityManager : Singleton<GravityManager>
     }
     void Start()
     {
+        if (DefaultModPresenterBuilder == null)
+            ErrorManager.Instance.ShowErrorMessage("Default module presenter has not set",this);
+
         if (PlanetsObject == null)
             ErrorManager.Instance.ShowErrorMessage("There is no Planets Storage-Object in scene",this);
+
         SceneStateManager.Instance.SceneRefreshed += RefreshSettings;
     }
     public List<GravityModule> Objects { get => objects; set => objects = value; }

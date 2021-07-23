@@ -2,7 +2,7 @@
 using System.Collections;
 using Assets.Library;
 
-public class SelectedObjectOpener : StateChanger
+public class SelectedPlanetOpener : StateChanger
 {
     [SerializeField] CustomizableObjectPresenter objectPresenter;
     [SerializeField] State state;
@@ -24,10 +24,21 @@ public class SelectedObjectOpener : StateChanger
         }
     }
 
+    private void Start()
+    {
+        SelectManager.Instance.SelectedPlanetChanged += SelectedObejctChanged;
+    }
+
+    private void SelectedObejctChanged(Planet planet, object sender)
+    {
+        Open();
+    }
+
     public void Open()
     {
         objectPresenter.Open(SelectManager.Instance.SelectedObject);
     }
+
     public void Close()
     {
         objectPresenter.Close();

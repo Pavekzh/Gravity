@@ -50,6 +50,7 @@ public class ModulePresenterBuilder : MonoBehaviour
     {
         properties.Clear();
         moduleName = "";
+        propertiesOffset = new Vector2(0, startMargin);
 
         moduleRoot = null;
         label = null;

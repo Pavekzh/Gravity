@@ -9,6 +9,7 @@ public class CustomizableObjectPresenter : MonoBehaviour
     UICustomizableObject customizableObject;
     public void Open(UICustomizableObject customizableObject)
     {
+        Close();
         if(customizableObject != null)
         {
             float offset = 0;

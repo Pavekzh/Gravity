@@ -4,9 +4,10 @@ using UnityEngine;
 using Assets.Library;
 using System;
 
+[RequireComponent(typeof(Rigidbody))]
 public class GravityModule : Module
 {
-    [SerializeField] private GenericModulePresenter modulePresenter;
+    [SerializeField] private ModulePresenterBuilder modulePresenterBuilder;
 
     public float Mass { get { return Rigidbody.mass; } }
     public Vector3 Velocity
@@ -39,10 +40,11 @@ public class GravityModule : Module
         get => planet;
         set
         {
+            InitModulePresenter();
             value.GravityModule = this;
             planet = value;
             planet.Modules.Add(this);
-            planet.Presenters.Add(modulePresenter);
+            planet.Presenters.Add(modulePresenterBuilder.GetPresenter());
             ErrorManager.Instance.ShowWarningMessage("Garvity module doesn't bind ui presenter",this);
         }
     }
@@ -56,6 +58,8 @@ public class GravityModule : Module
     public override void Awake()
     {
         Rigidbody = this.GetComponent<Rigidbody>();
+        InitModulePresenter();
+
         if (Rigidbody == null)
         {
             ErrorManager.Instance.ShowErrorMessage("Gravity object must have Rigidbody component",this);
@@ -63,10 +67,10 @@ public class GravityModule : Module
         GravityManager.Instance.Objects.Add(this);
         if(Planet != null)
         {
-            Planet.Presenters.Add(modulePresenter);
+            Planet.Presenters.Add(modulePresenterBuilder.GetPresenter());
             ErrorManager.Instance.ShowWarningMessage("Garvity module doesn't bind ui presenter", this);
         }
-        InitModulePresenter();
+
         base.Awake();
     }
     private void FixedUpdate()
@@ -78,9 +82,13 @@ public class GravityModule : Module
         }
         positionBinding.ChangeValue(new Vector2(Position.x, Position.z), this);
     }
+
     private void InitModulePresenter()
     {
-        modulePresenter.ModuleName = this.GetType().Name;
+        modulePresenterBuilder.ResetSettings();
+
+        modulePresenterBuilder.ModuleName = this.GetType().Name;
+
         Binding<float> massBinding = new Binding<float>();
         string[] massLabels = new string[1] { "" };
         ModuleProperty<float> massProperty = new ModuleProperty<float>(massLabels, "Mass", ModuleProperty<float>.FloatFromInputConverter, ModuleProperty<float>.FloatToInputConverter, massBinding,Mass);
@@ -98,9 +106,9 @@ public class GravityModule : Module
         velocityBinding.ValueChanged += SetVelocity;
         this.velocityBinding = velocityBinding;
 
-        modulePresenter.AddProperty<float>(massProperty);
-        modulePresenter.AddProperty<Vector2>(positionProperty);
-        modulePresenter.AddProperty<Vector2>(velocityProperty);
+        modulePresenterBuilder.properties.Add(massProperty);
+        modulePresenterBuilder.properties.Add(positionProperty);
+        modulePresenterBuilder.properties.Add(velocityProperty);
 
     }
     public Vector3 ComputeForce(IEnumerable<GravityModule> Environment, float GravityRatio)

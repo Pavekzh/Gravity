@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3852130856753710691}
   - component: {fileID: 6226291705993771983}
   - component: {fileID: 9077936107525570733}
-  - component: {fileID: 4388748388213801098}
+  - component: {fileID: 6619346377381547337}
   m_Layer: 5
   m_Name: FileButton
   m_TagString: Untagged
@@ -85,7 +85,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4539620304807355259}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a17fc84cb4692ca48890970a76b90f92, type: 3}
+  m_Script: {fileID: 11500000, guid: 717fa5a28565c3a43a42fbf7f8c6fec2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   StateChanger: {fileID: 9077936107525570733}
@@ -100,14 +100,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 4539620304807355259}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc448647d1473fc4aa681ef45dc175cd, type: 3}
+  m_Script: {fileID: 11500000, guid: 8ad88022c2fbf8d469088bf7ea9ef049, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   imageField: {fileID: 3852130856753710691}
   defaultState: {fileID: 21300000, guid: f16704b3bac34334d915ab4845ed12c4, type: 3}
   changedState: {fileID: 21300000, guid: d23c43aa7fc92234ea0fb4adeed18a53, type: 3}
   state: 0
---- !u!114 &4388748388213801098
+--- !u!114 &6619346377381547337
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -116,22 +116,48 @@ MonoBehaviour:
   m_GameObject: {fileID: 4539620304807355259}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 2
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 6226291705993771983}
-          m_MethodName: ChangeState
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+  m_Navigation:
+    m_Mode: 3
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 3852130856753710691}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6226291705993771983}
+        m_MethodName: ChangeState
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

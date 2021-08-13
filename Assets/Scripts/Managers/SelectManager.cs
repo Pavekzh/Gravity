@@ -2,6 +2,7 @@
 using System.Collections;
 using Assets.Library;
 using System.Linq;
+using BasicTools;
 
 public class SelectManager : Singleton<SelectManager>
 {
@@ -16,6 +17,7 @@ public class SelectManager : Singleton<SelectManager>
     [SerializeField] float selectSphereRadius;
 
     int layerMask;
+
     private void Start()
     {
         if (defaultSelectedObject != null)
@@ -25,11 +27,13 @@ public class SelectManager : Singleton<SelectManager>
 
         layerMask = 1 << LayerMask.NameToLayer(planetsLayer);
     }
+
     public void SelectObject(Planet planet,object sender)
     {
         SelectedObject = planet;
         SelectedPlanetChanged?.Invoke(planet, sender);
     }
+
     private void Update()
     {
         if (isSelectionEnabled)
@@ -45,7 +49,7 @@ public class SelectManager : Singleton<SelectManager>
 
                     if (SelectedObject == null)
                     {
-                        ErrorManager.Instance.ShowErrorMessage("SelectedObject must have Planet component",this);
+                        GenericErrorManager.Instance.ShowErrorMessage("SelectedObject must have Planet component",this);
                     }
                 }
 

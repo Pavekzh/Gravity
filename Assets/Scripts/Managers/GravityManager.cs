@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Assets.Library;
-
+using BasicTools;
 
 public class GravityManager : Singleton<GravityManager>
 {
@@ -22,10 +22,10 @@ public class GravityManager : Singleton<GravityManager>
     void Start()
     {
         if (DefaultModPresenterBuilder == null)
-            ErrorManager.Instance.ShowErrorMessage("Default module presenter has not set",this);
+            GenericErrorManager.Instance.ShowErrorMessage("Default module presenter has not set",this);
 
         if (PlanetsObject == null)
-            ErrorManager.Instance.ShowErrorMessage("There is no Planets Storage-Object in scene",this);
+            GenericErrorManager.Instance.ShowErrorMessage("There is no Planets Storage-Object in scene",this);
 
         SceneStateManager.Instance.SceneRefreshed += RefreshSettings;
     }

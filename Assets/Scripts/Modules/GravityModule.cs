@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Assets.Library;
 using System;
+using BasicTools;
+using UIExtended;
 
 [RequireComponent(typeof(Rigidbody))]
 public class GravityModule : Module
@@ -44,8 +46,8 @@ public class GravityModule : Module
             value.GravityModule = this;
             planet = value;
             planet.Modules.Add(this);
-            planet.Presenters.Add(modulePresenterBuilder.GetPresenter());
-            ErrorManager.Instance.ShowWarningMessage("Garvity module doesn't bind ui presenter",this);
+            planet.ModulePresenters.Add(modulePresenterBuilder.GetPresenter());
+            GenericErrorManager.Instance.ShowWarningMessage("Garvity module doesn't bind ui presenter",this);
         }
     }
 
@@ -62,17 +64,17 @@ public class GravityModule : Module
 
         if (Rigidbody == null)
         {
-            ErrorManager.Instance.ShowErrorMessage("Gravity object must have Rigidbody component",this);
+            GenericErrorManager.Instance.ShowErrorMessage("Gravity object must have Rigidbody component",this);
         }
         GravityManager.Instance.Objects.Add(this);
         if(Planet != null)
         {
-            Planet.Presenters.Add(modulePresenterBuilder.GetPresenter());
-            ErrorManager.Instance.ShowWarningMessage("Garvity module doesn't bind ui presenter", this);
+            Planet.ModulePresenters.Add(modulePresenterBuilder.GetPresenter());
         }
 
         base.Awake();
     }
+
     private void FixedUpdate()
     {
         if (IsPhysicsActive)
@@ -81,6 +83,7 @@ public class GravityModule : Module
             Rigidbody.AddForce(force * Time.fixedDeltaTime, ForceMode.Impulse);
         }
         positionBinding.ChangeValue(new Vector2(Position.x, Position.z), this);
+        velocityBinding.ChangeValue(new Vector2(Velocity.x, Velocity.z), this);
     }
 
     private void InitModulePresenter()
@@ -114,6 +117,7 @@ public class GravityModule : Module
         modulePresenterBuilder.properties.Add(velocityProperty);
 
     }
+
     public Vector3 ComputeForce(IEnumerable<GravityModule> Environment, float GravityRatio)
     {
         Vector3 force = Vector3.zero;
@@ -134,6 +138,7 @@ public class GravityModule : Module
         }
         return force;
     }
+
     public override void UpdatePhysicsState(bool state)
     {
         base.UpdatePhysicsState(state);
@@ -148,12 +153,13 @@ public class GravityModule : Module
             Rigidbody.velocity = savedVelocity;
         }
     }
+
     public override void SetModule(ModuleData module)
     {
         GravityModuleData data = module as GravityModuleData;
         if (data == null)
         {
-            ErrorManager.Instance.ShowErrorMessage("ModuleData must be GravityModuleData",this);
+            GenericErrorManager.Instance.ShowErrorMessage("ModuleData must be GravityModuleData",this);
         }
         else
         {
@@ -162,15 +168,13 @@ public class GravityModule : Module
             transform.position = data.Position;
             savedVelocity = data.Velocity;
         }
+        Debug.Log(this.IsPhysicsActive);
     }
+
     public override ModuleData GetModuleData()
     {
         GravityModuleData moduleData;
-        if (this.IsPhysicsActive)
-            moduleData = new GravityModuleData(this.Mass,this.Position,this.Velocity);
-        else
-            moduleData = new GravityModuleData(this.Mass, this.Position, this.savedVelocity);
-
+        moduleData = new GravityModuleData(this.Mass,this.Position,this.Velocity);
 
         return moduleData;
     }
@@ -182,11 +186,13 @@ public class GravityModule : Module
             this.Rigidbody.position = new Vector3(value.x,0,value.y);
         }
     }
+
     private void SetMass(float value,object sender)
     {
         if (sender != (object)this)
             this.Rigidbody.mass = value;
     }
+
     private void SetVelocity(Vector2 value,object sender)
     {
         if(sender != (object)this)

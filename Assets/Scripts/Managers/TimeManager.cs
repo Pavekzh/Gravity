@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Assets.Library;
 using System;
+using BasicTools;
 
 public class TimeManager : Singleton<TimeManager>
 {

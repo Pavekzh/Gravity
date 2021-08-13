@@ -3,7 +3,7 @@ using System.Collections;
 using Assets.Library;
 public class MergePlanetModule : Module
 {
-    [SerializeField]GenericModulePresenter modulePresenter;
+    [SerializeField]GeneralModulePresenter modulePresenter;
 
     public override ModuleData GetModuleData()
     {
@@ -17,7 +17,7 @@ public class MergePlanetModule : Module
 
     void Awake()
     {
-        Planet.Presenters.Add(modulePresenter);
+        Planet.ModulePresenters.Add(modulePresenter);
         base.Awake();
     }
 }

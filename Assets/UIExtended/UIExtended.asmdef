@@ -1,0 +1,15 @@
+{
+    "name": "UIExtended",
+    "references": [
+        "GUID:2d813934e6a03cd41b0a85ca1798e1e5",
+        "Unity.TextMeshPro"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}

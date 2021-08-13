@@ -2,7 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using Assets.Library;
-
+using BasicTools;
+using UIExtended;
 
 public class SceneStateManager : Singleton<SceneStateManager>
 {
@@ -22,10 +23,11 @@ public class SceneStateManager : Singleton<SceneStateManager>
         }
         catch (System.Exception ex)
         {
-            ErrorManager.Instance.ShowErrorMessage(ex.Message, this);
+            GenericErrorManager.Instance.ShowErrorMessage(ex.Message, this);
         }
 
     }
+
     public void LoadQuickSave()
     {
         try
@@ -35,19 +37,21 @@ public class SceneStateManager : Singleton<SceneStateManager>
         }
         catch (System.Exception ex)
         {
-            ErrorManager.Instance.ShowErrorMessage(ex.Message, this);
+            GenericErrorManager.Instance.ShowErrorMessage(ex.Message, this);
         }
     }
+
     public void SaveToFile()
     {
         saveSystem.SaveToFile(GetState());
     }
+
     public void LoadFromFile()
     {
         SceneState state =  loadSystem.LoadFromFile(typeof(SceneState)) as SceneState;
         if (state == null)
         {
-            ErrorManager.Instance.ShowErrorMessage("File have invalid format or doesn't exist", this);
+            GenericErrorManager.Instance.ShowErrorMessage("File have invalid format or doesn't exist", this);
         }
         else
         {
@@ -61,6 +65,7 @@ public class SceneStateManager : Singleton<SceneStateManager>
         Planets = new List<Planet>();
         this.SceneRefreshed += RefreshSettings;
     }
+
     public SceneState GetState()
     {
         List<PlanetData> planetsData = new List<PlanetData>();
@@ -71,6 +76,7 @@ public class SceneStateManager : Singleton<SceneStateManager>
         SceneState state = new SceneState(planetsData);
         return state;
     }
+
     public void RefreshScene(SceneState state)
     {
         ClearScene();
@@ -80,10 +86,12 @@ public class SceneStateManager : Singleton<SceneStateManager>
             builder.CreatePlanet(GravityManager.Instance.PlanetsObject.transform);
         }
     }
+
     private void RefreshSettings()
     {
         Planets = new List<Planet>();
     }
+
     public void ClearScene()
     {
         SceneRefreshed?.Invoke();

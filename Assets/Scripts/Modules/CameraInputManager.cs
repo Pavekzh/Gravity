@@ -10,7 +10,7 @@ public enum InputMode
 }
 class CameraInputManager:MonoBehaviour
 {
-    [SerializeField] private CameraManager cameraManager;
+    [SerializeField] private CameraModel cameraManager;
     [SerializeField] private bool isControlLocked;
     [SerializeField] private InputMode inputMode;
     [SerializeField] private float zoomSpeed = 0.5f;
@@ -77,6 +77,7 @@ class CameraInputManager:MonoBehaviour
         }
         return Vector2.zero;
     }
+
     public void ChangeInputMode()
     {
         if (InputMode == InputMode.Moving)

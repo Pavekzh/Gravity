@@ -19,6 +19,8 @@ namespace UIExtended
 
         public string Directory { get; set; }
         public string FileExtension { get; set; }
+        public FilePresenter FilePresenter { get => filePresenter; set => filePresenter = value; }
+
         bool isOpened = false;
 
         private void Start()
@@ -33,7 +35,7 @@ namespace UIExtended
 
         private void AddFileView(string filePath, float offset)
         {
-            RectTransform fileView = this.filePresenter.GetFileView(filePath, fileViewSize);
+            RectTransform fileView = this.filePresenter.GetFileView(System.IO.Path.GetFileNameWithoutExtension(filePath), fileViewSize);
             fileView.parent = container;
             fileView.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, fileViewSize.x);
             fileView.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, fileViewSize.y);

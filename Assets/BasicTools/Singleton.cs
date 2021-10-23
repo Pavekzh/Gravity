@@ -7,7 +7,7 @@ namespace BasicTools
     {
         private static T instance;
 
-        public virtual void Awake()
+        protected virtual void Awake()
         {
             if (!instance)
             {

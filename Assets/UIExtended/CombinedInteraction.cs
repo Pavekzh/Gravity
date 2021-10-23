@@ -8,7 +8,6 @@ namespace UIExtended
     public class CombinedInteraction : StateChanger
     {
         [SerializeField] List<StateChanger> interactors;
-        [SerializeField] State state;
 
         public override State State
         {

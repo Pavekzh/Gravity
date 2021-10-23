@@ -10,6 +10,8 @@ namespace BasicTools
     }
     public abstract class StateChanger : MonoBehaviour
     {
+        [SerializeField] protected State state;
+
         public abstract State State { get; set; }
         public void ChangeState()
         {
@@ -19,6 +21,10 @@ namespace BasicTools
                 State = State.Default;
         }
 
+        protected virtual void Start()
+        {
+            State = state;
+        }
     }
 }
 

@@ -6,10 +6,10 @@ using BasicTools;
 
 namespace UIExtended
 {
+
     public class ShowElement : StateChanger
     {
         [SerializeField] GameObject displayObject;
-        [SerializeField] State state = State.Default;
 
         public override State State
         {
@@ -28,9 +28,13 @@ namespace UIExtended
             }
         }
 
-        private void Start()
+        protected override void Start()
         {
-            State = state;
+            base.Start();
+
+            Button button = this.GetComponent<Button>();
+            if (button != null && button.onClick.GetPersistentEventCount() == 0)
+                button.onClick.AddListener(ChangeState);
         }
 
         public void Show()

@@ -1,33 +1,26 @@
-﻿using UnityEngine;
-using System.Collections;
-using BasicTools;
+﻿using BasicTools;
+using System;
+using UnityEngine;
 
-namespace UIExtended 
+namespace Assets.UIExtended
 {
-    public class MoveElement : StateChanger
+    public class MoveElement:BasicTools.StateChanger
     {
-        [SerializeField] RectTransform rectTransform;
-        [SerializeField] Vector2 movedPosition;
-        [SerializeField] Vector2 defaultPosition;
-        [SerializeField] State state = State.Default;
+        [SerializeField] protected RectTransform element;
+        [SerializeField] protected Vector2 standardPosition;
+        [SerializeField] protected Vector2 changedPosition;
 
-        public override State State
-        {
-            get { return state; }
+        public override State State 
+        { 
+            get => this.state;
             set
             {
                 state = value;
                 if (value == State.Default)
-                {
-                    rectTransform.anchoredPosition = defaultPosition;
-                }
-                else if (value == State.Changed)
-                {
-                    rectTransform.anchoredPosition = movedPosition;
-                }
+                    element.anchoredPosition = standardPosition;
+                else if(value == State.Changed)
+                    element.anchoredPosition = changedPosition;
             }
         }
     }
 }
-
-

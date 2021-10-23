@@ -2,10 +2,13 @@
 using System.Collections;
 using TMPro;
 
-public interface IModuleProperty
+namespace UIExtended
 {
-    string[] Labels { get; }
-    string ValueLabel { get; }
+    public interface IModuleProperty
+    {
+        string[] Labels { get; }
+        string ValueLabel { get; }
 
-    void AddInputField(TMP_InputField InputField,uint Index);
+        void AddInputField(TMP_InputField InputField, uint Index);
+    }
 }

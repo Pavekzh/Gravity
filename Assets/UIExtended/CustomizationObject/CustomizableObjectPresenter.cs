@@ -46,6 +46,5 @@ namespace UIExtended
             return offset + view.rect.height;
         }
 
-
     }
 }

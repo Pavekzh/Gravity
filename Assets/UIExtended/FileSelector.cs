@@ -9,23 +9,21 @@ namespace UIExtended
     {
         [SerializeField] private StateChanger StateChanger;
         [SerializeField] private string filePath;
-        [SerializeField] private SelectFilePath selectSystem;
+        [SerializeField] private Binding<string> pathBinding;
 
-        private State state = State.Default;
-        public SelectFilePath SelectSystem
+        public Binding<string> PathBinding
         {
-            get => selectSystem;
+            get => pathBinding;
             set
             {
-                if (selectSystem != null)
-                    selectSystem.PathChanged -= SelectedFileChanged;
+                if (pathBinding != null)
+                    pathBinding.ValueChanged -= SelectedFileChanged;
 
-                selectSystem = value;
-                if (selectSystem != null)
-                    selectSystem.PathChanged += SelectedFileChanged;
+                pathBinding = value;
+                if (pathBinding != null)
+                    pathBinding.ValueChanged += SelectedFileChanged;
             }
         }
-
         public string FilePath { get => filePath; set => filePath = value; }
         public override State State
         {
@@ -41,19 +39,15 @@ namespace UIExtended
             }
         }
 
-        private void Start()
-        {
-            selectSystem.PathChanged += this.SelectedFileChanged;
-        }
-
         private void OnDestroy()
         {
-            selectSystem.PathChanged -= this.SelectedFileChanged;
+            if(pathBinding != null)
+                pathBinding.ValueChanged -= this.SelectedFileChanged;
         }
 
         private void Select()
         {
-            SelectSystem.SelectPath(FilePath, this);
+            PathBinding.ChangeValue(FilePath, this);         
         }
 
         public void SelectedFileChanged(string selectedPath, object sender)

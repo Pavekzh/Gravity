@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<SceneState xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>SavedByInspector</Name>
+  <Planets>
+    <PlanetData Name="Earth">
+      <PlanetBuilder xsi:type="BasePlanetBuilder" />
+      <ArrayOfModuleData>
+        <ModuleData xsi:type="GravityModuleData">
+          <Mass>2.2</Mass>
+          <Position>
+            <x>4.41</x>
+            <y>2.59</y>
+          </Position>
+          <Velocity>
+            <x>-13</x>
+            <y>0</y>
+          </Velocity>
+        </ModuleData>
+      </ArrayOfModuleData>
+    </PlanetData>
+    <PlanetData Name="Mars">
+      <PlanetBuilder xsi:type="BasePlanetBuilder" />
+      <ArrayOfModuleData>
+        <ModuleData xsi:type="GravityModuleData">
+          <Mass>100</Mass>
+          <Position>
+            <x>3.87</x>
+            <y>-2.2</y>
+          </Position>
+          <Velocity>
+            <x>0.1</x>
+            <y>-0.3</y>
+          </Velocity>
+        </ModuleData>
+      </ArrayOfModuleData>
+    </PlanetData>
+    <PlanetData Name="Venus">
+      <PlanetBuilder xsi:type="BasePlanetBuilder" />
+      <ArrayOfModuleData>
+        <ModuleData xsi:type="GravityModuleData">
+          <Mass>1</Mass>
+          <Position>
+            <x>12.27</x>
+            <y>-1.78</y>
+          </Position>
+          <Velocity>
+            <x>0</x>
+            <y>10</y>
+          </Velocity>
+        </ModuleData>
+      </ArrayOfModuleData>
+    </PlanetData>
+  </Planets>
+</SceneState>

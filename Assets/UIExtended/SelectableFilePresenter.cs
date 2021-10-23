@@ -8,8 +8,6 @@ namespace UIExtended
 {
     public class SelectableFilePresenter : FilePresenter
     {
-
-        [SerializeField] SelectFilePath selectSystem;
         [SerializeField] FileSelector selector;
         [SerializeField] RectTransform selectorRect;
         [SerializeField] RectTransform fileViewPrefab;
@@ -17,7 +15,7 @@ namespace UIExtended
         [SerializeField] TMP_Text label;
         [SerializeField] [Range(0, 1)] float selectorFill;
 
-        public SelectFilePath SelectSystem { get => selectSystem; set => selectSystem = value; }
+        public Binding<string> PathBinding { get; set; }
 
         private void Start()
         {
@@ -43,7 +41,7 @@ namespace UIExtended
             {
                 ErrorManager.Instance.ShowErrorMessage("LabelPrefab has not set", this);
             }
-            if (SelectSystem == null)
+            if (PathBinding == null)
             {
                 ErrorManager.Instance.ShowErrorMessage("SelectSystem has not set", this);
             }
@@ -52,7 +50,6 @@ namespace UIExtended
         public override RectTransform GetFileView(string path, Vector2 cellSize)
         {
             selector.FilePath = path;
-            selector.SelectSystem = SelectSystem;
             label.text = System.IO.Path.GetFileNameWithoutExtension(path);
 
             selectorRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, cellSize.x);
@@ -67,8 +64,9 @@ namespace UIExtended
             GameObject selectObj = GameObject.Instantiate(selector.gameObject, fileView.transform);
             GameObject labelObj = GameObject.Instantiate(label.gameObject, fileView.transform);
 
+            FileSelector selectorInstance = selectObj.GetComponent<FileSelector>();
+            selectorInstance.PathBinding = PathBinding;
             return fileView.GetComponent<RectTransform>();
         }
     }
-
 }

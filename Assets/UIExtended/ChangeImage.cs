@@ -10,7 +10,6 @@ namespace UIExtended
         [SerializeField] protected Image imageField;
         [SerializeField] protected Sprite defaultState;
         [SerializeField] protected Sprite changedState;
-        [SerializeField] protected State state = State.Default;
 
         public override State State
         {
@@ -28,11 +27,6 @@ namespace UIExtended
                     imageField.sprite = changedState;
                 }
             }
-        }
-
-        protected virtual void Start()
-        {
-            State = state;
         }
     }
 }

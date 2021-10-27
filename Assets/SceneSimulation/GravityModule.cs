@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using BasicTools;
 using Assets.SceneEditor.Models;
+using Assets.Services;
 
 namespace Assets.SceneSimulation
 {
@@ -10,18 +11,20 @@ namespace Assets.SceneSimulation
     public class GravityModule:Module
     {
         [SerializeField] private new Rigidbody rigidbody;
-        [SerializeField] private float mass;
-        [SerializeField] private Vector2 velocity;
+        [SerializeField] private GravityInteractor data;
 
 
         public float Mass 
         { 
-            get { return Rigidbody.mass; } 
+            get
+            {
+                return Rigidbody.mass; 
+            } 
             set 
             {
                 this.massBinding.ChangeValue(value, this);
                 this.Rigidbody.mass = value;
-                this.mass = value;
+                this.data.Mass = value;
             } 
         }
         public Vector3 Velocity
@@ -29,9 +32,13 @@ namespace Assets.SceneSimulation
             get
             {
                 if (isSimulationEnabled)
+                {                    
                     return Rigidbody.velocity;
+                }
                 else
+                {
                     return savedVelocity;
+                }
             }
             set
             {
@@ -43,17 +50,21 @@ namespace Assets.SceneSimulation
                 {             
                     this.savedVelocity = value;
                 }
-                this.velocity = value.GetVectorXZ();
+                this.data.Velocity = value.GetVectorXZ();
                 this.velocityBinding.ChangeValue(value.GetVectorXZ(), this);
             }
         }
         public Vector3 Position 
         { 
-            get { return transform.position; } 
+            get 
+            {
+                return transform.position; 
+            } 
             set 
             {
                 this.positionBinding.ChangeValue(value, this);          
-                this.transform.position = value; 
+                this.transform.position = value;
+                this.data.Position = value.GetVectorXZ();
             } 
         }
 
@@ -80,10 +91,8 @@ namespace Assets.SceneSimulation
             Services.TimeManager.Instance.TimeStateChanged += UpdateSimulationState;
             Services.GravityManager.Instance.GravityInteractors.Add(this);
 
-            this.Mass = mass;
-            this.Velocity = new Vector3(velocity.x,0,velocity.y);
-
-            
+            this.Mass = data.Mass;
+            this.Velocity = data.Velocity.GetVector3();    
         }
 
         private void OnDestroy()
@@ -109,10 +118,12 @@ namespace Assets.SceneSimulation
 
                 positionBinding.ChangeValue(Position.GetVectorXZ(), this);
                 velocityBinding.ChangeValue(Velocity.GetVectorXZ(), this);
+                data.Velocity = rigidbody.velocity.GetVectorXZ();
+                data.Position = transform.position.GetVectorXZ();
             }
         }
 
-        public Vector3 ComputeForce(IEnumerable<SceneSimulation.GravityModule> Environment, float GravityRatio)
+        public virtual Vector3 ComputeForce(IEnumerable<SceneSimulation.GravityModule> Environment, float GravityRatio)
         {
             Vector3 force = Vector3.zero;
             foreach (GravityModule obj in Environment)
@@ -169,9 +180,9 @@ namespace Assets.SceneSimulation
         public override ModuleData InstatiateModuleData() 
         {
             GravityModuleData moduleData = new GravityModuleData();
-            moduleData.Position = new Vector2(transform.position.x,transform.position.z);
-            moduleData.Velocity = new Vector2(velocity.x, velocity.y);
-            moduleData.Mass = mass;
+            moduleData.Position = transform.position.GetVectorXZ();
+            moduleData.Velocity = data.Velocity;
+            moduleData.Mass = data.Mass;
             return moduleData;
         }
 
@@ -179,7 +190,8 @@ namespace Assets.SceneSimulation
         {
             if (sender != (object)this)
             { 
-                this.transform.position = new Vector3(value.x,0,value.y);
+                this.transform.position =value.GetVector3();
+                this.data.Position = value;
             }
         }
 
@@ -188,6 +200,7 @@ namespace Assets.SceneSimulation
             if (sender != (object)this)
             {
                 this.Rigidbody.mass = value;
+                this.data.Mass = value;
             }
 
         }
@@ -198,6 +211,7 @@ namespace Assets.SceneSimulation
             {
                 this.Rigidbody.velocity = value.GetVector3();
                 this.savedVelocity = value.GetVector3();
+                this.data.Velocity = value;
             }
         }
     }

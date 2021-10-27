@@ -4276,8 +4276,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigidbody: {fileID: 928647197}
-  mass: 1
-  velocity: {x: 0, y: 11}
+  data:
+    position: {x: 12.27, y: 0}
+    velocity: {x: 0, y: 11}
+    mass: 1
 --- !u!54 &928647197 stripped
 Rigidbody:
   m_CorrespondingSourceObject: {fileID: 9176977102359814394, guid: 1b02f18b82a97c543b0b136072449f3f,
@@ -6752,9 +6754,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 262c17a0e30f38145a17a4eb3dc3c98f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rigidbody: {fileID: 0}
-  mass: 20
-  velocity: {x: 0, y: 15}
+  rigidbody: {fileID: 1501193431}
+  data:
+    position: {x: 4.41, y: 0}
+    velocity: {x: 0, y: 15}
+    mass: 20
+--- !u!54 &1501193431 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 9176977102359814394, guid: 1b02f18b82a97c543b0b136072449f3f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1480792038}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1535168770
 GameObject:
   m_ObjectHideFlags: 0
@@ -8986,8 +8996,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigidbody: {fileID: 2124622948}
-  mass: 100
-  velocity: {x: -0.5, y: -3.2}
+  data:
+    position: {x: 0, y: 0}
+    velocity: {x: -0.5, y: -3.2}
+    mass: 100
 --- !u!54 &2124622948 stripped
 Rigidbody:
   m_CorrespondingSourceObject: {fileID: 9176977102359814394, guid: 1b02f18b82a97c543b0b136072449f3f,

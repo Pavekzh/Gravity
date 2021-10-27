@@ -4,14 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using BasicTools;
 using System.Xml.Serialization;
+using Assets.Services;
 
 namespace Assets.SceneEditor.Models
 {
     public class GravityModuleData : ModuleData
     {
-        private float mass;
-        private Vector2 position;
-        private Vector2 velocity;
+        private GravityInteractor data;
 
         public GravityModuleData() 
         {
@@ -71,29 +70,29 @@ namespace Assets.SceneEditor.Models
 
         public float Mass 
         {
-            get => mass;
+            get => data.Mass;
             set
             {
                 MassProperty.Binding.ChangeValue(value, this);
-                mass = value;
+                data.Mass = value;
             }
         }
         public Vector2 Position 
         {
-            get => position;
+            get => data.Position;
             set
             {
                 PositionProperty.Binding.ChangeValue(value, this);
-                this.position = value;
+                data.Position = value;
             }
         }
         public Vector2 Velocity 
         {
-            get => velocity; 
+            get => data.Velocity; 
             set
             {
                 VelocityProperty.Binding.ChangeValue(value, this);
-                velocity = value;
+                data.Velocity = value;
             }
         }
 
@@ -126,17 +125,17 @@ namespace Assets.SceneEditor.Models
         private void setMass(float value,object sender)
         {
             if (sender != this)
-                this.mass = value;
+                this.data.Mass = value;
         }
         private void setPosition(Vector2 value,object sender)
         {
             if (sender != this)
-                this.position = value;
+                this.data.Position = value;
         }
         private void setVelocity(Vector2 value, object sender)
         {
             if (sender != this)
-                this.velocity = value;
+                this.data.Velocity = value;
         }
     }
 }

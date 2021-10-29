@@ -14,6 +14,7 @@ namespace BasicTools
 
         public void AddPoint (StateCurvePoint point)
         {
+            points.Add(point);
             PointsAmount++;
             Length = point.DistanceFromStartPoint;     
         }
@@ -21,7 +22,7 @@ namespace BasicTools
         public StateCurvePoint GetPointAlongCurve(float distanceFromStart)
         {
             int startIndex = 0;
-            int endIndex = PointsAmount;
+            int endIndex = PointsAmount - 1;
             while (true)
             {
                 int middleIndex = startIndex + (endIndex - startIndex) / 2;
@@ -33,7 +34,6 @@ namespace BasicTools
                 }
                 else
                 {
-
                     endIndex = middleIndex;
                 }
 

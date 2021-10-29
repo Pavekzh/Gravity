@@ -26,6 +26,58 @@ namespace Assets.Services
             interactors = new List<SceneSimulation.GravityModule>();
         }
 
+        //test
+        public GameObject checkpoint;            
+        List<GameObject> checkPoints;
+        public void FixedUpdate()
+        {
+            //test
+            if(checkPoints == null)
+            {
+                checkPoints = new List<GameObject>();
+                for (int i = 1; i < 201; i++)
+                {
+                    checkPoints.Add(GameObject.Instantiate(checkpoint));
+                }
+            }
+
+            if (interactors.Count != 0)
+            {
+                //List<List<GravityInteractor>> interactorsPrediction = Predict(200);
+                List<GravityInteractor> prediction = Predict(200, GravityInteractors[0]);
+
+                Vector3 lastPos = prediction[0].Position.GetVector3();
+                for (int i = 1; i < 200; i++)
+                {
+                    Vector3 pos = prediction[i].Position.GetVector3();
+                    checkPoints[i].transform.position = prediction[i].Position.GetVector3();
+                    Debug.DrawLine(lastPos, pos, Color.red);
+                    lastPos = pos;
+                }
+
+                //Vector3 lastPos = interactorsPrediction[0][0].Position.GetVector3();
+                //for (int i = 1; i < 200; i++)
+                //{
+                //    Vector3 pos = interactorsPrediction[i][0].Position.GetVector3();
+                //    Debug.DrawLine(lastPos, pos, Color.blue);
+                //    lastPos = pos;
+                //}
+
+                //for (int i = 0; i < interactors.Count(); i++)
+                //{
+                //    Vector3 lastPos = interactorsPrediction[0][i].Position.GetVector3();
+                //    for (int j = 1; j < 100; j++)
+                //    {
+                //        Vector3 pos = interactorsPrediction[j][i].Position.GetVector3();
+                //        Debug.DrawLine(lastPos, pos, Color.blue);
+                //        lastPos = pos;
+
+                //    }
+                //}
+            }
+
+        }
+        //end test
 
         public List<GravityInteractor> Predict(int iterations,GravityModule predictObject)
         {

@@ -20,6 +20,11 @@ namespace Assets.Services
             this.velocity = velocity;
             this.mass = mass;
         }
-
+        public GravityInteractor(GravityInteractor data)
+        {
+            this.position = data.Position;
+            this.mass = data.Mass;
+            this.velocity = data.Velocity;
+        }
     }
 }

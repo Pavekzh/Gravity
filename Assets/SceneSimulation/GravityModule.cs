@@ -8,10 +8,13 @@ using Assets.Services;
 namespace Assets.SceneSimulation
 {
     [RequireComponent(typeof(Rigidbody))]
-    public class GravityModule:Module
+    public class GravityModule : Module
     {
         [SerializeField] private new Rigidbody rigidbody;
-        [SerializeField] private GravityInteractor data;
+        /// <summary>
+        /// Do not use it for setting properties
+        /// </summary>
+        public GravityInteractor data;
 
 
         public float Mass 
@@ -31,7 +34,7 @@ namespace Assets.SceneSimulation
         {
             get
             {
-                if (isSimulationEnabled)
+                if (IsSimulationEnabled)
                 {                    
                     return Rigidbody.velocity;
                 }
@@ -42,7 +45,7 @@ namespace Assets.SceneSimulation
             }
             set
             {
-                if (isSimulationEnabled)
+                if (IsSimulationEnabled)
                 {
                     this.Rigidbody.velocity = value;
                 }
@@ -67,8 +70,8 @@ namespace Assets.SceneSimulation
                 this.data.Position = value.GetVectorXZ();
             } 
         }
+        public bool IsSimulationEnabled { get; private set; }
 
-        private bool isSimulationEnabled;
         private Vector3 savedVelocity;
         private Rigidbody Rigidbody
         {
@@ -111,43 +114,24 @@ namespace Assets.SceneSimulation
         {
             positionBinding.ChangeValue(Position.GetVectorXZ(), this);
             velocityBinding.ChangeValue(Velocity.GetVectorXZ(), this);
-            if (isSimulationEnabled)
+            data.Velocity = Velocity.GetVectorXZ();
+            data.Position = Position.GetVectorXZ();
+            if (IsSimulationEnabled)
             {
-                Vector3 force = ComputeForce(Services.GravityManager.Instance.GravityInteractors, Services.GravityManager.Instance.GravityRatio);
+                Vector3 force = GravityManager.Instance.ComputeForce(data);
                 Rigidbody.AddForce(force * Time.fixedDeltaTime, ForceMode.Impulse);
 
                 positionBinding.ChangeValue(Position.GetVectorXZ(), this);
                 velocityBinding.ChangeValue(Velocity.GetVectorXZ(), this);
-                data.Velocity = rigidbody.velocity.GetVectorXZ();
-                data.Position = transform.position.GetVectorXZ();
+                data.Velocity = Velocity.GetVectorXZ();
+                data.Position = Position.GetVectorXZ();
             }
-        }
-
-        public virtual Vector3 ComputeForce(IEnumerable<SceneSimulation.GravityModule> Environment, float GravityRatio)
-        {
-            Vector3 force = Vector3.zero;
-            foreach (GravityModule obj in Environment)
-            {
-                if (obj.isSimulationEnabled)
-                {
-                    float distance = Vector3.Distance(Position, obj.Position);
-                    if (distance != 0)
-                    {
-                        float forceValue = GravityRatio * (Mass * obj.Mass) / (distance * distance);
-
-                        Vector3 forceDirection = (obj.Position - Position).normalized;
-                        force += forceDirection * forceValue;
-                    }
-                }
-
-            }
-            return force;
         }
 
         //reaction to time manager stop/resume
         public void UpdateSimulationState(bool state,object sender)
         {
-            isSimulationEnabled = state;
+            IsSimulationEnabled = state;
             if (state == false && Rigidbody.isKinematic == false)
             {
                 savedVelocity = Rigidbody.velocity;
@@ -186,6 +170,7 @@ namespace Assets.SceneSimulation
             return moduleData;
         }
 
+
         private void SetPosition(Vector2 value, object sender)
         {
             if (sender != (object)this)
@@ -215,4 +200,5 @@ namespace Assets.SceneSimulation
             }
         }
     }
+
 }

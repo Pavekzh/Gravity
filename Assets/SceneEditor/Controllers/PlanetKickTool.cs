@@ -37,14 +37,14 @@ namespace Assets.SceneEditor.Controllers
             {
                 inputSystem.OnTouchDown -= SingleTouch;
                 inputSystem.OnTouchContinues -= SingleTouch;
-                inputSystem.OnTouchRelease -= TouchRelease;
+                inputSystem.OnTouchRelease -= TouchRelease;            
+
+                if(Services.TimeManager.Instance != null)
+                    Services.TimeManager.Instance.ResumePhysics();
             }
             inputManipulator.IsVisible = false;
             outputManipulator.IsVisible = false;
             isWorking = false;
-
-            if(Services.TimeManager.Instance != null)
-                Services.TimeManager.Instance.ResumePhysics();
         }
 
         public override void EnableTool(InputSystem inputSystem)

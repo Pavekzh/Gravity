@@ -6,7 +6,7 @@
       <PlanetBuilder xsi:type="BasePlanetBuilder" />
       <ArrayOfModuleData>
         <ModuleData xsi:type="GravityModuleData">
-          <Mass>20</Mass>
+          <Mass>1</Mass>
           <Position>
             <x>4.41</x>
             <y>0</y>
@@ -28,8 +28,8 @@
             <y>0</y>
           </Position>
           <Velocity>
-            <x>-0.5</x>
-            <y>-3.2</y>
+            <x>0</x>
+            <y>0</y>
           </Velocity>
         </ModuleData>
       </ArrayOfModuleData>

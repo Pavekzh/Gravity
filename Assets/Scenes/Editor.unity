@@ -6758,7 +6758,7 @@ MonoBehaviour:
   data:
     position: {x: 4.41, y: 0}
     velocity: {x: 0, y: 15}
-    mass: 20
+    mass: 1
 --- !u!54 &1501193431 stripped
 Rigidbody:
   m_CorrespondingSourceObject: {fileID: 9176977102359814394, guid: 1b02f18b82a97c543b0b136072449f3f,
@@ -7622,7 +7622,7 @@ MonoBehaviour:
   arrow: {fileID: 693612897}
   origin: {fileID: 0}
   lineWidth: 0.1
-  manipulatorScale: 20
+  manipulatorScale: 30
 --- !u!114 &1735915247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7640,7 +7640,7 @@ MonoBehaviour:
   origin: {fileID: 0}
   originPosition: {x: 0, y: 0, z: 0}
   lineWidth: 0.1
-  manipulatorScale: 20
+  manipulatorScale: 30
 --- !u!1 &1751826645
 GameObject:
   m_ObjectHideFlags: 0
@@ -8998,7 +8998,7 @@ MonoBehaviour:
   rigidbody: {fileID: 2124622948}
   data:
     position: {x: 0, y: 0}
-    velocity: {x: -0.5, y: -3.2}
+    velocity: {x: 0, y: 0}
     mass: 100
 --- !u!54 &2124622948 stripped
 Rigidbody:

@@ -15,6 +15,7 @@
             <x>0</x>
             <y>15</y>
           </Velocity>
+          <Guid>1f44aafc-2c47-40a4-9db2-39ed16136b06</Guid>
         </ModuleData>
       </ArrayOfModuleData>
     </PlanetData>
@@ -31,6 +32,7 @@
             <x>-0.5</x>
             <y>-3.2</y>
           </Velocity>
+          <Guid>339cbb0d-0fdc-4d6a-a108-1e56adbbc696</Guid>
         </ModuleData>
       </ArrayOfModuleData>
     </PlanetData>
@@ -47,6 +49,7 @@
             <x>0</x>
             <y>11</y>
           </Velocity>
+          <Guid>9591a811-c627-4f0c-a162-01f96c68a1e3</Guid>
         </ModuleData>
       </ArrayOfModuleData>
     </PlanetData>

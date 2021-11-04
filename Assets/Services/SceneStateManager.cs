@@ -21,7 +21,7 @@ namespace Assets.Services
         public string Directory { get => BaseDirectory + savesDirectory; }
         public string Extension { get => saveSystem.Extension; }
         public delegate void SceneRefreshHandler();
-        public event SceneRefreshHandler SceneRefreshed;
+        public event SceneRefreshHandler SceneChanged;
         public static string BaseDirectory
         {
             get
@@ -119,15 +119,15 @@ namespace Assets.Services
 
         public void ClearScene()
         {
-            SceneRefreshed?.Invoke();
-            CurrentScene = new SceneState();
             if (PlanetBuildSettings.Instance.PlanetsParent != null)
             {
                 foreach(Transform planet in PlanetBuildSettings.Instance.PlanetsParent)
                 {
                     GameObject.Destroy(planet.gameObject);
                 }
-            }
+            }            
+            SceneChanged?.Invoke();
+            CurrentScene = new SceneState();
         }
 
         public void SaveStartScene(SceneState startScene)
@@ -185,5 +185,6 @@ namespace Assets.Services
         {
             return Directory + fileName + saveSystem.Extension;
         }
+
     }
 }

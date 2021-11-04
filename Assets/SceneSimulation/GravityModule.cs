@@ -16,7 +16,6 @@ namespace Assets.SceneSimulation
         /// </summary>
         public GravityInteractor data;
 
-
         public float Mass 
         { 
             get
@@ -72,6 +71,7 @@ namespace Assets.SceneSimulation
         }
         public bool IsSimulationEnabled { get; private set; }
 
+        private Guid guid;
         private Vector3 savedVelocity;
         private Rigidbody Rigidbody
         {
@@ -87,12 +87,10 @@ namespace Assets.SceneSimulation
         private ConvertibleBinding<Vector2, string[]> positionBinding;
         private ConvertibleBinding<Vector2, string[]> velocityBinding;
         private ConvertibleBinding<float, string[]> massBinding;
-        private GravityModuleData moduleData;
 
         private void Start()
         {
             Services.TimeManager.Instance.TimeStateChanged += UpdateSimulationState;
-            Services.GravityManager.Instance.GravityInteractors.Add(this);
 
             this.Mass = data.Mass;
             this.Velocity = data.Velocity.GetVector3();    
@@ -100,7 +98,7 @@ namespace Assets.SceneSimulation
 
         private void OnDestroy()
         {
-            Services.TimeManager.Instance.TimeStateChanged -= UpdateSimulationState;
+            TimeManager.Instance.TimeStateChanged -= UpdateSimulationState;
 
             if(positionBinding != null)
                 positionBinding.ValueChanged -= SetPosition;
@@ -144,6 +142,7 @@ namespace Assets.SceneSimulation
             }
         }
 
+        //initialization
         public void SetModuleData(GravityModuleData moduleData)
         {            
             positionBinding = moduleData.PositionProperty.Binding;
@@ -151,25 +150,36 @@ namespace Assets.SceneSimulation
             massBinding = moduleData.MassProperty.Binding;
             
             Mass = moduleData.Mass;
-            Velocity = new Vector3(moduleData.Velocity.x,0,moduleData.Velocity.y);
+            Velocity = new Vector3(moduleData.Velocity.x, 0, moduleData.Velocity.y);
             Position = new Vector3(moduleData.Position.x, 0, moduleData.Position.y) ;
 
             positionBinding.ValueChanged += SetPosition;
             massBinding.ValueChanged += SetMass;
             velocityBinding.ValueChanged += SetVelocity;
 
-            this.moduleData = moduleData;
+            this.guid = moduleData.Guid;
+            AddInteractor();
         }
-
+        //saving to file
         public override ModuleData InstatiateModuleData() 
         {
             GravityModuleData moduleData = new GravityModuleData();
             moduleData.Position = transform.position.GetVectorXZ();
             moduleData.Velocity = data.Velocity;
             moduleData.Mass = data.Mass;
+            moduleData.Guid = guid;
+
+            if(guid == null || guid == Guid.Empty)
+                moduleData.Guid = Guid.NewGuid();
+
+
             return moduleData;
         }
 
+        private void AddInteractor()
+        {
+            GravityManager.Instance.GravityInteractors.Add(guid, this);
+        }
 
         private void SetPosition(Vector2 value, object sender)
         {

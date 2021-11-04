@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Assets.UIExtended
+namespace UIExtended
 {
     public class DragInputManipulator : InputManipulator
     {

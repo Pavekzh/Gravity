@@ -2,24 +2,27 @@
 
 namespace BasicTools
 {
-    public class StateCurve
+    public class StateCurve<T> where T : IStateCurvePoint
     {
-        private List<StateCurvePoint> points = new List<StateCurvePoint>();
+        private List<T> points = new List<T>();
 
-        public IEnumerable<StateCurvePoint> Points { get => points; }
+        /// <summary>
+        /// do not use Points.Add(), use StateCurve.AddPoint() instead 
+        /// </summary>
+        public List<T> Points { get => points; }
 
         public float Length { get; private set; } = 0;
 
         public int PointsAmount { get; private set; } = 0;
 
-        public void AddPoint (StateCurvePoint point)
+        public void AddPoint (T point)
         {
             points.Add(point);
             PointsAmount++;
             Length = point.DistanceFromStartPoint;     
         }
 
-        public StateCurvePoint GetPointAlongCurve(float distanceFromStart)
+        public IStateCurvePoint GetPointAlongCurve(float distanceFromStart)
         {
             int startIndex = 0;
             int endIndex = PointsAmount - 1;

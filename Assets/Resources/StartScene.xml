@@ -2,11 +2,11 @@
 <SceneState xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Name>SavedByInspector</Name>
   <Planets>
-    <PlanetData Name="Earth">
+    <PlanetData Name="Titan">
       <PlanetBuilder xsi:type="BasePlanetBuilder" />
       <ArrayOfModuleData>
         <ModuleData xsi:type="GravityModuleData">
-          <Mass>1</Mass>
+          <Mass>20</Mass>
           <Position>
             <x>4.41</x>
             <y>0</y>
@@ -15,10 +15,11 @@
             <x>0</x>
             <y>15</y>
           </Velocity>
+          <Guid>57e0be45-2fe7-4d5b-a50a-6aa0e9eee8de</Guid>
         </ModuleData>
       </ArrayOfModuleData>
     </PlanetData>
-    <PlanetData Name="Mars">
+    <PlanetData Name="Saturn">
       <PlanetBuilder xsi:type="BasePlanetBuilder" />
       <ArrayOfModuleData>
         <ModuleData xsi:type="GravityModuleData">
@@ -28,13 +29,14 @@
             <y>0</y>
           </Position>
           <Velocity>
-            <x>0</x>
-            <y>0</y>
+            <x>-0.5</x>
+            <y>-3.2</y>
           </Velocity>
+          <Guid>7ac29253-1bf7-4406-ac04-446b7e5afcef</Guid>
         </ModuleData>
       </ArrayOfModuleData>
     </PlanetData>
-    <PlanetData Name="Venus">
+    <PlanetData Name="IO">
       <PlanetBuilder xsi:type="BasePlanetBuilder" />
       <ArrayOfModuleData>
         <ModuleData xsi:type="GravityModuleData">
@@ -47,6 +49,7 @@
             <x>0</x>
             <y>11</y>
           </Velocity>
+          <Guid>f6502ba9-e67e-4c3f-87a9-f53e9c0252d4</Guid>
         </ModuleData>
       </ArrayOfModuleData>
     </PlanetData>

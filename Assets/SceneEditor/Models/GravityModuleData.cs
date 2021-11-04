@@ -11,8 +11,9 @@ namespace Assets.SceneEditor.Models
     public class GravityModuleData : ModuleData
     {
         private GravityInteractor data;
+        private Guid guid;
 
-        public GravityModuleData() 
+        public GravityModuleData(Guid guid)
         {
             //init ui changeble properties
             ConvertibleBinding<Vector2, string[]> positionBinding = new BasicTools.ConvertibleBinding<Vector2, string[]>(new VectorStringConverter());
@@ -40,7 +41,10 @@ namespace Assets.SceneEditor.Models
             velocityProperty.Components = new string[] { "x", "y" };
             VelocityProperty = velocityProperty;
             Properties.Add(VelocityProperty);
+
+            this.guid = guid;
         }
+        public GravityModuleData() : this(Guid.NewGuid()) {  }
         public GravityModuleData(ConvertibleBinding<Vector2,string[]> positionBinding, ConvertibleBinding<Vector2,string[]> velocityBinding, ConvertibleBinding<float,string[]> massBinding)
         {
             //init ui changeble properties
@@ -95,6 +99,9 @@ namespace Assets.SceneEditor.Models
                 data.Velocity = value;
             }
         }
+        
+        //setter for serialization do not use it
+        public Guid Guid { get => guid; set => guid = value; }
 
         public CommonPropertyViewData<float> MassProperty { get; }
         public CommonPropertyViewData<Vector2> PositionProperty { get; }

@@ -2,7 +2,7 @@
 using UnityEngine;
 using BasicTools;
 
-namespace Assets.UIExtended
+namespace UIExtended
 {
     public abstract class InputManipulator : MonoBehaviour
     {

@@ -8,27 +8,44 @@ namespace Assets.SceneEditor.Controllers
 {
     public class PlanetKickTool : ObjectTool
     {
-        [SerializeField] private UIExtended.InputManipulator inputManipulator;
-        [SerializeField] private UIExtended.OutputManipulator outputManipulator;
+        [SerializeField] private InputManipulator inputManipulator;
+        [SerializeField] private OutputManipulator outputManipulator;
 
-
-        private bool isWorking;
         private InputSystem inputSystem;
-        private GravityModuleData selectedPlanet;
+        private PlanetController selectedPlanet { get => EditorController.Instance.ToolsController.ObjectSelectionTool.SelectedPlanet; }
+        private GravityModuleData selectedGravityInteractor { get => EditorController.Instance.ToolsController.ObjectSelectionTool.SelectedPlanet.PlanetData.GetModule<GravityModuleData>(GravityModuleData.Key); }
 
         public override string DefaultKey { get => "PlanetKickTool"; }
 
         protected override void Awake()
         {
             base.Awake();
-            this.toolsController.ObjectSelectionTool.SelectedPlanetChanged += SelectedPlanetChanged;
             this.inputManipulator.OnManipulatorActivates += ManipulatorActivatesHandler;
+            EditorController.Instance.ToolsController.ObjectSelectionTool.SelectedPlanetChanged += SelectedPlanetChanged;
         }
 
-        private void SelectedPlanetChanged(PlanetController planet, object sender)
+        private void SelectedPlanetChanged(object sender, PlanetController planet)
         {
-            selectedPlanet = planet.PlanetData.GetModule<GravityModuleData>(GravityModuleData.Key);
-            inputManipulator.Origin = EditorController.Instance.ToolsController.ObjectSelectionTool.SelectedPlanet.transform;
+            if (isSelectedAndWorking)
+            {
+                if(planet != null)
+                {                        
+                    inputManipulator.Origin = selectedPlanet.transform;
+                    if (inputManipulator.IsVisible == false)
+                    {
+                        inputManipulator.IsVisible = true;
+                    }
+                    if (outputManipulator.IsVisible == false)
+                    {
+                        outputManipulator.IsVisible = true;
+                    }
+                }
+                else
+                {
+                    inputManipulator.IsVisible = false;
+                    outputManipulator.IsVisible = false;
+                }
+            }
         }
 
         public override void DisableTool()
@@ -44,44 +61,50 @@ namespace Assets.SceneEditor.Controllers
             }
             inputManipulator.IsVisible = false;
             outputManipulator.IsVisible = false;
-            isWorking = false;
+            isSelectedAndWorking = false;
         }
 
         public override void EnableTool(InputSystem inputSystem)
         {
+            if(selectedPlanet != null)
+            {
+                inputManipulator.Origin = selectedPlanet.transform;            
+                inputManipulator.IsVisible = true;
+                outputManipulator.IsVisible = true;
+            }
             Services.TimeManager.Instance.StopPhysics();
-
             this.inputSystem = inputSystem;
-            inputManipulator.Origin = EditorController.Instance.ToolsController.ObjectSelectionTool.SelectedPlanet.transform;
 
             inputSystem.OnTouchDown += SingleTouch;
             inputSystem.OnTouchContinues += SingleTouch;
             inputSystem.OnTouchRelease += TouchRelease;
-            
-            inputManipulator.IsVisible = true;
-            outputManipulator.IsVisible = true;
 
-            isWorking = true;
+            isSelectedAndWorking = true;
         }
 
         private void FixedUpdate()
         {
-            if(isWorking)
+            if(isSelectedAndWorking && selectedPlanet != null)
             {
-                inputManipulator.UpdateView(selectedPlanet.Position.GetVector3(), (selectedPlanet.Position.GetVector3() + ComputeInputVector(selectedPlanet.Velocity.GetVector3())),EditorController.Instance.Camera.ScaleFactor);
-                outputManipulator.UpdateManipulatorView(selectedPlanet.Position.GetVector3(), selectedPlanet.Velocity.GetVector3(),EditorController.Instance.Camera.ScaleFactor);
+                GravityModuleData gravityObject = selectedGravityInteractor;
+                inputManipulator.UpdateView(gravityObject.Position.GetVector3(), (gravityObject.Position.GetVector3() + ComputeInputVector(gravityObject.Velocity.GetVector3())),EditorController.Instance.Camera.ScaleFactor);
+                outputManipulator.UpdateManipulatorView(gravityObject.Position.GetVector3(), gravityObject.Velocity.GetVector3(),EditorController.Instance.Camera.ScaleFactor);
             }
         }
 
         private void SingleTouch(Touch touch)
         {
-            Vector3 inputVector = inputManipulator.GetInputByTouch(touch, EditorController.Instance.Camera.ScaleFactor);
-            if (inputManipulator.IsManipulatorActive)
+            if(selectedPlanet != null)
             {
-                Vector3 outputVector = ComputeOutputVector(inputVector);
+                GravityModuleData gravityObject = selectedGravityInteractor;
+                Vector3 inputVector = inputManipulator.GetInputByTouch(touch, EditorController.Instance.Camera.ScaleFactor);
+                if (inputManipulator.IsManipulatorActive)
+                {
+                    Vector3 outputVector = ComputeOutputVector(inputVector);
 
-                outputManipulator.UpdateManipulatorView(selectedPlanet.Position.GetVector3(), outputVector, EditorController.Instance.Camera.ScaleFactor);
-                selectedPlanet.Velocity = outputVector.GetVectorXZ();
+                    outputManipulator.UpdateManipulatorView(gravityObject.Position.GetVector3(), outputVector, EditorController.Instance.Camera.ScaleFactor);
+                    gravityObject.Velocity = outputVector.GetVectorXZ();
+                }
             }
         }
 

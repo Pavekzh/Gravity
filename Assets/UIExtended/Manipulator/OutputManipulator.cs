@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace Assets.UIExtended
+namespace UIExtended
 {
     public abstract class OutputManipulator : MonoBehaviour
     {

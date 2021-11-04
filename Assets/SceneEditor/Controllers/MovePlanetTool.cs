@@ -12,18 +12,6 @@ namespace Assets.SceneEditor.Controllers
 
         public override string DefaultKey => "MoveTool";
 
-        private GravityModuleData planet;
-
-        private void Start()
-        {
-            EditorController.Instance.ToolsController.ObjectSelectionTool.SelectedPlanetChanged += SelectedPlanetChanged;
-        }
-
-        private void SelectedPlanetChanged(PlanetController planet, object sender)
-        {
-            this.planet = planet.PlanetData.GetModule<GravityModuleData>(GravityModuleData.Key);
-        }
-
         public override void DisableTool()
         {                
             if(this.inputSystem != null)
@@ -48,14 +36,14 @@ namespace Assets.SceneEditor.Controllers
 
         private void Touch(Touch touch)
         {
-            if(planet != null)
+            if(EditorController.Instance.ToolsController.ObjectSelectionTool.SelectedPlanet != null)
             {
                 Ray ray = Camera.main.ScreenPointToRay(touch.position);
                 Plane plane = new Plane(Vector3.up, Vector3.zero);
                 float distance;
                 if (plane.Raycast(ray, out distance))
                 {
-                    planet.Position = ray.GetPoint(distance).GetVectorXZ();
+                    EditorController.Instance.ToolsController.ObjectSelectionTool.SelectedPlanet.PlanetData.GetModule<GravityModuleData>(GravityModuleData.Key).Position = ray.GetPoint(distance).GetVectorXZ();
                 }
             }
         }

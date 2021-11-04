@@ -7,9 +7,8 @@ namespace Assets.SceneEditor.Controllers
 {
     public class SelectPlanetTool : EditorTool
     {
-        public delegate void SelectedPlanetChangedHandler(PlanetController planet, object sender);
+        public delegate void SelectedPlanetChangedHandler(object sender, PlanetController planet);
         public event SelectedPlanetChangedHandler SelectedPlanetChanged;
-        
         private int layerMask;
         private InputSystem inputSystem;
 
@@ -19,23 +18,52 @@ namespace Assets.SceneEditor.Controllers
 
         public PlanetController SelectedPlanet
         {
-            get => planet;
-            set
+            get 
             {
-                if(value != null)
-                {
-                    planet = value;
-                    SelectedPlanetChanged?.Invoke(value, this);
-                }
+                if (planet != null)
+                    return planet;
+                else
+                    return FindPlanet();
             }
+            private set
+            {
+                planet = value;
+                SelectedPlanetChanged?.Invoke(this, value);
+            }
+        }
+
+        public void ForceSelect(PlanetController planet)
+        {
+            if(planet != null)
+                this.SelectedPlanet = planet;
         }
 
         void Start()
         {
             layerMask = 1 << LayerMask.NameToLayer(planetsLayerName);
-            SelectedPlanet = Services.PlanetBuildSettings.Instance.PlanetsParent.GetComponentInChildren<PlanetController>();
-        }   
-        
+            Services.SceneStateManager.Instance.SceneChanged += SceneCleared;
+            if (planet == null)
+                FindPlanet();
+        }
+
+        private void SceneCleared()
+        {
+            SelectedPlanet = null;
+        }
+
+        private PlanetController FindPlanet()
+        {
+            if(Services.PlanetBuildSettings.Instance.PlanetsParent.childCount != 0)
+            {
+                planet = Services.PlanetBuildSettings.Instance.PlanetsParent.GetComponentInChildren<PlanetController>();
+                if (planet != null)
+                    SelectedPlanetChanged?.Invoke(this, planet);
+
+                return planet;
+            }
+            return null;
+        }
+
         public override void DisableTool()
         {
             if (inputSystem != null)
@@ -52,6 +80,7 @@ namespace Assets.SceneEditor.Controllers
 
         private void TouchDown(Touch touch)
         {
+
             Ray ray = Camera.main.ScreenPointToRay(touch.position);
             RaycastHit hitinfo;
             if (Physics.SphereCast(ray, selectSphereRadius, out hitinfo, Mathf.Infinity, layerMask))

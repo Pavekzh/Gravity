@@ -42,22 +42,21 @@ namespace Assets.SceneEditor.Controllers
 
         private void Init(RectTransform parent,float offset)
         {
-            moduleRoot = GameObject.Instantiate(ModuleViewTemplate.Instance.EmptyPrefab,parent);
+            moduleRoot = GameObject.Instantiate(ValuesPanelTemplate.Instance.EmptyPrefab,parent);
             moduleRoot.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, parent.rect.width);
             moduleRoot.anchoredPosition = new Vector2(0, (-moduleRoot.rect.height / 2) - offset);
             moduleRoot.gameObject.name = "ModulePresenter";
             ModuleOffset = offset + moduleRoot.rect.height;
 
-            label = GameObject.Instantiate(ModuleViewTemplate.Instance.ShortViewPrefab, moduleRoot);
+            label = GameObject.Instantiate(ValuesPanelTemplate.Instance.ShortViewPrefab, moduleRoot);
             label.gameObject.name = "ShortView";
-
-            propertiesContainer = GameObject.Instantiate(ModuleViewTemplate.Instance.EmptyPrefab, moduleRoot);
-            propertiesContainer.gameObject.name = "PropertiesContainer";
-            propertiesContainer.anchoredPosition += new Vector2(0, -label.rect.height - (propertiesContainer.rect.height / 2));
-
-            TMP_Text modLabel = GameObject.Instantiate(ModuleViewTemplate.Instance.ModuleLabelPrefab, label);
+            TMP_Text modLabel = GameObject.Instantiate(ValuesPanelTemplate.Instance.ModuleLabelPrefab, label);
             modLabel.text = ModuleData.Name;
             modLabel.name = "ModuleLabel";
+
+            propertiesContainer = GameObject.Instantiate(ValuesPanelTemplate.Instance.EmptyPrefab, moduleRoot);
+            propertiesContainer.gameObject.name = "PropertiesContainer";
+            propertiesContainer.anchoredPosition += new Vector2(0, -label.rect.height - (propertiesContainer.rect.height / 2));
 
             moduleLabel = modLabel;
             propertiesOffset = 0;

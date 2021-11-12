@@ -29,7 +29,8 @@ namespace Assets.SceneEditor.Controllers
         }
 
         private void TwoTouchesDown(Touch[] touches)
-        {            
+        {
+            Debug.Log("two touches");
             float distance = 0;
             distance = Vector2.Distance(touches[0].position, touches[1].position);
 

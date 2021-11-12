@@ -1,0 +1,159 @@
+<?xml version="1.0"?>
+<SceneState xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>SavedByInspector</Name>
+  <Planets>
+    <PlanetData Name="Titan">
+      <PlanetBuilder xsi:type="BasePlanetBuilder" />
+      <ArrayOfModuleData>
+        <ModuleData xsi:type="GravityModuleData">
+          <Mass>20</Mass>
+          <Position>
+            <x>4.41</x>
+            <y>0</y>
+          </Position>
+          <Velocity>
+            <x>0</x>
+            <y>0</y>
+          </Velocity>
+          <Guid>3c195ab6-3e96-4591-b06a-7885bbe123ec</Guid>
+        </ModuleData>
+      </ArrayOfModuleData>
+    </PlanetData>
+    <PlanetData Name="Saturn">
+      <PlanetBuilder xsi:type="BasePlanetBuilder" />
+      <ArrayOfModuleData>
+        <ModuleData xsi:type="GravityModuleData">
+          <Mass>100</Mass>
+          <Position>
+            <x>0</x>
+            <y>0</y>
+          </Position>
+          <Velocity>
+            <x>0</x>
+            <y>0</y>
+          </Velocity>
+          <Guid>64e5115b-9d0b-47c0-a7b7-eaf7ca50d533</Guid>
+        </ModuleData>
+      </ArrayOfModuleData>
+    </PlanetData>
+    <PlanetData Name="IO">
+      <PlanetBuilder xsi:type="BasePlanetBuilder" />
+      <ArrayOfModuleData>
+        <ModuleData xsi:type="GravityModuleData">
+          <Mass>1</Mass>
+          <Position>
+            <x>12.27</x>
+            <y>0</y>
+          </Position>
+          <Velocity>
+            <x>0</x>
+            <y>0</y>
+          </Velocity>
+          <Guid>b3500db6-cc29-45a5-a92c-c86560edc218</Guid>
+        </ModuleData>
+      </ArrayOfModuleData>
+    </PlanetData>
+    <PlanetData Name="IO (1)">
+      <PlanetBuilder xsi:type="BasePlanetBuilder" />
+      <ArrayOfModuleData>
+        <ModuleData xsi:type="GravityModuleData">
+          <Mass>1</Mass>
+          <Position>
+            <x>7.47</x>
+            <y>5.78</y>
+          </Position>
+          <Velocity>
+            <x>0</x>
+            <y>0</y>
+          </Velocity>
+          <Guid>868b135b-2692-44c5-94d2-fb80c7f62492</Guid>
+        </ModuleData>
+      </ArrayOfModuleData>
+    </PlanetData>
+    <PlanetData Name="Saturn (1)">
+      <PlanetBuilder xsi:type="BasePlanetBuilder" />
+      <ArrayOfModuleData>
+        <ModuleData xsi:type="GravityModuleData">
+          <Mass>100</Mass>
+          <Position>
+            <x>0</x>
+            <y>6.62</y>
+          </Position>
+          <Velocity>
+            <x>0</x>
+            <y>0</y>
+          </Velocity>
+          <Guid>56d5c670-6de2-4a76-b021-d1e9ef80f39d</Guid>
+        </ModuleData>
+      </ArrayOfModuleData>
+    </PlanetData>
+    <PlanetData Name="Saturn (2)">
+      <PlanetBuilder xsi:type="BasePlanetBuilder" />
+      <ArrayOfModuleData>
+        <ModuleData xsi:type="GravityModuleData">
+          <Mass>100</Mass>
+          <Position>
+            <x>5.13</x>
+            <y>10.85</y>
+          </Position>
+          <Velocity>
+            <x>0</x>
+            <y>0</y>
+          </Velocity>
+          <Guid>6d2594c4-a39e-4273-a400-d4afbebfb51d</Guid>
+        </ModuleData>
+      </ArrayOfModuleData>
+    </PlanetData>
+    <PlanetData Name="Saturn (3)">
+      <PlanetBuilder xsi:type="BasePlanetBuilder" />
+      <ArrayOfModuleData>
+        <ModuleData xsi:type="GravityModuleData">
+          <Mass>100</Mass>
+          <Position>
+            <x>15.13</x>
+            <y>6.62</y>
+          </Position>
+          <Velocity>
+            <x>0</x>
+            <y>0</y>
+          </Velocity>
+          <Guid>0d83361e-cbc4-4d38-868b-d5c4fe3f5f8b</Guid>
+        </ModuleData>
+      </ArrayOfModuleData>
+    </PlanetData>
+    <PlanetData Name="IO (3)">
+      <PlanetBuilder xsi:type="BasePlanetBuilder" />
+      <ArrayOfModuleData>
+        <ModuleData xsi:type="GravityModuleData">
+          <Mass>1</Mass>
+          <Position>
+            <x>3.69999933</x>
+            <y>17.57</y>
+          </Position>
+          <Velocity>
+            <x>0</x>
+            <y>0</y>
+          </Velocity>
+          <Guid>47daf607-952b-4605-8ae8-5d5a5f0274dd</Guid>
+        </ModuleData>
+      </ArrayOfModuleData>
+    </PlanetData>
+    <PlanetData Name="Saturn (5)">
+      <PlanetBuilder xsi:type="BasePlanetBuilder" />
+      <ArrayOfModuleData>
+        <ModuleData xsi:type="GravityModuleData">
+          <Mass>100</Mass>
+          <Position>
+            <x>-3.77000046</x>
+            <y>18.41</y>
+          </Position>
+          <Velocity>
+            <x>0</x>
+            <y>0</y>
+          </Velocity>
+          <Guid>1b79ac36-526f-41e7-afbb-a99816fd6ae9</Guid>
+        </ModuleData>
+      </ArrayOfModuleData>
+    </PlanetData>
+  </Planets>
+</SceneState>

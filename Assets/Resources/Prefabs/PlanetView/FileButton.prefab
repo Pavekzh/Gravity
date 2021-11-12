@@ -69,7 +69,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 79f58bb0bcbbc624e9a8ada8fc643e80, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 550ea74ee4c71fe4b8b2e3f444ddcaee, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -108,8 +108,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   imageField: {fileID: 7744393717145992225}
-  defaultState: {fileID: 21300000, guid: 42ded826b7b66aa48af0b719ead8a0bf, type: 3}
-  changedState: {fileID: 21300000, guid: 79f58bb0bcbbc624e9a8ada8fc643e80, type: 3}
+  defaultState: {fileID: 21300000, guid: 550ea74ee4c71fe4b8b2e3f444ddcaee, type: 3}
+  changedState: {fileID: 21300000, guid: d9b126f513cb9924a8317e3db41cc9b1, type: 3}
 --- !u!114 &3683630185126557199
 MonoBehaviour:
   m_ObjectHideFlags: 0

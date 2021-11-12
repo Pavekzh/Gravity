@@ -17,9 +17,22 @@ namespace Assets.Services
         [SerializeField] CurveDrawer curveDrawer;        
         [SerializeField] float predictLimit = 2;
         [SerializeField] LimitType limitType;
+        [SerializeField] int frameRate = 50;
+        [SerializeField] bool useTimeScale = true;
 
-        int predictIterationsNumber { get => (int)(predictLimit / Time.fixedDeltaTime); }
+        private float deltaTime = 0;
+        private int predictIterationsNumber;
         private bool isVisible;
+
+        private void Start()
+        {
+            if (useTimeScale)
+                deltaTime = Time.fixedDeltaTime;
+            else
+                deltaTime = (float)1 / frameRate;
+
+            predictIterationsNumber = (int)(predictLimit / deltaTime);
+        }
 
         public override bool IsVisible 
         {
@@ -39,9 +52,9 @@ namespace Assets.Services
                 StateCurve<StateCurvePoint3D> curve;
 
                 if (limitType == LimitType.Length)
-                    curve = GravityManager.Instance.PredictPositions((float)predictLimit, selectedGravityInteractor);
+                    curve = GravityManager.Instance.PredictPositions((float)predictLimit, selectedGravityInteractor,deltaTime);
                 else
-                    curve = GravityManager.Instance.PredictPositions(predictIterationsNumber, selectedGravityInteractor);
+                    curve = GravityManager.Instance.PredictPositions(predictIterationsNumber, selectedGravityInteractor,deltaTime);
 
                 curveDrawer.Draw(curve);
             }

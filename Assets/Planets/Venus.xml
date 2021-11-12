@@ -9,9 +9,10 @@
         <y>-13.8821087</y>
       </Position>
       <Velocity>
-        <x>8.514411</x>
-        <y>-0.8600982</y>
+        <x>0</x>
+        <y>0</y>
       </Velocity>
+      <Guid>b9d2f1c5-c783-4ad5-8b18-43bba8acb104</Guid>
     </ModuleData>
   </ArrayOfModuleData>
 </PlanetData>

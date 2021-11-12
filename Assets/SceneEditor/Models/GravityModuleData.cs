@@ -111,7 +111,7 @@ namespace Assets.SceneEditor.Models
         public override List<PropertyViewData> Properties { get; } = new List<PropertyViewData>();
         public override string Name { get => Key; }
         
-        public static string Key { get => "GravityModule"; }
+        public static string Key { get => "Gravity"; }
 
         public override void CreateModule(GameObject planetObject)
         {

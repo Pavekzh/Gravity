@@ -38,6 +38,10 @@ namespace Assets.SceneEditor.Controllers
 
         public override void Close()
         {
+            foreach(Transform child in containerTransform)
+            {
+                GameObject.Destroy(child.gameObject);
+            }
             visibleManager.State = BasicTools.State.Default;
         }
 

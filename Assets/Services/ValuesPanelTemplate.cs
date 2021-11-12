@@ -4,7 +4,7 @@ using TMPro;
 
 namespace Assets.Services
 {
-    public class ModuleViewTemplate : BasicTools.Singleton<ModuleViewTemplate>
+    public class ValuesPanelTemplate : BasicTools.Singleton<ValuesPanelTemplate>
     {
         [Header("Base")]        
         [SerializeField] RectTransform emptyPrefab;
@@ -15,10 +15,12 @@ namespace Assets.Services
         [SerializeField] TMP_InputField inputFieldPrefab;
         [SerializeField] TMP_Text propertyLabelPrefab;
         [SerializeField] TMP_Text lineLabelPrefab;
+        [SerializeField] TMP_Text planetLabelPrefab;
         [SerializeField] float startMargin = 10;
         [SerializeField] float propertiesMargin = 10;
         [SerializeField] float lineMargin = 5;
 
+        public TMP_Text PlanetLabelPrefab { get => planetLabelPrefab; set => planetLabelPrefab = value; }
         public TMP_Text PropertyLabelPrefab { get => propertyLabelPrefab; set => propertyLabelPrefab = value; }
         public TMP_Text LineLabelPrefab { get => lineLabelPrefab; set => lineLabelPrefab = value; }
         public float StartMargin { get => startMargin; set => startMargin = value; }

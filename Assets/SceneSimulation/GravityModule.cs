@@ -42,7 +42,7 @@ namespace Assets.SceneSimulation
                     return savedVelocity;
                 }
             }
-            set
+            private set
             {
                 if (IsSimulationEnabled)
                 {
@@ -64,7 +64,7 @@ namespace Assets.SceneSimulation
             } 
             set 
             {
-                this.positionBinding.ChangeValue(value, this);          
+                this.positionBinding.ChangeValue(value.GetVectorXZ(), this);          
                 this.transform.position = value;
                 this.data.Position = value.GetVectorXZ();
             } 
@@ -88,12 +88,9 @@ namespace Assets.SceneSimulation
         private ConvertibleBinding<Vector2, string[]> velocityBinding;
         private ConvertibleBinding<float, string[]> massBinding;
 
-        private void Start()
+        private void Awake()
         {
             Services.TimeManager.Instance.TimeStateChanged += UpdateSimulationState;
-
-            this.Mass = data.Mass;
-            this.Velocity = data.Velocity.GetVector3();    
         }
 
         private void OnDestroy()
@@ -110,12 +107,13 @@ namespace Assets.SceneSimulation
 
         private void FixedUpdate()
         {
-            positionBinding.ChangeValue(Position.GetVectorXZ(), this);
-            velocityBinding.ChangeValue(Velocity.GetVectorXZ(), this);
-            data.Velocity = Velocity.GetVectorXZ();
-            data.Position = Position.GetVectorXZ();
             if (IsSimulationEnabled)
             {
+                positionBinding.ChangeValue(Position.GetVectorXZ(), this);
+                velocityBinding.ChangeValue(Velocity.GetVectorXZ(), this);
+                data.Velocity = Velocity.GetVectorXZ();
+                data.Position = Position.GetVectorXZ();
+
                 Vector3 force = GravityManager.Instance.ComputeForce(data);
                 Rigidbody.AddForce(force * Time.fixedDeltaTime, ForceMode.Impulse);
 
@@ -144,14 +142,14 @@ namespace Assets.SceneSimulation
 
         //initialization
         public void SetModuleData(GravityModuleData moduleData)
-        {            
+        {                     
             positionBinding = moduleData.PositionProperty.Binding;
             velocityBinding = moduleData.VelocityProperty.Binding;
-            massBinding = moduleData.MassProperty.Binding;
+            massBinding = moduleData.MassProperty.Binding;     
             
             Mass = moduleData.Mass;
-            Velocity = new Vector3(moduleData.Velocity.x, 0, moduleData.Velocity.y);
-            Position = new Vector3(moduleData.Position.x, 0, moduleData.Position.y) ;
+            Velocity = moduleData.Velocity.GetVector3();
+            Position = moduleData.Position.GetVector3();  
 
             positionBinding.ValueChanged += SetPosition;
             massBinding.ValueChanged += SetMass;
@@ -185,7 +183,7 @@ namespace Assets.SceneSimulation
         {
             if (sender != (object)this)
             { 
-                this.transform.position =value.GetVector3();
+                this.transform.position = value.GetVector3();
                 this.data.Position = value;
             }
         }
@@ -204,8 +202,15 @@ namespace Assets.SceneSimulation
         {
             if (sender != (object)this)
             {
-                this.Rigidbody.velocity = value.GetVector3();
-                this.savedVelocity = value.GetVector3();
+                if (IsSimulationEnabled)
+                {
+                    this.Rigidbody.velocity = value.GetVector3();
+                }
+                else
+                {
+                    this.savedVelocity = value.GetVector3();
+                }
+
                 this.data.Velocity = value;
             }
         }

@@ -26,7 +26,7 @@ namespace Assets.Services
             interactors = new Dictionary<Guid, GravityModule>();
         }
         
-        public StateCurve<StateCurvePoint3D> PredictPositions(float curveLength, Guid element)
+        public StateCurve<StateCurvePoint3D> PredictPositions(float curveLength, Guid element,float deltaTime)
         {
             StateCurve<StateCurvePoint3D> Curve = new StateCurve<StateCurvePoint3D>();
             List<GravityInteractor> lastAllInteractorsState = new List<GravityInteractor>();
@@ -55,14 +55,14 @@ namespace Assets.Services
                     for (int j = 0; j < allInteractors; j++)
                     {
                         GravityInteractor newState = new GravityInteractor(lastAllInteractorsState[j]);
-                        Vector3 velocityChange = ComputeForce(newState, lastAllInteractorsState, gravityRatio) * Time.deltaTime / newState.Mass;
+                        Vector3 velocityChange = ComputeForce(newState, lastAllInteractorsState, gravityRatio) * deltaTime / newState.Mass;
                         newState.Velocity += velocityChange.GetVectorXZ();
-                        newState.Position += newState.Velocity * Time.fixedDeltaTime;
+                        newState.Position += newState.Velocity * deltaTime;
 
                         allInteractorsState.Add(newState);
                         if (j == predictableElement)
                         {
-                            float newDistanceFromStart = Curve.Length + newState.Velocity.magnitude * Time.fixedDeltaTime;
+                            float newDistanceFromStart = Curve.Length + newState.Velocity.magnitude * deltaTime;
                             if (newDistanceFromStart < curveLength)
                             {
                                 Curve.AddPoint(new GravityStateCurvePoint(newState, newDistanceFromStart));
@@ -81,7 +81,7 @@ namespace Assets.Services
             return Curve;
         }
 
-        public StateCurve<StateCurvePoint3D> PredictPositions(int iterations, Guid element)
+        public StateCurve<StateCurvePoint3D> PredictPositions(int iterations, Guid element, float deltaTime)
         {
             StateCurve<StateCurvePoint3D> Curve = new StateCurve<StateCurvePoint3D>();
             List<GravityInteractor> lastAllInteractorsState = new List<GravityInteractor>();
@@ -110,13 +110,13 @@ namespace Assets.Services
                     for (int j = 0; j < allInteractors; j++)
                     {
                         GravityInteractor newState = new GravityInteractor(lastAllInteractorsState[j]);
-                        Vector3 velocityChange = ComputeForce(newState, lastAllInteractorsState, gravityRatio) * Time.deltaTime / newState.Mass;
+                        Vector3 velocityChange = ComputeForce(newState, lastAllInteractorsState, gravityRatio) * deltaTime / newState.Mass;
                         newState.Velocity += velocityChange.GetVectorXZ();
-                        newState.Position += newState.Velocity * Time.fixedDeltaTime;
+                        newState.Position += newState.Velocity * deltaTime;
 
                         allInteractorsState.Add(newState);
                         if (j == predictableElement)
-                            Curve.AddPoint(new GravityStateCurvePoint(newState, Curve.Length + newState.Velocity.magnitude * Time.fixedDeltaTime));
+                            Curve.AddPoint(new GravityStateCurvePoint(newState, Curve.Length + newState.Velocity.magnitude * deltaTime));
                     }
                     lastAllInteractorsState = allInteractorsState;
                 }

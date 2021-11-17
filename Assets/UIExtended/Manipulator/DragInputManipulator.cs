@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using BasicTools;
 
 namespace UIExtended
 {
@@ -7,20 +8,24 @@ namespace UIExtended
     {
         [SerializeField][Tooltip("Line object must be aligned along the z axis")] private MeshFilter line;
         [SerializeField][Tooltip("Object must be aligned along the z axis")] private MeshFilter touchPointer;
-        [SerializeField] private Transform origin;
         [SerializeField] private Vector3 originPosition = Vector3.zero;
         [SerializeField] private float lineWidth = 1f;
         [SerializeField] private float manipulatorScale = 10f;
 
+        private bool isManipulatorActive;
         private Collider pointerCollider;
         private Vector3 lineScaleFactor;
         private Vector3 touchScale;
         private bool isVisible;
+        private Binding<Vector2> originBinding;
 
-        public override bool IsVisible
+        public override event InputReadingHandler InputReadingStarted;
+        public override event InputReadingHandler InputReadingStoped;
+
+        public bool IsEnabled
         {
             get => isVisible;
-            set
+            protected set
             {
                 if (line != null)
                     line.gameObject.SetActive(value);
@@ -29,25 +34,15 @@ namespace UIExtended
                 isVisible = value;
             }
         }
-        public override Transform Origin { get => origin; set => origin = value; }
         public Vector3 OriginPosition
         {
             get
             {
-                if (origin != null)
-                {
-                    return origin.position;
-                }
-                else
-                {
-                    return originPosition;
-                }
+                return originPosition;
             }
         }
 
-        public override event EventHandler OnManipulatorActivates;
-
-        void Start()
+        private void Start()
         {
             pointerCollider = touchPointer.GetComponent<Collider>();
             if (pointerCollider == null)
@@ -55,47 +50,93 @@ namespace UIExtended
 
             touchScale = touchPointer.transform.localScale;
             lineScaleFactor = new Vector3(1 / (line.mesh.bounds.extents.x * 2), 1 / (line.mesh.bounds.extents.y * 2), 1 / (line.mesh.bounds.extents.z * 2));
-            IsVisible = false;
+            InputBinding = new Binding<Vector3>();
+            InputBinding.ValueChanged += UpdateView;
+            IsEnabled = false;
         }
 
-        public override Vector3 GetInputByTouch(Touch touch,float scale)
+        private void Update()
         {
-            if(IsManipulatorActive == false)
+            if(!isManipulatorActive && IsEnabled && Input.touchCount == 1)
             {
-                Ray ray = Camera.main.ScreenPointToRay(touch.position);
-                RaycastHit hitinfo;
-                if (pointerCollider.Raycast(ray, out hitinfo, Mathf.Infinity))
-                {
-                    IsManipulatorActive = true;
-                    OnManipulatorActivates(this, EventArgs.Empty);
-                }
-                return Vector3.zero;
+                isManipulatorActive = IsTouchOverPointer(Input.GetTouch(0));
+                if (isManipulatorActive)
+                    this.InputReadingStarted?.Invoke();
             }
-            else
+            if(isManipulatorActive && IsEnabled && Input.touchCount != 1)
             {
-                Ray ray = Camera.main.ScreenPointToRay(touch.position);
-                float distance = 0;
-                Plane plane = new Plane(Vector3.up, Vector3.zero);
-
-                if (plane.Raycast(ray, out distance))
-                {
-                    //getting touch position on plane
-                    Vector3 touchPosition = ray.GetPoint(distance);
-                    UpdateView(OriginPosition, touchPosition, scale);
-                    return OriginPosition - touchPosition;
-                }
-                return Vector3.zero;
+                isManipulatorActive = false;
+                this.InputReadingStoped?.Invoke();
             }
-
         }
 
-        public override void Deactivate(Touch touch)
+        private void FixedUpdate()
         {
-            IsManipulatorActive = false;   
+            if(IsEnabled && isManipulatorActive && Input.touchCount == 1)
+            {
+                Vector3 input = GetInputByTouch(Input.GetTouch(0));
+                InputBinding.ChangeValue(input,this);
+            }
         }
 
-        public override void UpdateView(Vector3 origin,Vector3 touch, float scaleFactor)
+        private void SetOriginPosition(Vector2 value,object sender)
         {
+            this.originPosition = value.GetVector3();
+        }
+
+        public override void EnableTool(Binding<Vector2> originBinding)
+        {
+            if (this.IsEnabled)
+                this.DisableTool();
+
+            this.originBinding = originBinding;
+            this.originBinding.ValueChanged += SetOriginPosition;            
+            originBinding.ForceUpdate();
+            this.IsEnabled = true;
+        }
+
+        public override void DisableTool()
+        {
+            if (IsEnabled)
+            {
+                this.originBinding.ValueChanged -= SetOriginPosition;
+                this.isManipulatorActive = false;
+                this.IsEnabled = false;
+            }
+        }
+
+        public bool IsTouchOverPointer(Touch touch)
+        {
+            Ray ray = Camera.main.ScreenPointToRay(touch.position);
+            RaycastHit hitInfo;
+            if (pointerCollider.Raycast(ray, out hitInfo, Mathf.Infinity))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public Vector3 GetInputByTouch(Touch touch)
+        {
+            Ray ray = Camera.main.ScreenPointToRay(touch.position);
+            float distance;
+            Plane plane = new Plane(Vector3.up, Vector3.zero);
+
+            if (plane.Raycast(ray, out distance))
+            {
+                //getting touch position on plane
+                Vector3 touchPosition = ray.GetPoint(distance);
+                return OriginPosition - touchPosition;
+            }
+            return Vector3.zero;
+        }
+
+        public void UpdateView(Vector3 input,object sender)
+        {
+            Vector3 origin = originPosition;
+            Vector3 touch = origin - input;
+            float scaleFactor = ScaleFactor;
+
             scaleFactor *= this.manipulatorScale;
             if (origin != touch)
             {
@@ -118,7 +159,5 @@ namespace UIExtended
             }
            
         }
-
-
     }
 }

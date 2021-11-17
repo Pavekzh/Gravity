@@ -24,7 +24,7 @@ namespace Assets.Services
         private int predictIterationsNumber;
         private bool isVisible;
 
-        private void Start()
+        private void Awake()
         {
             if (useTimeScale)
                 deltaTime = Time.fixedDeltaTime;

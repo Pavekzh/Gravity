@@ -7,6 +7,13 @@ namespace Assets.SceneEditor.Models
 {
     public class CameraModel : MonoBehaviour
     {
+        public delegate void ZoomChangedEventHandler(float value, object sender);
+        public delegate void OriginMovedEventHandler(Vector3 value, object sender);
+        public delegate void RotationChangedEventHandler(Vector2 value, object sender);
+        public event ZoomChangedEventHandler ZoomChanged;
+        public event OriginMovedEventHandler OriginMoved;
+        public event RotationChangedEventHandler RotationChanged;
+
         public static string Key = "KEY_CameraModel";
 
         [Header("Limiters")]
@@ -36,15 +43,18 @@ namespace Assets.SceneEditor.Models
                     if (value <= maxRadius || maxRadius == 0)
                     {
                         rotationRadius = value;
+                        ZoomChanged?.Invoke(value, this);
                     }
                     else
                     {
                         rotationRadius = maxRadius;
+                        ZoomChanged?.Invoke(value, this);
                     }
                 }
                 else
                 {
                     rotationRadius = minRotationRadius;
+                    ZoomChanged?.Invoke(value, this);
                 }
             }
         }
@@ -56,8 +66,24 @@ namespace Assets.SceneEditor.Models
                 if (value.x <= maxXAngle && value.x >= minXAngle)
                 {
                     orbitAngle = value;
+                    RotationChanged?.Invoke(value, this);
                 }
 
+            }
+        }
+        public Vector3 Origin
+        {
+            get => origin;
+            set
+            {
+                this.origin.x -= value.x * Mathf.Cos(Mathf.Deg2Rad * Camera.transform.rotation.eulerAngles.y);
+                this.origin.z += value.x * Mathf.Sin(Mathf.Deg2Rad * Camera.transform.rotation.eulerAngles.y);
+
+                this.origin.z += value.z * Mathf.Cos(Mathf.Deg2Rad * Camera.transform.rotation.eulerAngles.y);
+                this.origin.x += value.z * Mathf.Sin(Mathf.Deg2Rad * Camera.transform.rotation.eulerAngles.y);
+
+                this.origin.y += value.y;
+                OriginMoved?.Invoke(origin, value);
             }
         }
         public bool ControlLocked { get; set; } = false;
@@ -96,7 +122,7 @@ namespace Assets.SceneEditor.Models
             if (Vector != Vector3.zero && ControlLocked == false)
             {
                 Vector = Vector * (rotationRadius / DefaultRadius);
-                LocalOriginTranslate(Vector);
+                Origin = Vector;
                 ResetRotation();
             }
         }
@@ -121,16 +147,6 @@ namespace Assets.SceneEditor.Models
             }
         }
 
-        private void LocalOriginTranslate(Vector3 vector)
-        {
-            this.origin.x -= vector.x * Mathf.Cos(Mathf.Deg2Rad * Camera.transform.rotation.eulerAngles.y);
-            this.origin.z += vector.x * Mathf.Sin(Mathf.Deg2Rad * Camera.transform.rotation.eulerAngles.y);
-
-            this.origin.z += vector.z * Mathf.Cos(Mathf.Deg2Rad * Camera.transform.rotation.eulerAngles.y);
-            this.origin.x += vector.z * Mathf.Sin(Mathf.Deg2Rad * Camera.transform.rotation.eulerAngles.y);
-
-            this.origin.y += vector.y;
-        }
         private void TranslateY(float y)
         {
 

@@ -6,19 +6,16 @@ namespace UIExtended
 {
     public abstract class InputManipulator : MonoBehaviour
     {
-        public bool IsManipulatorActive { get; protected set; }
+        public delegate void InputReadingHandler();
+        public abstract event InputReadingHandler InputReadingStarted;
+        public abstract event InputReadingHandler InputReadingStoped;
 
-        public abstract Transform Origin { get; set; }
+        public virtual float ScaleFactor { get; set; }
 
-        public abstract event System.EventHandler OnManipulatorActivates;
+        public virtual Binding<Vector3> InputBinding { get; protected set; }
 
-        public abstract Vector3 GetInputByTouch(Touch touch, float scale);
+        public abstract void EnableTool(Binding<Vector2> originBinding);
 
-        public abstract void UpdateView(Vector3 origin, Vector3 touch, float scaleFactor);
-
-        public abstract void Deactivate(Touch touch);
-
-        public abstract bool IsVisible { get; set; }
-
+        public abstract void DisableTool();
     }
 }

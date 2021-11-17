@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System;
 using UnityEngine;
-using UIExtended;
 
 namespace Assets.SceneEditor.Controllers
 {

@@ -9,7 +9,7 @@ namespace Assets.SceneEditor.Controllers
         [SerializeField] private string individualKey;
         [SerializeField] protected ToolsController toolsController;
 
-        protected bool isSelectedAndWorking = false;
+        protected bool ToolSelectedAndWorking = false;
 
         public abstract string DefaultKey { get; }
         
@@ -35,15 +35,15 @@ namespace Assets.SceneEditor.Controllers
 
         public virtual void SwitchActiveState()
         {
-            if(isSelectedAndWorking)
+            if(ToolSelectedAndWorking)
             {
                 this.DisableTool();
-                isSelectedAndWorking = false;
+                ToolSelectedAndWorking = false;
             }
             else
             {
                 this.toolsController.EnableTool(this.Key);
-                isSelectedAndWorking = true;
+                ToolSelectedAndWorking = true;
             }
         }
     }

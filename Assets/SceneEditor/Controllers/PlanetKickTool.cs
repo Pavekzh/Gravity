@@ -13,8 +13,9 @@ namespace Assets.SceneEditor.Controllers
 
         private Binding<Vector3> inputBinding;
         private InputSystem inputSystem;
-        private PlanetController selectedPlanet { get => EditorController.Instance.ToolsController.ObjectSelectionTool.SelectedPlanet; }
-        private GravityModuleData selectedGravityInteractor { get => EditorController.Instance.ToolsController.ObjectSelectionTool.SelectedPlanet.PlanetData.GetModule<GravityModuleData>(GravityModuleData.Key); }
+        private PlanetController selectedPlanet { get => Services.PlanetSelector.Instance.SelectedPlanet; }
+        private GravityModuleData selectedGravityInteractor { get => Services.PlanetSelector.Instance.SelectedPlanet.PlanetData.GetModule<GravityModuleData>(GravityModuleData.Key); }
+        private Binding<Vector2> velocityBinding;
 
         public override string DefaultKey { get => "PlanetKickTool"; }
 
@@ -23,7 +24,7 @@ namespace Assets.SceneEditor.Controllers
             base.Awake();
             EditorController.Instance.Camera.ZoomChanged += SceneZoomChanged;
             inputManipulator.ScaleFactor = EditorController.Instance.Camera.ScaleFactor;
-            EditorController.Instance.ToolsController.ObjectSelectionTool.SelectedPlanetChanged += SelectedPlanetChanged;
+            Services.PlanetSelector.Instance.SelectedPlanetChanged += SelectedPlanetChanged;
         }
 
         private void SceneZoomChanged(float value, object sender)
@@ -34,9 +35,14 @@ namespace Assets.SceneEditor.Controllers
         private void SelectedPlanetChanged(object sender, PlanetController planet)
         {               
             if(planet != null)
-            {
+            { 
                 GravityModuleData gravityModuleData = planet.PlanetData.GetModule<GravityModuleData>(GravityModuleData.Key);
-                gravityModuleData.VelocityProperty.Binding.ValueChanged += VelocityChanged;
+
+                if(velocityBinding != null)
+                    velocityBinding.ValueChanged -= VelocityChanged;
+                velocityBinding = gravityModuleData.VelocityProperty.Binding;
+                velocityBinding.ValueChanged += VelocityChanged;
+
                 if (this.ToolSelectedAndWorking)
                 {
                     inputManipulator.EnableTool(planet.PlanetData.GetModule<GravityModuleData>(GravityModuleData.Key).PositionProperty.Binding);

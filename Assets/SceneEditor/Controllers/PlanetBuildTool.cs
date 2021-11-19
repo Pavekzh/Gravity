@@ -32,7 +32,7 @@ namespace Assets.SceneEditor.Controllers
         {
             this.inputSystem.IsInputEnabled = true;
             PlanetController controller = planetData.CreateSceneObject();
-            EditorController.Instance.ToolsController.ObjectSelectionTool.ForceSelect(controller);
+            Services.PlanetSelector.Instance.ForceSelect(controller);
             MovePlanetTool.EnableTool(inputSystem);
         }
 

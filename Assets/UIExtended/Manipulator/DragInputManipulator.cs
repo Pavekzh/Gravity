@@ -99,7 +99,8 @@ namespace UIExtended
         {
             if (IsEnabled)
             {
-                this.originBinding.ValueChanged -= SetOriginPosition;
+                this.originBinding.ValueChanged -= SetOriginPosition;                
+                this.originBinding = null;
                 this.isManipulatorActive = false;
                 this.IsEnabled = false;
             }

@@ -8,14 +8,14 @@
         <ModuleData xsi:type="GravityModuleData">
           <Mass>20</Mass>
           <Position>
-            <x>4.41</x>
+            <x>8.91</x>
             <y>0</y>
           </Position>
           <Velocity>
-            <x>0</x>
-            <y>15</y>
+            <x>5</x>
+            <y>30</y>
           </Velocity>
-          <Guid>dd022df1-7b15-4af4-b5fd-a59c1e6ea450</Guid>
+          <Guid>d435a987-23b3-4ea1-9432-85be4ed6eece</Guid>
         </ModuleData>
       </ArrayOfModuleData>
     </PlanetData>
@@ -23,16 +23,16 @@
       <PlanetBuilder xsi:type="BasePlanetBuilder" />
       <ArrayOfModuleData>
         <ModuleData xsi:type="GravityModuleData">
-          <Mass>100</Mass>
+          <Mass>1000</Mass>
           <Position>
             <x>0</x>
             <y>0</y>
           </Position>
           <Velocity>
-            <x>-0.5</x>
-            <y>-3.2</y>
+            <x>0</x>
+            <y>0</y>
           </Velocity>
-          <Guid>c0531c0d-f2ab-45bf-980f-db407e3738b5</Guid>
+          <Guid>47128648-6645-4106-b25e-cbe7856b74d1</Guid>
         </ModuleData>
       </ArrayOfModuleData>
     </PlanetData>
@@ -49,7 +49,7 @@
             <x>0</x>
             <y>11</y>
           </Velocity>
-          <Guid>f8c08299-ccdc-482c-a0f1-c3de60b1d942</Guid>
+          <Guid>f22b048f-5cf5-483f-8fb9-3517ffcbbe06</Guid>
         </ModuleData>
       </ArrayOfModuleData>
     </PlanetData>

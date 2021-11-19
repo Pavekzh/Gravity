@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Assets.SceneEditor.Models;
+using Assets.SceneEditor.Controllers;
 using Assets.Services;
 using System.Linq;
+using BasicTools;
 
-namespace Assets.SceneEditor.Controllers
+namespace Assets.Services
 {
-    public class SelectPlanetTool : EditorTool
+    public class PlanetSelector : Singleton<PlanetSelector> 
     {
         public delegate void SelectedPlanetChangedHandler(object sender, PlanetController planet);
         public event SelectedPlanetChangedHandler SelectedPlanetChanged;
+
         private int layerMask;
         private InputSystem inputSystem;
 
@@ -34,12 +37,20 @@ namespace Assets.SceneEditor.Controllers
                 this.SelectedPlanet = planet;
         }
 
-        void Start()
+        private void Start()
         {
             layerMask = 1 << LayerMask.NameToLayer(planetsLayerName);
             Services.SceneStateManager.Instance.SceneChanged += SceneChanged;
             if (planet == null)
                 FindPlanet();
+        }
+
+        private void FixedUpdate()
+        {
+            if(Input.touchCount == 1)
+            {
+                TouchDown(Input.GetTouch(0));
+            }
         }
 
         private void SceneChanged()
@@ -63,20 +74,6 @@ namespace Assets.SceneEditor.Controllers
                 return planet;
             }
             return null;
-        }
-
-        public override void DisableTool()
-        {
-            if (inputSystem != null)
-            {
-                inputSystem.OnTouchDown -= TouchDown;
-            }
-        }
-
-        public override void EnableTool(InputSystem inputSystem)
-        {
-            this.inputSystem = inputSystem;
-            inputSystem.OnTouchDown += TouchDown;
         }
 
         private void TouchDown(Touch touch)

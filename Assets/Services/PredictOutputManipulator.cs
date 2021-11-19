@@ -46,9 +46,9 @@ namespace Assets.Services
 
         public override void UpdateManipulatorView(Vector3 origin, Vector3 directPoint, float scaleFactor)
         {
-            if(EditorController.Instance.ToolsController.ObjectSelectionTool.SelectedPlanet != null)
+            if(Services.PlanetSelector.Instance.SelectedPlanet != null)
             {
-                Guid selectedGravityInteractor = (EditorController.Instance.ToolsController.ObjectSelectionTool.SelectedPlanet.PlanetData.GetModule<GravityModuleData>(GravityModuleData.Key) as GravityModuleData).Guid;
+                Guid selectedGravityInteractor = (Services.PlanetSelector.Instance.SelectedPlanet.PlanetData.GetModule<GravityModuleData>(GravityModuleData.Key) as GravityModuleData).Guid;
                 StateCurve<StateCurvePoint3D> curve;
 
                 if (limitType == LimitType.Length)

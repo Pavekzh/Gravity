@@ -3894,7 +3894,6 @@ GameObject:
   - component: {fileID: 661572004}
   - component: {fileID: 661572007}
   - component: {fileID: 661572006}
-  - component: {fileID: 661572005}
   m_Layer: 5
   m_Name: Tools
   m_TagString: Untagged
@@ -3936,23 +3935,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72edef6c91f6ac844951c98caae6141c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectSelectTool: {fileID: 661572005}
   selectedSceneTool: 0
---- !u!114 &661572005
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 661572002}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 692ab511bf75e2c4d8af7571edcd9127, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  planet: {fileID: 0}
-  planetsLayerName: Planets
-  selectSphereRadius: 2
 --- !u!114 &661572006
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6040,6 +6023,7 @@ GameObject:
   - component: {fileID: 1351268445}
   - component: {fileID: 1351268448}
   - component: {fileID: 1351268447}
+  - component: {fileID: 1351268446}
   m_Layer: 0
   m_Name: UI
   m_TagString: Untagged
@@ -6062,6 +6046,21 @@ Transform:
   m_Father: {fileID: 213010654}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1351268446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1351268444}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 692ab511bf75e2c4d8af7571edcd9127, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  planet: {fileID: 0}
+  planetsLayerName: Planets
+  selectSphereRadius: 2
 --- !u!114 &1351268447
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6618,7 +6617,7 @@ PrefabInstance:
     - target: {fileID: 809096217804583104, guid: 1b02f18b82a97c543b0b136072449f3f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.41
+      value: 8.91
       objectReference: {fileID: 0}
     - target: {fileID: 809096217804583104, guid: 1b02f18b82a97c543b0b136072449f3f,
         type: 3}
@@ -6699,7 +6698,7 @@ MonoBehaviour:
   rigidbody: {fileID: 1501193431}
   data:
     position: {x: 4.41, y: 0}
-    velocity: {x: 0, y: 15}
+    velocity: {x: 5, y: 30}
     mass: 20
 --- !u!54 &1501193431 stripped
 Rigidbody:
@@ -9232,8 +9231,8 @@ MonoBehaviour:
   rigidbody: {fileID: 2124622948}
   data:
     position: {x: 0, y: 0}
-    velocity: {x: -0.5, y: -3.2}
-    mass: 100
+    velocity: {x: 0, y: 0}
+    mass: 1000
 --- !u!54 &2124622948 stripped
 Rigidbody:
   m_CorrespondingSourceObject: {fileID: 9176977102359814394, guid: 1b02f18b82a97c543b0b136072449f3f,

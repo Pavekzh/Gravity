@@ -17,13 +17,14 @@ namespace Assets.Services
 
         void Start()
         {
-            SceneRefreshed();
-            SceneStateManager.Instance.SceneChanged += SceneRefreshed;
+            SceneChanged();
+            SceneStateManager.Instance.SceneChanged += SceneChanged;
         }
 
-        void SceneRefreshed()
+        void SceneChanged()
         {
-            interactors = new Dictionary<Guid, GravityModule>();
+            if(SceneStateManager.Instance.CurrentScene.Planets.Count == 0)
+                interactors = new Dictionary<Guid, GravityModule>();
         }
         
         public StateCurve<StateCurvePoint3D> PredictPositions(float curveLength, Guid element,float deltaTime)

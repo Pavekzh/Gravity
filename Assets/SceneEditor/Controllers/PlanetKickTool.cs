@@ -40,8 +40,14 @@ namespace Assets.SceneEditor.Controllers
                 if (this.ToolSelectedAndWorking)
                 {
                     inputManipulator.EnableTool(planet.PlanetData.GetModule<GravityModuleData>(GravityModuleData.Key).PositionProperty.Binding);
+                    outputManipulator.IsVisible = true;
                     gravityModuleData.VelocityProperty.Binding.ForceUpdate();
                 }
+            }
+            else
+            {
+                inputManipulator.DisableTool();
+                outputManipulator.IsVisible = false;
             }
         }
 

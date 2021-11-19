@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Assets.SceneEditor.Models;
+using Assets.Services;
+using System.Linq;
 
 namespace Assets.SceneEditor.Controllers
 {
@@ -18,13 +20,7 @@ namespace Assets.SceneEditor.Controllers
 
         public PlanetController SelectedPlanet
         {
-            get 
-            {
-                if (planet != null)
-                    return planet;
-                else
-                    return FindPlanet();
-            }
+            get => planet;
             private set
             {
                 planet = value;
@@ -41,20 +37,25 @@ namespace Assets.SceneEditor.Controllers
         void Start()
         {
             layerMask = 1 << LayerMask.NameToLayer(planetsLayerName);
-            Services.SceneStateManager.Instance.SceneChanged += SceneCleared;
+            Services.SceneStateManager.Instance.SceneChanged += SceneChanged;
             if (planet == null)
                 FindPlanet();
         }
 
-        private void SceneCleared()
+        private void SceneChanged()
         {
-            SelectedPlanet = null;
+            if(SceneStateManager.Instance.CurrentScene.Planets.Count == 0)
+                SelectedPlanet = null;
+            else
+                SelectedPlanet = FindPlanet();
         }
 
         private PlanetController FindPlanet()
         {
             if(Services.PlanetBuildSettings.Instance.PlanetsParent.childCount != 0)
             {
+
+
                 planet = Services.PlanetBuildSettings.Instance.PlanetsParent.GetComponentInChildren<PlanetController>();
                 if (planet != null)
                     SelectedPlanetChanged?.Invoke(this, planet);

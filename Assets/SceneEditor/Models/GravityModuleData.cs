@@ -10,6 +10,7 @@ namespace Assets.SceneEditor.Models
 {
     public class GravityModuleData : ModuleData
     {
+
         private GravityInteractor data;
         private Guid guid;
 
@@ -71,7 +72,8 @@ namespace Assets.SceneEditor.Models
             MassProperty = massProperty;
             Properties.Add(MassProperty);
         }
-
+        
+        public GravityInteractor Data { get => data; }
         public float Mass 
         {
             get => data.Mass;

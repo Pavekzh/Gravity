@@ -123,11 +123,13 @@ namespace Assets.Services
             {
                 foreach(Transform planet in PlanetBuildSettings.Instance.PlanetsParent)
                 {
+                    planet.gameObject.SetActive(false);
                     GameObject.Destroy(planet.gameObject);
                 }
-            }            
+            }
+
+            CurrentScene = new SceneState();            
             SceneChanged?.Invoke();
-            CurrentScene = new SceneState();
         }
 
         public void SaveStartScene(SceneState startScene)
@@ -176,8 +178,9 @@ namespace Assets.Services
                     {
                         ErrorManager.Instance.ShowErrorMessage(ex.Message + "(line: 142)",this);
                     }
-                }                
-                CurrentScene = clonedState;
+                }
+                CurrentScene = clonedState;                
+                SceneChanged?.Invoke();
             }
         }        
 

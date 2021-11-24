@@ -12,9 +12,8 @@ namespace Assets.SceneEditor.Models
     {
 
         private GravityInteractor data;
-        private Guid guid;
 
-        public GravityModuleData(Guid guid)
+        public GravityModuleData()
         {
             //init ui changeble properties
             ConvertibleBinding<Vector2, string[]> positionBinding = new BasicTools.ConvertibleBinding<Vector2, string[]>(new VectorStringConverter());
@@ -42,18 +41,15 @@ namespace Assets.SceneEditor.Models
             velocityProperty.Components = new string[] { "x", "y" };
             VelocityProperty = velocityProperty;
             Properties.Add(VelocityProperty);
-
-            this.guid = guid;
         }
-        public GravityModuleData() : this(Guid.NewGuid()) {  }
-        public GravityModuleData(ConvertibleBinding<Vector2,string[]> positionBinding, ConvertibleBinding<Vector2,string[]> velocityBinding, ConvertibleBinding<float,string[]> massBinding)
+        public GravityModuleData(ConvertibleBinding<Vector2, string[]> positionBinding, ConvertibleBinding<Vector2, string[]> velocityBinding, ConvertibleBinding<float, string[]> massBinding)
         {
             //init ui changeble properties
             CommonPropertyViewData<Vector2> positionProperty = new CommonPropertyViewData<Vector2>();
             positionBinding.ValueChanged += setPosition;
             positionProperty.Binding = positionBinding;
             positionProperty.Name = "Position";
-            positionProperty.Components = new string[] {"x","y" };
+            positionProperty.Components = new string[] { "x", "y" };
             PositionProperty = positionProperty;
             Properties.Add(PositionProperty);
 
@@ -72,9 +68,9 @@ namespace Assets.SceneEditor.Models
             MassProperty = massProperty;
             Properties.Add(MassProperty);
         }
-        
+
         public GravityInteractor Data { get => data; }
-        public float Mass 
+        public float Mass
         {
             get => data.Mass;
             set
@@ -83,7 +79,7 @@ namespace Assets.SceneEditor.Models
                 data.Mass = value;
             }
         }
-        public Vector2 Position 
+        public Vector2 Position
         {
             get => data.Position;
             set
@@ -92,18 +88,15 @@ namespace Assets.SceneEditor.Models
                 data.Position = value;
             }
         }
-        public Vector2 Velocity 
+        public Vector2 Velocity
         {
-            get => data.Velocity; 
+            get => data.Velocity;
             set
             {
                 VelocityProperty.Binding.ChangeValue(value, this);
                 data.Velocity = value;
             }
         }
-        
-        //setter for serialization do not use it
-        public Guid Guid { get => guid; set => guid = value; }
 
         public CommonPropertyViewData<float> MassProperty { get; }
         public CommonPropertyViewData<Vector2> PositionProperty { get; }
@@ -112,7 +105,8 @@ namespace Assets.SceneEditor.Models
         [XmlIgnore]
         public override List<PropertyViewData> Properties { get; } = new List<PropertyViewData>();
         public override string Name { get => Key; }
-        
+        public override PlanetData Planet  { get; set; }
+
         public static string Key { get => "Gravity"; }
 
         public override void CreateModule(GameObject planetObject)

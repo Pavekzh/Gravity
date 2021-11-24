@@ -155,7 +155,7 @@ namespace Assets.SceneSimulation
             massBinding.ValueChanged += SetMass;
             velocityBinding.ValueChanged += SetVelocity;
 
-            this.guid = moduleData.Guid;
+            this.guid = moduleData.Planet.Guid;
             AddInteractor();
         }
         //saving to file
@@ -165,11 +165,6 @@ namespace Assets.SceneSimulation
             moduleData.Position = transform.position.GetVectorXZ();
             moduleData.Velocity = data.Velocity;
             moduleData.Mass = data.Mass;
-            moduleData.Guid = guid;
-
-            if(guid == null || guid == Guid.Empty)
-                moduleData.Guid = Guid.NewGuid();
-
 
             return moduleData;
         }

@@ -15,7 +15,7 @@ namespace Assets.SceneEditor.Controllers
             if(containerTransform == null)
                 containerTransform = this.GetComponent<RectTransform>();
 
-            Services.PlanetSelector.Instance.SelectedPlanetChanged += SelectedPlanetChanged;
+            Services.PlanetSelectSystem.Instance.SelectedPlanetChanged += SelectedPlanetChanged;
         }
 
         private void SelectedPlanetChanged(object sender,PlanetController planet)
@@ -48,7 +48,7 @@ namespace Assets.SceneEditor.Controllers
         {
             EditorController.Instance.Panel = this;
             visibleManager.State = BasicTools.State.Changed;
-            Services.PlanetSelector.Instance.SelectedPlanet.OpenView(this.containerTransform);
+            Services.PlanetSelectSystem.Instance.SelectedPlanet.OpenView(this.containerTransform);
         }
     }
 }

@@ -72,7 +72,7 @@ namespace Assets.SceneEditor.Controllers
 
         public void SavePlanet()
         {
-            saveSystem.Save(Services.PlanetSelector.Instance.SelectedPlanet.PlanetData,Directory + Services.PlanetSelector.Instance.SelectedPlanet.PlanetData.Name + saveSystem.Extension);
+            saveSystem.Save(Services.PlanetSelectSystem.Instance.SelectedPlanet.PlanetData,Directory + Services.PlanetSelectSystem.Instance.SelectedPlanet.PlanetData.Name + saveSystem.Extension);
             this.Close();
             this.Open();
         }

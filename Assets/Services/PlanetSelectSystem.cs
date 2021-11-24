@@ -9,17 +9,19 @@ using BasicTools;
 
 namespace Assets.Services
 {
-    public class PlanetSelector : Singleton<PlanetSelector> 
+    public class PlanetSelectSystem : Singleton<PlanetSelectSystem> 
     {
         public delegate void SelectedPlanetChangedHandler(object sender, PlanetController planet);
         public event SelectedPlanetChangedHandler SelectedPlanetChanged;
 
         private int layerMask;
         private InputSystem inputSystem;
+       
+        [SerializeField] private PlanetController planet;
+        [SerializeField] private string planetsLayerName;
+        [SerializeField] private float selectSphereRadius;
 
-        [SerializeField]private PlanetController planet;
-        [SerializeField]private string planetsLayerName;
-        [SerializeField]private float selectSphereRadius;
+        public Dictionary<Guid, PlanetController> PlanetControllers { get; private set; } = new Dictionary<Guid, PlanetController>();
 
         public PlanetController SelectedPlanet
         {
@@ -56,25 +58,15 @@ namespace Assets.Services
         private void SceneChanged()
         {
             if(SceneStateManager.Instance.CurrentScene.Planets.Count == 0)
-                SelectedPlanet = null;
-            else
-                SelectedPlanet = FindPlanet();
-        }
-
-        private PlanetController FindPlanet()
-        {
-            if(Services.PlanetBuildSettings.Instance.PlanetsParent.childCount != 0)
             {
-
-
-                planet = Services.PlanetBuildSettings.Instance.PlanetsParent.GetComponentInChildren<PlanetController>();
-                if (planet != null)
-                    SelectedPlanetChanged?.Invoke(this, planet);
-
-                return planet;
+                PlanetControllers = new Dictionary<Guid, PlanetController>();
+                SelectedPlanet = null;
             }
-            return null;
+            else
+                FindPlanet();
         }
+
+        private PlanetController FindPlanet() => SelectedPlanet = PlanetControllers.First().Value;
 
         private void TouchDown(Touch touch)
         {

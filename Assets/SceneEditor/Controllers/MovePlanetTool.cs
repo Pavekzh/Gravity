@@ -36,14 +36,14 @@ namespace Assets.SceneEditor.Controllers
 
         private void Touch(Touch touch)
         {
-            if(Services.PlanetSelector.Instance.SelectedPlanet != null)
+            if(Services.PlanetSelectSystem.Instance.SelectedPlanet != null)
             {
                 Ray ray = Camera.main.ScreenPointToRay(touch.position);
                 Plane plane = new Plane(Vector3.up, Vector3.zero);
                 float distance;
                 if (plane.Raycast(ray, out distance))
                 {
-                    Services.PlanetSelector.Instance.SelectedPlanet.PlanetData.GetModule<GravityModuleData>(GravityModuleData.Key).Position = ray.GetPoint(distance).GetVectorXZ();
+                    Services.PlanetSelectSystem.Instance.SelectedPlanet.PlanetData.GetModule<GravityModuleData>(GravityModuleData.Key).Position = ray.GetPoint(distance).GetVectorXZ();
                 }
             }
         }

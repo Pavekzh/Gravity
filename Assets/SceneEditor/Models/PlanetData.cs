@@ -14,7 +14,7 @@ namespace Assets.SceneEditor.Models
     {
         public PlanetData() 
         {
-            XmlModules = new List<ModuleData>();        
+            this.XmlModules = new List<ModuleData>();
         }
 
         public PlanetData(Dictionary<string, ModuleData> modules, string name,PlanetBuilder planetBuilder)
@@ -27,6 +27,7 @@ namespace Assets.SceneEditor.Models
         [XmlIgnore]
         public Dictionary<string, ModuleData> Modules { get; private set; } = new Dictionary<string, ModuleData>();
 
+        public Guid Guid { get; } = Guid.NewGuid();
         public List<ModuleData> XmlModules
         {
             get
@@ -75,6 +76,7 @@ namespace Assets.SceneEditor.Models
                 valuePair.Value.CreateModule(planet);
             }
 
+            Services.PlanetSelectSystem.Instance.PlanetControllers.Add(this.Guid, controller);
             Services.SceneStateManager.Instance.AddPlanet(this);
             return controller;
         }
@@ -94,12 +96,16 @@ namespace Assets.SceneEditor.Models
             this.PlanetBuilder = serializer.Deserialize(reader) as PlanetBuilder;
             XmlSerializer modulesSerializer = new XmlSerializer(typeof(List<ModuleData>));
             this.XmlModules = modulesSerializer.Deserialize(reader) as List<ModuleData>;
+            foreach(ModuleData moduleData in XmlModules)
+            {
+                moduleData.Planet = this;
+            }
             reader.Read();
         }
 
         public void WriteXml(XmlWriter writer)
         {
-            writer.WriteAttributeString("Name",this.Name);
+            writer.WriteAttributeString("Name", this.Name);
             XmlSerializer serializer = new XmlSerializer(typeof(PlanetBuilder));
             serializer.Serialize(writer, this.PlanetBuilder);
             XmlSerializer modulesSerializer = new XmlSerializer(typeof(List<ModuleData>));
@@ -113,7 +119,10 @@ namespace Assets.SceneEditor.Models
             clonedData.Modules = new Dictionary<string, ModuleData>();
             foreach(KeyValuePair<string,ModuleData> mData in Modules)
             {
-                clonedData.Modules.Add(mData.Key, mData.Value.Clone() as ModuleData);
+                ModuleData clonedModule = mData.Value.Clone() as ModuleData;
+                clonedModule.Planet = clonedData;
+                clonedData.Modules.Add(mData.Key, clonedModule);
+
             }
             return clonedData;
         }

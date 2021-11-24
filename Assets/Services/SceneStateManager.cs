@@ -134,24 +134,16 @@ namespace Assets.Services
 
         public void SaveStartScene(SceneState startScene)
         {
-            try
+            if (startScenePath != "")
             {
-                if (startScenePath != "")
+                XmlSerializer serializer = new XmlSerializer(typeof(SceneState));
+                File.Delete(startScenePath);
+                using (FileStream file = new FileStream(startScenePath, FileMode.OpenOrCreate))
                 {
-                    XmlSerializer serializer = new XmlSerializer(typeof(SceneState));
-                    File.Delete(startScenePath);
-                    using (FileStream file = new FileStream(startScenePath, FileMode.OpenOrCreate))
-                    {
-                        serializer.Serialize(file, startScene);
-                    }
+                    serializer.Serialize(file, startScene);
                 }
-
             }
-            catch (System.Exception ex)
-            {
-                ErrorManager.Instance.ShowErrorMessage(ex.InnerException.Message, this);
-            }
-        }          
+        }
 
         private SceneState LoadStartScene()
         {
@@ -176,7 +168,7 @@ namespace Assets.Services
                     }
                     catch(Exception ex)
                     {
-                        ErrorManager.Instance.ShowErrorMessage(ex.Message + "(line: 142)",this);
+                        ErrorManager.Instance.ShowErrorMessage(ex.Message,this);
                     }
                 }
                 CurrentScene = clonedState;                

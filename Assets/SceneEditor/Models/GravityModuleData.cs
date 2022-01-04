@@ -105,6 +105,7 @@ namespace Assets.SceneEditor.Models
         [XmlIgnore]
         public override List<PropertyViewData> Properties { get; } = new List<PropertyViewData>();
         public override string Name { get => Key; }
+        [XmlIgnore]
         public override PlanetData Planet  { get; set; }
 
         public static string Key { get => "Gravity"; }

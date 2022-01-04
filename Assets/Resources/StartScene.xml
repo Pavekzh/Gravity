@@ -3,7 +3,7 @@
   <Name>SavedByInspector</Name>
   <Planets>
     <PlanetData Name="Titan">
-      <PlanetBuilder xsi:type="BasePlanetBuilder" />
+      <SceneObjectBuilder xsi:type="DefaultSceneObjectBuilder" />
       <ArrayOfModuleData>
         <ModuleData xsi:type="GravityModuleData">
           <Mass>20</Mass>
@@ -19,7 +19,7 @@
       </ArrayOfModuleData>
     </PlanetData>
     <PlanetData Name="Saturn">
-      <PlanetBuilder xsi:type="BasePlanetBuilder" />
+      <SceneObjectBuilder xsi:type="DefaultSceneObjectBuilder" />
       <ArrayOfModuleData>
         <ModuleData xsi:type="GravityModuleData">
           <Mass>1000</Mass>
@@ -35,7 +35,7 @@
       </ArrayOfModuleData>
     </PlanetData>
     <PlanetData Name="IO">
-      <PlanetBuilder xsi:type="BasePlanetBuilder" />
+      <SceneObjectBuilder xsi:type="DefaultSceneObjectBuilder" />
       <ArrayOfModuleData>
         <ModuleData xsi:type="GravityModuleData">
           <Mass>1</Mass>

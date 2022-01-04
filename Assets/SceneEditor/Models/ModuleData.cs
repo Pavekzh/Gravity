@@ -13,6 +13,7 @@ namespace Assets.SceneEditor.Models
         [XmlIgnore]
         public abstract List<PropertyViewData> Properties { get; }
         public abstract string Name { get; }
+        [XmlIgnore]
         public abstract PlanetData Planet { get; set; }
 
         public abstract object Clone();

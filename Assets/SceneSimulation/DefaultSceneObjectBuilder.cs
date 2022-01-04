@@ -8,9 +8,9 @@ using Assets.SceneEditor.Controllers;
 namespace Assets.SceneSimulation
 {
     [System.Serializable]
-    public class BasePlanetBuilder : PlanetBuilder
+    public class DefaultSceneObjectBuilder : SceneObjectBuilder
     {
-        public BasePlanetBuilder() { }
+        public DefaultSceneObjectBuilder() { }
 
         public override GameObject Create(PlanetData data)
         {
@@ -31,7 +31,7 @@ namespace Assets.SceneSimulation
 
         public override object Clone()
         {
-            return new BasePlanetBuilder();
+            return new DefaultSceneObjectBuilder();
         }
     }
 }

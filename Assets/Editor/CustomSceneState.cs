@@ -35,7 +35,7 @@ public class CustomSceneState:Editor
                         modulesData.Add(moduleData.Name, moduleData);
                     }
 
-                    PlanetData planetData = new PlanetData(modulesData,planet.name, new BasePlanetBuilder());
+                    PlanetData planetData = new PlanetData(modulesData,planet.name, new DefaultSceneObjectBuilder());
 
                     sceneState.Planets.Add(planetData);
                 }

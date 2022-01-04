@@ -17,7 +17,7 @@ namespace Assets.SceneEditor.Models
             this.XmlModules = new List<ModuleData>();
         }
 
-        public PlanetData(Dictionary<string, ModuleData> modules, string name,PlanetBuilder planetBuilder)
+        public PlanetData(Dictionary<string, ModuleData> modules, string name,SceneObjectBuilder planetBuilder)
         {
             Modules = modules;
             Name = name;
@@ -47,7 +47,7 @@ namespace Assets.SceneEditor.Models
             }
         } 
         public string Name { get; set; }
-        public PlanetBuilder PlanetBuilder { get; set; }
+        public SceneObjectBuilder PlanetBuilder { get; set; }
 
         public T GetModule<T>(string key) where T : ModuleData
         {
@@ -91,9 +91,9 @@ namespace Assets.SceneEditor.Models
             reader.MoveToAttribute("Name");
             this.Name = reader.Value;
             reader.MoveToElement();
-            reader.ReadToDescendant("PlanetBuilder");
-            XmlSerializer serializer = new XmlSerializer(typeof(PlanetBuilder));
-            this.PlanetBuilder = serializer.Deserialize(reader) as PlanetBuilder;
+            reader.ReadToDescendant("SceneObjectBuilder");
+            XmlSerializer serializer = new XmlSerializer(typeof(SceneObjectBuilder));
+            this.PlanetBuilder = serializer.Deserialize(reader) as SceneObjectBuilder;
             XmlSerializer modulesSerializer = new XmlSerializer(typeof(List<ModuleData>));
             this.XmlModules = modulesSerializer.Deserialize(reader) as List<ModuleData>;
             foreach(ModuleData moduleData in XmlModules)
@@ -106,7 +106,7 @@ namespace Assets.SceneEditor.Models
         public void WriteXml(XmlWriter writer)
         {
             writer.WriteAttributeString("Name", this.Name);
-            XmlSerializer serializer = new XmlSerializer(typeof(PlanetBuilder));
+            XmlSerializer serializer = new XmlSerializer(typeof(SceneObjectBuilder));
             serializer.Serialize(writer, this.PlanetBuilder);
             XmlSerializer modulesSerializer = new XmlSerializer(typeof(List<ModuleData>));
             modulesSerializer.Serialize(writer, this.XmlModules);
@@ -115,7 +115,7 @@ namespace Assets.SceneEditor.Models
         public object Clone()
         {
             PlanetData clonedData = this.MemberwiseClone() as PlanetData;
-            clonedData.PlanetBuilder = this.PlanetBuilder.Clone() as PlanetBuilder;                
+            clonedData.PlanetBuilder = this.PlanetBuilder.Clone() as SceneObjectBuilder;                
             clonedData.Modules = new Dictionary<string, ModuleData>();
             foreach(KeyValuePair<string,ModuleData> mData in Modules)
             {

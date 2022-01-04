@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.17713085, g: 0.18027186, b: 0.20740747, a: 1}
+  m_IndirectSpecularColor: {r: 0.17735976, g: 0.18007782, b: 0.20813164, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -6023,7 +6023,7 @@ GameObject:
   - component: {fileID: 1351268445}
   - component: {fileID: 1351268448}
   - component: {fileID: 1351268447}
-  - component: {fileID: 1351268446}
+  - component: {fileID: 1351268449}
   m_Layer: 0
   m_Name: UI
   m_TagString: Untagged
@@ -6046,21 +6046,6 @@ Transform:
   m_Father: {fileID: 213010654}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1351268446
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1351268444}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 692ab511bf75e2c4d8af7571edcd9127, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  planet: {fileID: 0}
-  planetsLayerName: Planets
-  selectSphereRadius: 2
 --- !u!114 &1351268447
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6089,6 +6074,21 @@ MonoBehaviour:
   inputSystem: {fileID: 1351268447}
   panel: {fileID: 0}
   toolsController: {fileID: 661572004}
+--- !u!114 &1351268449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1351268444}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180387621c6fcd74d85cea636444ebc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  planet: {fileID: 0}
+  planetsLayerName: Planets
+  selectSphereRadius: 2
 --- !u!1 &1366210025
 GameObject:
   m_ObjectHideFlags: 0

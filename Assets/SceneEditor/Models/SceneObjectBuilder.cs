@@ -4,8 +4,8 @@ using System.Xml.Serialization;
 
 namespace Assets.SceneEditor.Models
 {
-    [XmlInclude(typeof(Assets.SceneSimulation.BasePlanetBuilder))]
-    public abstract class PlanetBuilder:ICloneable
+    [XmlInclude(typeof(Assets.SceneSimulation.DefaultSceneObjectBuilder))]
+    public abstract class SceneObjectBuilder:ICloneable
     {
         public abstract object Clone();
 

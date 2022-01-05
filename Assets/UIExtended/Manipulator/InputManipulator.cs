@@ -12,10 +12,11 @@ namespace UIExtended
 
         public virtual float ScaleFactor { get; set; }
 
-        public virtual Binding<Vector3> InputBinding { get; protected set; }
+        public virtual Binding<Vector3> InputBinding { get; protected set; } = new Binding<Vector3>();
 
         public abstract void EnableTool(Binding<Vector2> originBinding);
 
-        public abstract void DisableTool();
+        public abstract void DisableTool();        
+
     }
 }

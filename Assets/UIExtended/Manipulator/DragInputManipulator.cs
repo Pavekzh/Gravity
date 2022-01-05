@@ -50,7 +50,6 @@ namespace UIExtended
 
             touchScale = touchPointer.transform.localScale;
             lineScaleFactor = new Vector3(1 / (line.mesh.bounds.extents.x * 2), 1 / (line.mesh.bounds.extents.y * 2), 1 / (line.mesh.bounds.extents.z * 2));
-            InputBinding = new Binding<Vector3>();
             InputBinding.ValueChanged += UpdateView;
             IsEnabled = false;
         }

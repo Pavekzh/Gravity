@@ -13,8 +13,10 @@ namespace UIExtended
         private RectTransform negativePoint;
         [SerializeField]
         private RectTransform stick;
+        [SerializeField]
         private bool isEnabled;
 
+        public Vector2 LineCenter { get => (PositivePoint + NegativePoint) / 2; }
         public Vector2 PositivePoint { get => positivePoint.position; }
         public Vector2 NegativePoint { get => negativePoint.position; }
         public Vector2 lineDirection { get => PositivePoint - NegativePoint; }
@@ -52,8 +54,7 @@ namespace UIExtended
                     pointOverLine = NegativePoint;
                 }
                 stick.position = pointOverLine;
-                Vector2 lineCenter = (PositivePoint + NegativePoint) / 2;
-                Vector2 inputVector = pointOverLine - lineCenter;
+                Vector2 inputVector = pointOverLine - LineCenter;
 
                 InputBinding.ChangeValue(inputVector.GetVector3(), this);
             }
@@ -67,24 +68,24 @@ namespace UIExtended
         }
 
         public virtual void StickTouchUp()
-        {
+        {           
+            stick.position = LineCenter;
+            InputBinding.ChangeValue(Vector3.zero, this);
+
             if (isEnabled)
                 InputReadingStoped?.Invoke();
         }
 
         public float GetRangedFloatInput(Vector2 input)
         {
-            Vector2 lineCenter = (PositivePoint + NegativePoint) / 2;
-            Vector2 positiveAxis = PositivePoint - lineCenter;
+            Vector2 positiveAxis = PositivePoint - LineCenter;
 
             return input.magnitude / positiveAxis.magnitude * Vector2.Dot(input.normalized, positiveAxis.normalized);
         }
 
-
         public Vector2 GetRangedVectorInput(Vector2 input)
         {
-            Vector2 lineCenter = (PositivePoint + NegativePoint) / 2;
-            Vector2 positiveAxis = PositivePoint - lineCenter;
+            Vector2 positiveAxis = PositivePoint - LineCenter;
 
             return input / positiveAxis.magnitude;
         }

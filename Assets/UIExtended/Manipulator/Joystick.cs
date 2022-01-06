@@ -8,13 +8,16 @@ namespace UIExtended
     [RequireComponent(typeof(RectTransform))]
     public class Joystick : InputManipulator
     {
-        private bool isEnabled;
+
         private RectTransform rectTransform;
         [SerializeField]
         private RectTransform stick;
         [SerializeField]
-        private float SpaceRadius;
+        private float spaceRadius;        
+        [SerializeField]
+        private bool isEnabled;
 
+        public float SpaceRadius { get => spaceRadius; }
         public Vector2 Origin { get => rectTransform.position; }
 
         public override event InputReadingHandler InputReadingStarted;

@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
-<PlanetData Name="Mars">
-  <PlanetBuilder xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="BasePlanetBuilder" />
+<PlanetData Name="IO">
+  <SceneObjectBuilder xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="DefaultSceneObjectBuilder" />
   <ArrayOfModuleData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <ModuleData xsi:type="GravityModuleData">
-      <Mass>100</Mass>
+      <Mass>1</Mass>
       <Position>
-        <x>-0.5566318</x>
-        <y>0.728900254</y>
+        <x>12.27</x>
+        <y>0</y>
       </Position>
       <Velocity>
-        <x>-2.18972158</x>
-        <y>-1.9696399</y>
+        <x>0</x>
+        <y>11</y>
       </Velocity>
     </ModuleData>
   </ArrayOfModuleData>

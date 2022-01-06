@@ -1,18 +1,17 @@
 <?xml version="1.0"?>
-<PlanetData Name="Venus">
-  <PlanetBuilder xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="BasePlanetBuilder" />
+<PlanetData Name="Saturn">
+  <SceneObjectBuilder xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="DefaultSceneObjectBuilder" />
   <ArrayOfModuleData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <ModuleData xsi:type="GravityModuleData">
-      <Mass>1</Mass>
+      <Mass>1000</Mass>
       <Position>
-        <x>-6.79042435</x>
-        <y>-13.8821087</y>
+        <x>0</x>
+        <y>0</y>
       </Position>
       <Velocity>
         <x>0</x>
         <y>0</y>
       </Velocity>
-      <Guid>b9d2f1c5-c783-4ad5-8b18-43bba8acb104</Guid>
     </ModuleData>
   </ArrayOfModuleData>
 </PlanetData>

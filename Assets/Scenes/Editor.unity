@@ -1183,7 +1183,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 232343616}
-  m_LocalRotation: {x: 0, y: 0, z: 0.38268343, w: 0.92387956}
+  m_LocalRotation: {x: -0, y: -0, z: 0.38268343, w: 0.92387956}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1191,12 +1191,12 @@ RectTransform:
   - {fileID: 1889485091}
   - {fileID: 1089220947}
   - {fileID: 438714923}
-  m_Father: {fileID: 466993987}
-  m_RootOrder: 8
+  m_Father: {fileID: 758557818}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 45}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 145, y: 137}
+  m_AnchoredPosition: {x: -475.09113, y: -141.31354}
   m_SizeDelta: {x: 75, y: 225}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &232343618
@@ -1287,6 +1287,7 @@ MonoBehaviour:
   positivePoint: {fileID: 1089220947}
   negativePoint: {fileID: 438714923}
   stick: {fileID: 1889485091}
+  isEnabled: 1
 --- !u!1 &244998787
 GameObject:
   m_ObjectHideFlags: 0
@@ -3250,8 +3251,7 @@ RectTransform:
   - {fileID: 1038785919}
   - {fileID: 1223060874}
   - {fileID: 1089039044}
-  - {fileID: 1168485803}
-  - {fileID: 232343617}
+  - {fileID: 758557818}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4143,6 +4143,61 @@ MeshFilter:
     type: 3}
   m_PrefabInstance: {fileID: 1021739083}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &758557817
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 758557818}
+  - component: {fileID: 758557819}
+  m_Layer: 5
+  m_Name: JoysticksSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &758557818
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 758557817}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 232343617}
+  - {fileID: 1168485803}
+  m_Father: {fileID: 466993987}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: -1298, y: -530}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &758557819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 758557817}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bce614208ef66ce4c82f70dc30a30e78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isEnabled: 0
+  roundJoystick: {fileID: 1168485804}
+  straightJoystick: {fileID: 232343619}
+  ResultVectorAcceleration: 10
+  ResultVectorMagnitudeRange: 50
 --- !u!1 &774017783
 GameObject:
   m_ObjectHideFlags: 0
@@ -5859,18 +5914,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1168485802}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1365556520}
   - {fileID: 1026033602}
-  m_Father: {fileID: 466993987}
-  m_RootOrder: 7
+  m_Father: {fileID: 758557818}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -144, y: 144}
+  m_AnchoredPosition: {x: 476.09106, y: -134.31357}
   m_SizeDelta: {x: 256, y: 256}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1168485804
@@ -5886,7 +5941,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stick: {fileID: 1026033602}
-  SpaceRadius: 128
+  spaceRadius: 128
+  isEnabled: 1
 --- !u!114 &1168485805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8074,7 +8130,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   individualKey: 
   toolsController: {fileID: 661572004}
-  inputManipulator: {fileID: 1168485804}
+  inputManipulator: {fileID: 758557819}
   outputManipulator: {fileID: 986049731}
 --- !u!1 &1751826645
 GameObject:

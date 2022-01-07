@@ -34,7 +34,7 @@
         </ModuleData>
       </ArrayOfModuleData>
     </PlanetData>
-    <PlanetData Name="IO">
+    <PlanetData Name="Earth">
       <SceneObjectBuilder xsi:type="DefaultSceneObjectBuilder" />
       <ArrayOfModuleData>
         <ModuleData xsi:type="GravityModuleData">

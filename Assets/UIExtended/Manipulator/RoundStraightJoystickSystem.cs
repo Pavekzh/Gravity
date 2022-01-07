@@ -26,6 +26,8 @@ namespace UIExtended
 
         protected virtual void Start()
         {
+            InputBinding.ValueChanged += InputBindingChanged;
+
             roundJoystick.InputBinding.ValueChanged += RoundJoystickInputChanged;            
             roundJoystick.InputReadingStoped += RoundJoystickDown;
             roundJoystick.InputReadingStoped += RoundJoystickUp;
@@ -34,6 +36,7 @@ namespace UIExtended
             straightJoystick.InputReadingStoped += StraightJoystickUp;
             straightJoystick.InputReadingStarted += StraightJoystickDown;
         }
+
 
         protected virtual void Update()
         {
@@ -56,7 +59,7 @@ namespace UIExtended
 
         private void RoundJoystickInputChanged(Vector3 value, object source)
         {
-            if (isEnabled)
+            if (isEnabled && source != (object)this)
             {
                 roundJoystickInput = value.GetVectorXZ().normalized * (value.magnitude / roundJoystick.SpaceRadius);
                 Vector2 resultVector = roundJoystickInput * ResultVectorMagnitudeRange;
@@ -64,16 +67,30 @@ namespace UIExtended
             }
         }
 
+        private void InputBindingChanged(Vector3 value, object source)
+        {
+            if(source != (object)this)
+            {
+                roundJoystick.InputBinding.ChangeValue(value / ResultVectorMagnitudeRange * roundJoystick.SpaceRadius, this);
+                roundJoystickInput = value.GetVectorXZ() / ResultVectorMagnitudeRange;
+            }
+        }
+
         public override void DisableTool()
         {
             InputReadingStoped?.Invoke();
             isEnabled = false;
+            straightJoystick.DisableTool();
+            roundJoystick.DisableTool();
         }
 
         public override void EnableTool(Binding<Vector2> originBinding)
         {
             if (isEnabled)
                 DisableTool();
+
+            straightJoystick.EnableTool(originBinding);
+            roundJoystick.EnableTool(originBinding);
             isEnabled = true;
         }
 

@@ -15,7 +15,10 @@ namespace UIExtended
         private RectTransform stick;
         [SerializeField]
         private bool isEnabled;
+        [SerializeField]
+        private bool returnStickToOrigin = true;
 
+        public bool ReturnStickToOrigin { get => returnStickToOrigin; set => returnStickToOrigin = value; }
         public Vector2 LineCenter { get => (PositivePoint + NegativePoint) / 2; }
         public Vector2 PositivePoint { get => positivePoint.position; }
         public Vector2 NegativePoint { get => negativePoint.position; }
@@ -69,11 +72,15 @@ namespace UIExtended
 
         public virtual void StickTouchUp()
         {           
-            stick.position = LineCenter;
-            InputBinding.ChangeValue(Vector3.zero, this);
-
             if (isEnabled)
                 InputReadingStoped?.Invoke();
+
+            if (returnStickToOrigin)
+            {
+                stick.position = LineCenter;            
+                InputBinding.ChangeValue(Vector3.zero, this);
+            }
+
         }
 
         public float GetRangedFloatInput(Vector2 input)

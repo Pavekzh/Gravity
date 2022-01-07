@@ -15,8 +15,12 @@ namespace UIExtended
         private float spaceRadius;        
         [SerializeField]
         private bool isEnabled;
-
-        public float SpaceRadius { get => spaceRadius; }
+        [SerializeField]
+        private bool returnStickToOrigin;
+        
+        public bool ReturnStickToOrigin { get => returnStickToOrigin; set => returnStickToOrigin = value; }
+        public bool IsTouched { get; protected set; }
+        public float SpaceRadius { get => spaceRadius * rectTransform.lossyScale.x; }
         public Vector2 Origin { get => rectTransform.position; }
 
         public override event InputReadingHandler InputReadingStarted;
@@ -25,6 +29,24 @@ namespace UIExtended
         private void Start()
         {
             rectTransform = GetComponent<RectTransform>();
+            InputBinding.ValueChanged += InputBindingChanged;
+        }
+
+        private void InputBindingChanged(Vector3 value, object source)
+        {
+            if(source != (object)this && IsTouched == false)
+            {
+                Vector2 pointerPosition;
+                if(value.GetVectorXZ().magnitude < spaceRadius * rectTransform.lossyScale.x)
+                {
+                    pointerPosition = Origin - value.GetVectorXZ();
+                }
+                else
+                {
+                    pointerPosition = Origin - value.GetVectorXZ().normalized * spaceRadius * rectTransform.lossyScale.x; ;
+                }
+                stick.position = pointerPosition;
+            }
         }
 
         public override void DisableTool()
@@ -43,14 +65,14 @@ namespace UIExtended
 
         public virtual void JoystickTouch(BaseEventData eventData)
         {
-            if (isEnabled)
+            if (isEnabled && IsTouched)
             {
                 Vector2 pointerPosition = (eventData as PointerEventData).position;
                 Vector2 direction = Origin - pointerPosition;
-                if (direction.magnitude > (SpaceRadius * rectTransform.lossyScale.x))
+                if (direction.magnitude > spaceRadius * rectTransform.lossyScale.x)
                 {
-                    direction = direction.normalized * SpaceRadius * rectTransform.lossyScale.x;
-                    pointerPosition = Origin - direction;
+                    direction = direction.normalized * spaceRadius * rectTransform.lossyScale.x;
+                    pointerPosition = Origin - (direction);
                 }
                 stick.position = pointerPosition;
                 InputBinding.ChangeValue(direction.GetVector3(), this);
@@ -61,13 +83,17 @@ namespace UIExtended
         {
             if(isEnabled)
                 InputReadingStarted?.Invoke();
+            IsTouched = true;
         }
 
         public virtual void JoystickTouchUp()
         {
             if(isEnabled)
                 InputReadingStoped?.Invoke();
-            stick.position = rectTransform.position;
+            if(returnStickToOrigin)
+                stick.position = rectTransform.position;
+
+            IsTouched = false;
         }
     }
 }

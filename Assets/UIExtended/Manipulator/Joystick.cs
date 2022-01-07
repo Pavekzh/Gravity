@@ -8,6 +8,8 @@ namespace UIExtended
     [RequireComponent(typeof(RectTransform))]
     public class Joystick : InputManipulator
     {
+        [SerializeField]
+        private RectTransform background;
 
         private RectTransform rectTransform;
         [SerializeField]
@@ -48,15 +50,14 @@ namespace UIExtended
             {
                 Vector2 pointerPosition = (eventData as PointerEventData).position;
                 Vector2 direction = Origin - pointerPosition;
-                if (direction.magnitude > SpaceRadius)
+                if (direction.magnitude > (SpaceRadius * rectTransform.lossyScale.x))
                 {
-                    direction = direction.normalized * SpaceRadius;
+                    direction = direction.normalized * SpaceRadius * rectTransform.lossyScale.x;
                     pointerPosition = Origin - direction;
                 }
                 stick.position = pointerPosition;
                 InputBinding.ChangeValue(direction.GetVector3(), this);
             }
-
         }
         
         public virtual void JoystickTouchDown()
@@ -69,6 +70,7 @@ namespace UIExtended
         {
             if(isEnabled)
                 InputReadingStoped?.Invoke();
+            stick.position = rectTransform.position;
         }
     }
 }

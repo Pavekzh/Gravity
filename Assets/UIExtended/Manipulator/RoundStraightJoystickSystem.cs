@@ -77,10 +77,9 @@ namespace UIExtended
             isEnabled = true;
         }
 
-        //input reading start & stop events invoking
         private bool StraightJoystickInputReading;
         private bool RoundJoystickInputReading;
-
+        //input reading start & stop events invoking
         private void RoundJoystickUp()
         {
             RoundJoystickInputReading = false;

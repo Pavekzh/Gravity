@@ -19,6 +19,7 @@ namespace Assets.SceneEditor.Controllers
         public event TouchChanged OnTouchRelease;
         public event SeveralTouches OnTwoTouchesDown;
         public event SeveralTouches OnTwoTouchesContinue;
+        public event SeveralTouches OnTwoTouchesRelease;
 
         public bool IsInputEnabled { get; set; } = true;
 
@@ -51,16 +52,22 @@ namespace Assets.SceneEditor.Controllers
 
                     if (IsInputEnabled)
                     {
-                        //sending messages
+                        //messages one-per-one touch
                         if (touch.phase == TouchPhase.Began && Input.touchCount == 1)
                             this.OnTouchDown?.Invoke(touch);
                         if ((touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled) && Input.touchCount == 1)
                             this.OnTouchRelease?.Invoke(touch);
-
-                        if (Input.touchCount == 2 && (Input.GetTouch(0).phase == TouchPhase.Began || Input.GetTouch(1).phase == TouchPhase.Began))
-                            OnTwoTouchesDown?.Invoke(new Touch[] { Input.GetTouch(0), Input.GetTouch(1) });
-
                     }
+
+                }
+
+                //messages one-for-several touches
+                if (IsInputEnabled)
+                {
+                    if (Input.touchCount == 2 && (Input.GetTouch(0).phase == TouchPhase.Began || Input.GetTouch(1).phase == TouchPhase.Began))
+                        OnTwoTouchesDown?.Invoke(new Touch[] { Input.GetTouch(0), Input.GetTouch(1) });
+                    if (Input.touchCount == 2 && (Input.GetTouch(0).phase == TouchPhase.Ended || Input.GetTouch(1).phase == TouchPhase.Ended || Input.GetTouch(0).phase == TouchPhase.Canceled || Input.GetTouch(1).phase == TouchPhase.Canceled))
+                        OnTwoTouchesRelease?.Invoke(new Touch[] { Input.GetTouch(0), Input.GetTouch(1) });
                 }
             }
         }
@@ -95,10 +102,14 @@ namespace Assets.SceneEditor.Controllers
                         if ((touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary) && Input.touchCount == 1)
                             this.OnTouchContinues?.Invoke(touch);
 
-                        if (Input.touchCount == 2)
-                            OnTwoTouchesContinue?.Invoke(new Touch[] { Input.GetTouch(0), Input.GetTouch(1) });
+
                     }
 
+                }
+                if (IsInputEnabled)
+                {
+                    if (Input.touchCount == 2)
+                        OnTwoTouchesContinue?.Invoke(new Touch[] { Input.GetTouch(0), Input.GetTouch(1) });
                 }
             }
         }

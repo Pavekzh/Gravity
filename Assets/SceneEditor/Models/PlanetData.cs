@@ -12,10 +12,7 @@ namespace Assets.SceneEditor.Models
     [Serializable]
     public class PlanetData:IXmlSerializable,ICloneable
     {
-        public PlanetData() 
-        {
-            this.XmlModules = new List<ModuleData>();
-        }
+        public PlanetData() { }
 
         public PlanetData(Dictionary<string, ModuleData> modules, string name,SceneObjectBuilder planetBuilder)
         {
@@ -28,24 +25,6 @@ namespace Assets.SceneEditor.Models
         public Dictionary<string, ModuleData> Modules { get; private set; } = new Dictionary<string, ModuleData>();
 
         public Guid Guid { get; } = Guid.NewGuid();
-        public List<ModuleData> XmlModules
-        {
-            get
-            {
-                return Modules.Select(x => x.Value).ToList();
-            }
-            set
-            {
-                if (value != null)
-                {
-                    Modules = new Dictionary<string, ModuleData>();
-                    foreach (ModuleData moduleData in value)
-                    {
-                        Modules.Add(moduleData.Name, moduleData);
-                    }
-                }
-            }
-        } 
         public string Name { get; set; }
         public SceneObjectBuilder PlanetBuilder { get; set; }
 
@@ -94,12 +73,18 @@ namespace Assets.SceneEditor.Models
             reader.ReadToDescendant("SceneObjectBuilder");
             XmlSerializer serializer = new XmlSerializer(typeof(SceneObjectBuilder));
             this.PlanetBuilder = serializer.Deserialize(reader) as SceneObjectBuilder;
-            XmlSerializer modulesSerializer = new XmlSerializer(typeof(List<ModuleData>));
-            this.XmlModules = modulesSerializer.Deserialize(reader) as List<ModuleData>;
-            foreach(ModuleData moduleData in XmlModules)
+            if (reader.ReadToDescendant("ModuleData"))
             {
-                moduleData.Planet = this;
+                while (reader.LocalName == "ModuleData")
+                {
+                    XmlSerializer moduleSerializer = new XmlSerializer(typeof(ModuleData));
+                    ModuleData data = (ModuleData)moduleSerializer.Deserialize(reader);
+                    data.Planet = this;
+                    data.OnDeserialized();
+                    Modules.Add(data.Name, data);
+                }
             }
+            reader.Read();
             reader.Read();
         }
 
@@ -108,8 +93,13 @@ namespace Assets.SceneEditor.Models
             writer.WriteAttributeString("Name", this.Name);
             XmlSerializer serializer = new XmlSerializer(typeof(SceneObjectBuilder));
             serializer.Serialize(writer, this.PlanetBuilder);
-            XmlSerializer modulesSerializer = new XmlSerializer(typeof(List<ModuleData>));
-            modulesSerializer.Serialize(writer, this.XmlModules);
+            writer.WriteStartElement("Modules");
+            foreach(KeyValuePair<string,ModuleData> mData in Modules)
+            {
+                XmlSerializer moduleSerializer = new XmlSerializer(typeof(ModuleData));
+                moduleSerializer.Serialize(writer, mData.Value);
+            }
+            writer.WriteEndElement();
         }
 
         public object Clone()

@@ -162,14 +162,7 @@ namespace Assets.Services
 
                 foreach (PlanetData planet in clonedState.Planets)
                 {
-                    try
-                    {
-                        planet.CreateSceneObject();
-                    }
-                    catch(Exception ex)
-                    {
-                        ErrorManager.Instance.ShowErrorMessage(ex.Message,this);
-                    }
+                    planet.CreateSceneObject();
                 }
                 CurrentScene = clonedState;                
                 SceneChanged?.Invoke();

@@ -8,6 +8,7 @@ using System.Xml;
 namespace Assets.SceneEditor.Models
 {
     [XmlInclude(typeof(GravityModuleData))]
+    [XmlInclude(typeof(PlanetViewModuleData))]
     public abstract class ModuleData:System.ICloneable
     {
         [XmlIgnore]
@@ -19,5 +20,6 @@ namespace Assets.SceneEditor.Models
         public abstract object Clone();
 
         public abstract void CreateModule(GameObject sceneObject);
+        public abstract void OnDeserialized();
     }
 }

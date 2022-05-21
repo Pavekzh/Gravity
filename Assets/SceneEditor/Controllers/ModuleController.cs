@@ -37,7 +37,9 @@ namespace Assets.SceneEditor.Controllers
             {
                 controller.CreateView(propertiesContainer, propertiesOffset);
                 propertiesOffset = controller.propertyOffset;
+
             }
+            ModuleOffset += propertiesOffset;
         } 
 
         private void Init(RectTransform parent,float offset)

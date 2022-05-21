@@ -10,7 +10,6 @@ namespace Assets.SceneEditor.Models
 {
     public class GravityModuleData : ModuleData
     {
-
         private GravityInteractor data;
 
         public GravityModuleData()
@@ -141,5 +140,7 @@ namespace Assets.SceneEditor.Models
             if (sender != this)
                 this.data.Velocity = value;
         }
+
+        public override void OnDeserialized() { }
     }
 }

@@ -4,7 +4,7 @@
   <Planets>
     <PlanetData Name="Titan">
       <SceneObjectBuilder xsi:type="DefaultSceneObjectBuilder" />
-      <ArrayOfModuleData>
+      <Modules>
         <ModuleData xsi:type="GravityModuleData">
           <Mass>20</Mass>
           <Position>
@@ -16,11 +16,76 @@
             <y>30</y>
           </Velocity>
         </ModuleData>
-      </ArrayOfModuleData>
+        <ModuleData xsi:type="PlanetViewModuleData">
+          <NoiseSettings>
+            <Frequency>5</Frequency>
+            <Lacunarity>7,45</Lacunarity>
+            <Persistence>0,2</Persistence>
+            <Vector3>
+              <x>0</x>
+              <y>0</y>
+              <z>0</z>
+            </Vector3>
+            <Octaves>3</Octaves>
+            <MinValue>0,5</MinValue>
+            <Strength>0,2</Strength>
+          </NoiseSettings>
+          <PlanetRadius>1</PlanetRadius>
+          <GeneratedMesh>
+            <name />
+            <hideFlags>None</hideFlags>
+            <indexFormat>UInt16</indexFormat>
+            <bindposes />
+            <subMeshCount>1</subMeshCount>
+            <bounds>
+              <center>
+                <x>0</x>
+                <y>0</y>
+                <z>0</z>
+              </center>
+              <size>
+                <x>0</x>
+                <y>0</y>
+                <z>0</z>
+              </size>
+              <extents>
+                <x>0</x>
+                <y>0</y>
+                <z>0</z>
+              </extents>
+              <min>
+                <x>0</x>
+                <y>0</y>
+                <z>0</z>
+              </min>
+              <max>
+                <x>0</x>
+                <y>0</y>
+                <z>0</z>
+              </max>
+            </bounds>
+            <vertices />
+            <normals />
+            <tangents />
+            <uv />
+            <uv2 />
+            <uv3 />
+            <uv4 />
+            <uv5 />
+            <uv6 />
+            <uv7 />
+            <uv8 />
+            <colors />
+            <colors32 />
+            <triangles />
+            <boneWeights />
+          </GeneratedMesh>
+        </ModuleData>
+      </Modules>
     </PlanetData>
     <PlanetData Name="Saturn">
       <SceneObjectBuilder xsi:type="DefaultSceneObjectBuilder" />
-      <ArrayOfModuleData>
+      <Modules>
         <ModuleData xsi:type="GravityModuleData">
           <Mass>1000</Mass>
           <Position>
@@ -32,11 +97,76 @@
             <y>0</y>
           </Velocity>
         </ModuleData>
-      </ArrayOfModuleData>
+        <ModuleData xsi:type="PlanetViewModuleData">
+          <NoiseSettings>
+            <Frequency>5</Frequency>
+            <Lacunarity>7,45</Lacunarity>
+            <Persistence>0,2</Persistence>
+            <Vector3>
+              <x>0</x>
+              <y>0</y>
+              <z>0</z>
+            </Vector3>
+            <Octaves>3</Octaves>
+            <MinValue>0,5</MinValue>
+            <Strength>0,2</Strength>
+          </NoiseSettings>
+          <PlanetRadius>1</PlanetRadius>
+          <GeneratedMesh>
+            <name />
+            <hideFlags>None</hideFlags>
+            <indexFormat>UInt16</indexFormat>
+            <bindposes />
+            <subMeshCount>1</subMeshCount>
+            <bounds>
+              <center>
+                <x>0</x>
+                <y>0</y>
+                <z>0</z>
+              </center>
+              <size>
+                <x>0</x>
+                <y>0</y>
+                <z>0</z>
+              </size>
+              <extents>
+                <x>0</x>
+                <y>0</y>
+                <z>0</z>
+              </extents>
+              <min>
+                <x>0</x>
+                <y>0</y>
+                <z>0</z>
+              </min>
+              <max>
+                <x>0</x>
+                <y>0</y>
+                <z>0</z>
+              </max>
+            </bounds>
+            <vertices />
+            <normals />
+            <tangents />
+            <uv />
+            <uv2 />
+            <uv3 />
+            <uv4 />
+            <uv5 />
+            <uv6 />
+            <uv7 />
+            <uv8 />
+            <colors />
+            <colors32 />
+            <triangles />
+            <boneWeights />
+          </GeneratedMesh>
+        </ModuleData>
+      </Modules>
     </PlanetData>
     <PlanetData Name="Earth">
       <SceneObjectBuilder xsi:type="DefaultSceneObjectBuilder" />
-      <ArrayOfModuleData>
+      <Modules>
         <ModuleData xsi:type="GravityModuleData">
           <Mass>1</Mass>
           <Position>
@@ -48,7 +178,72 @@
             <y>11</y>
           </Velocity>
         </ModuleData>
-      </ArrayOfModuleData>
+        <ModuleData xsi:type="PlanetViewModuleData">
+          <NoiseSettings>
+            <Frequency>5</Frequency>
+            <Lacunarity>7,45</Lacunarity>
+            <Persistence>0,2</Persistence>
+            <Vector3>
+              <x>0</x>
+              <y>0</y>
+              <z>0</z>
+            </Vector3>
+            <Octaves>3</Octaves>
+            <MinValue>0,5</MinValue>
+            <Strength>0,2</Strength>
+          </NoiseSettings>
+          <PlanetRadius>1</PlanetRadius>
+          <GeneratedMesh>
+            <name />
+            <hideFlags>None</hideFlags>
+            <indexFormat>UInt16</indexFormat>
+            <bindposes />
+            <subMeshCount>1</subMeshCount>
+            <bounds>
+              <center>
+                <x>0</x>
+                <y>0</y>
+                <z>0</z>
+              </center>
+              <size>
+                <x>0</x>
+                <y>0</y>
+                <z>0</z>
+              </size>
+              <extents>
+                <x>0</x>
+                <y>0</y>
+                <z>0</z>
+              </extents>
+              <min>
+                <x>0</x>
+                <y>0</y>
+                <z>0</z>
+              </min>
+              <max>
+                <x>0</x>
+                <y>0</y>
+                <z>0</z>
+              </max>
+            </bounds>
+            <vertices />
+            <normals />
+            <tangents />
+            <uv />
+            <uv2 />
+            <uv3 />
+            <uv4 />
+            <uv5 />
+            <uv6 />
+            <uv7 />
+            <uv8 />
+            <colors />
+            <colors32 />
+            <triangles />
+            <boneWeights />
+          </GeneratedMesh>
+        </ModuleData>
+      </Modules>
     </PlanetData>
   </Planets>
 </SceneState>

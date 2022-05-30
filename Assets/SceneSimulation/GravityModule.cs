@@ -11,11 +11,9 @@ namespace Assets.SceneSimulation
     public class GravityModule : Module
     {
         [SerializeField] private new Rigidbody rigidbody;
-        /// <summary>
-        /// Do not use it for setting properties
-        /// </summary>
-        public GravityInteractor data;
+        [SerializeField] private GravityInteractor data;
 
+        public GravityInteractor Data { get => data; }
         public float Mass 
         { 
             get
@@ -114,7 +112,7 @@ namespace Assets.SceneSimulation
                 data.Velocity = Velocity.GetVectorXZ();
                 data.Position = Position.GetVectorXZ();
 
-                Vector3 force = GravityManager.Instance.ComputeForce(data);
+                Vector3 force = GravityManager.Instance.ComputeForce(Data);
                 Rigidbody.AddForce(force * Time.fixedDeltaTime, ForceMode.Impulse);
 
                 positionBinding.ChangeValue(Position.GetVectorXZ(), this);
@@ -163,8 +161,8 @@ namespace Assets.SceneSimulation
         {
             GravityModuleData moduleData = new GravityModuleData();
             moduleData.Position = transform.position.GetVectorXZ();
-            moduleData.Velocity = data.Velocity;
-            moduleData.Mass = data.Mass;
+            moduleData.Velocity = Data.Velocity;
+            moduleData.Mass = Data.Mass;
 
             return moduleData;
         }

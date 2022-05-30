@@ -39,7 +39,7 @@ namespace Assets.Services
                 if (element == interactor.Key)
                     predictableElement = allInteractors;
 
-                lastAllInteractorsState.Add(interactor.Value.data);
+                lastAllInteractorsState.Add(interactor.Value.Data);
                 allInteractors++;
             }
             if (predictableElement == -1)
@@ -94,7 +94,7 @@ namespace Assets.Services
                 if (element == interactor.Key)
                     predictableElement = allInteractors;
 
-                lastAllInteractorsState.Add(interactor.Value.data);
+                lastAllInteractorsState.Add(interactor.Value.Data);
                 allInteractors++;
             }
             if (predictableElement == -1)
@@ -129,7 +129,7 @@ namespace Assets.Services
         {
             int predictableElement = -1;
             StateCurve<GravityStateCurvePoint> Curve = new StateCurve<GravityStateCurvePoint>();
-            List<GravityInteractor> lastAllInteractorsState = GravityInteractors.Select(x => x.Value.data).ToList();
+            List<GravityInteractor> lastAllInteractorsState = GravityInteractors.Select(x => x.Value.Data).ToList();
             int allInteractors = 0;
 
             foreach (KeyValuePair<Guid, GravityModule> interactor in GravityInteractors)
@@ -137,7 +137,7 @@ namespace Assets.Services
                 if (element == interactor.Key)
                     predictableElement = allInteractors;
 
-                lastAllInteractorsState.Add(interactor.Value.data);
+                lastAllInteractorsState.Add(interactor.Value.Data);
                 allInteractors++;
             }
             if (predictableElement == -1)
@@ -170,7 +170,7 @@ namespace Assets.Services
 
         public List<List<GravityInteractor>> Predict(int iterations)
         {
-            List<GravityInteractor> startInteractorsData = interactors.Select(x => x.Value.data).ToList();                
+            List<GravityInteractor> startInteractorsData = interactors.Select(x => x.Value.Data).ToList();                
             List<List<GravityInteractor>> interactorsPrediction = new List<List<GravityInteractor>>();
 
             if(startInteractorsData.Count() != 0)
@@ -203,7 +203,7 @@ namespace Assets.Services
             {
                 if (obj.Value.IsSimulationEnabled)
                 {
-                    force += GravityRatio * ComputeForce(data, obj.Value.data);
+                    force += GravityRatio * ComputeForce(data, obj.Value.Data);
                 }
 
             }

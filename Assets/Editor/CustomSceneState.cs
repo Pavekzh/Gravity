@@ -7,7 +7,7 @@ using Assets.SceneSimulation;
 using System.Linq;
 
 [CustomEditor(typeof(SceneStateManager))]
-public class CustomSceneState:Editor
+public class CustomSceneState:UnityEditor.Editor
 {
 
     public override void OnInspectorGUI()

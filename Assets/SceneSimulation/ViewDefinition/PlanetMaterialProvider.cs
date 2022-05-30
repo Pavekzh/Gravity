@@ -37,16 +37,23 @@ namespace Assets.SceneSimulation
             loadedMaterial.SetTexture("_texture", planetTexture);
         }
 
+        public PlanetMaterialProvider(Gradient landGradient,Gradient waterGradient)
+        {
+            loadedMaterial = new Material(Resources.Load<Material>("Source/ViewModule/PlanetView/PlanetMaterial"));
+            this.LandGradient = landGradient;
+            this.WaterGradient = waterGradient;
+        }
+
         public PlanetMaterialProvider()
         {
             loadedMaterial = Resources.Load<Material>("Source/ViewModule/PlanetView/PlanetMaterial");
 
-            GradientColorKey startLand = new GradientColorKey(new Color(0.945f,0.819f,0.541f), 0);
-            GradientColorKey endLand = new GradientColorKey(new Color(0.443f, 0.400f, 0.400f), 1);            
+            GradientColorKey startLand = new GradientColorKey(new Color(0.5f,0.5f,0.5f), 0);
+            GradientColorKey endLand = new GradientColorKey(new Color(1f, 1f, 1f), 1);            
             LandGradient.colorKeys = new GradientColorKey[2] {startLand,endLand };
 
-            GradientColorKey startWater = new GradientColorKey(new Color(0.223f, 0.384f, 0.498f), 0);
-            GradientColorKey endWater = new GradientColorKey(new Color(0.372f, 0.717f, 0.803f), 1);
+            GradientColorKey startWater = new GradientColorKey(new Color(0f, 0f, 0f), 0);
+            GradientColorKey endWater = new GradientColorKey(new Color(0.5f, 0.5f, 0.5f), 1);
             WaterGradient.colorKeys = new GradientColorKey[2] { startWater, endWater };
 
         }

@@ -30,6 +30,8 @@ namespace Assets.SceneEditor.Models
                 this.radiusBinding.ChangeValue(value,this);
             }
         }
+        public Gradient LandGradient { get; set; } = new Gradient();
+        public Gradient WaterGradient { get; set; } = new Gradient();
         public Mesh GeneratedMesh { get; set; } = new Mesh();
 
         private NoiseSettings noiseSettings = new NoiseSettings();
@@ -44,7 +46,7 @@ namespace Assets.SceneEditor.Models
                 if (meshProvider != null) return meshProvider;
                 else
                 {
-                    materialProvider = new PlanetMaterialProvider();
+                    materialProvider = new PlanetMaterialProvider(LandGradient,WaterGradient);
                     meshProvider = new PlanetMeshProvider(GeneratedMesh,NoiseSettings,planetRadius);
                     return meshProvider;
                 }
@@ -58,7 +60,7 @@ namespace Assets.SceneEditor.Models
                 if (materialProvider != null) return materialProvider;
                 else
                 {
-                    materialProvider = new PlanetMaterialProvider();
+                    materialProvider = new PlanetMaterialProvider(LandGradient, WaterGradient);
                     meshProvider = new PlanetMeshProvider(GeneratedMesh, NoiseSettings,planetRadius);
                     return materialProvider;
                 }
@@ -74,7 +76,7 @@ namespace Assets.SceneEditor.Models
         public PlanetViewModuleData()
         {
             noiseSetsBinding = new BasicTools.ConvertibleBinding<NoiseSettings, string[]>(new NoiseSetsStringConverter());
-            noiseSetsBinding.ValueChanged += SetNoiseSetsBinding; 
+            noiseSetsBinding.ValueChanged += setNoiseSetsBinding; 
             CommonPropertyViewData<NoiseSettings> noiseSettingsProperty = new CommonPropertyViewData<NoiseSettings>();
             noiseSettingsProperty.Binding = noiseSetsBinding;
             noiseSettingsProperty.Name = "Relief settings";
@@ -89,19 +91,20 @@ namespace Assets.SceneEditor.Models
             Properties.Add(radiusProperty);
         }
 
-        private void SetNoiseSetsBinding(NoiseSettings value, object source)
+        private void setNoiseSetsBinding(NoiseSettings value, object source)
         {
-            if(source != this)
+            if(source != this && !value.Equals(this.noiseSettings))
             {
                 meshProvider.NoiseSettings = value;
                 this.noiseSettings = value;
                 UpdateView();
+
             }
         }
 
         private void setRadius(float value, object source)
         {
-            if(source != this)
+            if(source != this && value != this.planetRadius)
             {
                 meshProvider.PlanetRadius = value;
                 this.planetRadius = value;
@@ -114,10 +117,9 @@ namespace Assets.SceneEditor.Models
         public override string Name => Key;
         [XmlIgnore]
         public override PlanetData Planet { get; set; }
-
         public Binding<Mesh> MeshBinding { get; } = new Binding<Mesh>();
-
         public Binding<Material> MaterialBinding { get; } = new Binding<Material>();
+
 
         public override object Clone()
         {
@@ -129,7 +131,7 @@ namespace Assets.SceneEditor.Models
         public override void CreateModule(GameObject sceneObject)
         {
             ViewDefinitionModule viewModule = sceneObject.AddComponent<ViewDefinitionModule>();
-            viewModule.SetModuleData(this);
+            viewModule.ModuleData = this;
         }
 
         public override void OnDeserialized()
@@ -138,10 +140,15 @@ namespace Assets.SceneEditor.Models
         }        
         
         private void UpdateView()
-        {          
+        {
             MeshBinding.ChangeValue(MeshProvider.GetMesh(), this);
             materialProvider.UpdateMinMax(new Vector2(PlanetShapeGenerator.ElevationMinMax.Min, PlanetShapeGenerator.ElevationMinMax.Max));
             MaterialBinding.ChangeValue(MaterialProvider.GetMaterial(), this);
+        }
+
+        public ModuleData GetModuleData()
+        {
+            return this;
         }
     }
 }

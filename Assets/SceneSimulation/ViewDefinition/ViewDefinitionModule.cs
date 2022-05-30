@@ -1,6 +1,7 @@
 ﻿using Assets.SceneEditor.Models;
 using System;
 using UnityEngine;
+using UnityEditor;
 
 namespace Assets.SceneSimulation
 {
@@ -8,9 +9,27 @@ namespace Assets.SceneSimulation
     [RequireComponent(typeof(MeshRenderer))]
     public class ViewDefinitionModule : Module
     {
+        [SerializeField]
+        private ViewModuleScriptableObject settingsObject;
+
         private MeshFilter meshFilter;
         private MeshRenderer meshRenderer;
-        public IViewModuleData ModuleData { get; private set; }
+        private IViewModuleData moduleData;
+
+        public ViewModuleScriptableObject SettingsObject { get => settingsObject; set => settingsObject = value; }
+        public bool SettingsFoldout { get; set; }
+        public IViewModuleData ModuleData 
+        { 
+            get => moduleData;
+            set
+            {
+                this.moduleData = value;
+                value.MeshBinding.ValueChanged += setMesh;
+                value.MaterialBinding.ValueChanged += setMaterial;
+                value.MeshBinding.ForceUpdate();
+                value.MaterialBinding.ForceUpdate();
+            }
+        }
 
         public void Awake()
         {
@@ -20,27 +39,19 @@ namespace Assets.SceneSimulation
 
         public override ModuleData InstatiateModuleData()
         {
-            PlanetViewModuleData viewModuleData = new PlanetViewModuleData();
-            return viewModuleData;
-        }
-        
-        public void SetModuleData(IViewModuleData data)
-        {
-            this.ModuleData = data;
-            data.MeshBinding.ValueChanged += setMesh;
-            data.MaterialBinding.ValueChanged += setMaterial;            
-            data.MeshBinding.ForceUpdate();
-            data.MaterialBinding.ForceUpdate();
+            return settingsObject.CreateModuleData().GetModuleData();
         }
 
         private void setMesh(Mesh mesh,object sender)
         {
-            this.meshFilter.mesh = mesh;
+            if(this.meshFilter != null)
+                this.meshFilter.mesh = mesh;
         }
 
         private void setMaterial(Material material,object value)
         {
-            this.meshRenderer.material = material;
+            if(this.meshRenderer != null)
+                this.meshRenderer.material = material;
         }
     }
 }

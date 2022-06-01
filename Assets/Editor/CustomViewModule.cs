@@ -23,9 +23,20 @@ public class CustomViewModule : Editor
             if (module.SettingsFoldout)
             {
                 CreateCachedEditor(module.SettingsObject, null, ref settingsEditor);
-                settingsEditor.OnInspectorGUI();
+
+                using(var check = new EditorGUI.ChangeCheckScope())
+                {
+                    settingsEditor.OnInspectorGUI();
+                    if (check.changed && module.AutoUpdate)
+                    {
+                        module.UpdateView();
+                    }
+                }
             }
         }
-
+        if (GUILayout.Button("Update view"))
+        {
+            module.UpdateView();
+        }
     }
 }

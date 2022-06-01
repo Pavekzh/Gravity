@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.SceneSimulation
 {
-    public class PlanetMaterialProvider : IMaterialProvider
+    public class PlanetMaterialProvider
     {
         private const int textureResolution = 50;
         private Material loadedMaterial;
@@ -46,7 +46,7 @@ namespace Assets.SceneSimulation
 
         public PlanetMaterialProvider()
         {
-            loadedMaterial = Resources.Load<Material>("Source/ViewModule/PlanetView/PlanetMaterial");
+            loadedMaterial = new Material(Resources.Load<Material>("Source/ViewModule/PlanetView/PlanetMaterial"));
 
             GradientColorKey startLand = new GradientColorKey(new Color(0.5f,0.5f,0.5f), 0);
             GradientColorKey endLand = new GradientColorKey(new Color(1f, 1f, 1f), 1);            

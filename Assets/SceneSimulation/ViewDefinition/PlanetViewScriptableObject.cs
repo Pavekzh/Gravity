@@ -26,11 +26,27 @@ public class PlanetViewScriptableObject : ViewModuleScriptableObject
     {
         PlanetViewModuleData modData = new PlanetViewModuleData();
         modData.PlanetRadius = PlanetRadius;
-        modData.NoiseSettings = NoiseSettings;
+        modData.NoiseSettings = new NoiseSettings(NoiseSettings);
         modData.WaterGradient = WaterGradient;
         modData.LandGradient = LandGradient;
 
         return modData;
+    }
+
+    protected override void UpdateViewModule(IViewModuleData moduleData)
+    {
+        PlanetViewModuleData data = moduleData as PlanetViewModuleData;
+        if(data == null)
+        {
+            throw new Exception("Invalid ModuleData type or ModuleData is null. ModuleData must be PlanetViewModuleData");
+        }
+        else
+        {
+            if (this.planetRadius != data.PlanetRadius) data.PlanetRadius = this.planetRadius;
+            if (!this.noiseSettings.Equals(data.NoiseSettings)) data.NoiseSettings = new NoiseSettings(this.noiseSettings);
+            if (!this.landGradient.Equals(data.LandGradient)) data.LandGradient = this.landGradient;
+            if (!this.waterGradient.Equals(data.WaterGradient)) data.WaterGradient = this.waterGradient;
+        }
     }
 }
 

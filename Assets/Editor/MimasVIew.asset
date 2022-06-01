@@ -23,18 +23,18 @@ MonoBehaviour:
     strength: 0.2
   landGradient:
     serializedVersion: 2
-    key0: {r: 0.468, g: 0.31500652, b: 0.235872, a: 1}
-    key1: {r: 0.74509805, g: 0.4876241, b: 0.35686272, a: 1}
-    key2: {r: 0.958, g: 0.625221, b: 0.45883155, a: 1}
-    key3: {r: 0.46226418, g: 0.46226418, b: 0.46226418, a: 0}
+    key0: {r: 0.3679245, g: 0.30253467, b: 0.26900142, a: 1}
+    key1: {r: 0.468, g: 0.31500652, b: 0.235872, a: 1}
+    key2: {r: 0.74509805, g: 0.4876241, b: 0.35686272, a: 1}
+    key3: {r: 0.958, g: 0.625221, b: 0.45883155, a: 0}
     key4: {r: 1, g: 1, b: 1, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 18504
-    ctime1: 36430
-    ctime2: 46067
-    ctime3: 36237
+    ctime0: 20046
+    ctime1: 30455
+    ctime2: 33731
+    ctime3: 41634
     ctime4: 43947
     ctime5: 0
     ctime6: 0
@@ -47,8 +47,8 @@ MonoBehaviour:
     atime5: 0
     atime6: 0
     atime7: 0
-    m_Mode: 0
-    m_NumColorKeys: 3
+    m_Mode: 1
+    m_NumColorKeys: 4
     m_NumAlphaKeys: 3
   waterGradient:
     serializedVersion: 2
@@ -60,9 +60,9 @@ MonoBehaviour:
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 18504
-    ctime1: 28334
-    ctime2: 38165
+    ctime0: 30840
+    ctime1: 40670
+    ctime2: 43176
     ctime3: 0
     ctime4: 0
     ctime5: 0
@@ -76,6 +76,6 @@ MonoBehaviour:
     atime5: 0
     atime6: 0
     atime7: 0
-    m_Mode: 0
+    m_Mode: 1
     m_NumColorKeys: 3
     m_NumAlphaKeys: 3

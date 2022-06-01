@@ -18,7 +18,7 @@
         </ModuleData>
         <ModuleData xsi:type="PlanetViewModuleData">
           <NoiseSettings>
-            <Frequency>5</Frequency>
+            <Frequency>4,7</Frequency>
             <Lacunarity>7,45</Lacunarity>
             <Persistence>0,2</Persistence>
             <Vector3>
@@ -30,41 +30,86 @@
             <MinValue>0,5</MinValue>
             <Strength>0,2</Strength>
           </NoiseSettings>
-          <PlanetRadius>1.4</PlanetRadius>
+          <PlanetRadius>1.6</PlanetRadius>
           <LandGradient>
             <colorKeys>
               <GradientColorKey>
                 <color>
-                  <r>0.207547188</r>
-                  <g>0.20690006</g>
-                  <b>0.2065682</b>
+                  <r>0</r>
+                  <g>0</g>
+                  <b>0</b>
                   <a>1</a>
                 </color>
-                <time>0.282352954</time>
+                <time>0</time>
               </GradientColorKey>
               <GradientColorKey>
                 <color>
-                  <r>0.5</r>
-                  <g>0.473270446</g>
-                  <b>0.459905654</b>
+                  <r>0.29556784</r>
+                  <g>0.3426909</g>
+                  <b>0.509434</b>
                   <a>1</a>
                 </color>
-                <time>0.555886149</time>
+                <time>0.05587854</time>
               </GradientColorKey>
               <GradientColorKey>
                 <color>
-                  <r>0.6792453</r>
-                  <g>0.6556569</g>
-                  <b>0.6440014</b>
+                  <r>0.432976365</r>
+                  <g>0.517602146</g>
+                  <b>0.805460453</b>
                   <a>1</a>
                 </color>
-                <time>0.702937365</time>
+                <time>0.09706264</time>
+              </GradientColorKey>
+              <GradientColorKey>
+                <color>
+                  <r>0.8102928</r>
+                  <g>0.8518696</g>
+                  <b>0.5183358</b>
+                  <a>1</a>
+                </color>
+                <time>0.1764706</time>
+              </GradientColorKey>
+              <GradientColorKey>
+                <color>
+                  <r>0.515039861</r>
+                  <g>0.6784314</g>
+                  <b>0.431372553</b>
+                  <a>1</a>
+                </color>
+                <time>0.270588249</time>
+              </GradientColorKey>
+              <GradientColorKey>
+                <color>
+                  <r>0.623529434</r>
+                  <g>0.568858147</g>
+                  <b>0.4392157</b>
+                  <a>1</a>
+                </color>
+                <time>0.34117648</time>
+              </GradientColorKey>
+              <GradientColorKey>
+                <color>
+                  <r>0.46226418</r>
+                  <g>0.46226418</g>
+                  <b>0.46226418</b>
+                  <a>1</a>
+                </color>
+                <time>0.5529412</time>
+              </GradientColorKey>
+              <GradientColorKey>
+                <color>
+                  <r>1</r>
+                  <g>1</g>
+                  <b>1</b>
+                  <a>1</a>
+                </color>
+                <time>0.670588255</time>
               </GradientColorKey>
             </colorKeys>
             <alphaKeys>
               <GradientAlphaKey>
                 <alpha>1</alpha>
-                <time>0.305882365</time>
+                <time>0.40589</time>
               </GradientAlphaKey>
               <GradientAlphaKey>
                 <alpha>1</alpha>
@@ -75,45 +120,45 @@
                 <time>0.6852979</time>
               </GradientAlphaKey>
             </alphaKeys>
-            <mode>Blend</mode>
+            <mode>Fixed</mode>
           </LandGradient>
           <WaterGradient>
             <colorKeys>
               <GradientColorKey>
                 <color>
-                  <r>0.3773585</r>
-                  <g>0.361338556</g>
-                  <b>0.361338556</b>
+                  <r>0.346075118</r>
+                  <g>0.419100374</g>
+                  <b>0.7264151</b>
                   <a>1</a>
                 </color>
-                <time>0.300007641</time>
+                <time>0.5029374</time>
               </GradientColorKey>
               <GradientColorKey>
                 <color>
-                  <r>0.207547188</r>
-                  <g>0.20690006</g>
-                  <b>0.2065682</b>
+                  <r>0.207458168</r>
+                  <g>0.300329953</g>
+                  <b>0.6981132</b>
                   <a>1</a>
                 </color>
-                <time>0.488242924</time>
+                <time>0.7882353</time>
               </GradientColorKey>
               <GradientColorKey>
                 <color>
-                  <r>0.5</r>
-                  <g>0.473270446</g>
-                  <b>0.459905654</b>
+                  <r>0.257431477</r>
+                  <g>0.483839124</g>
+                  <b>0.8396226</b>
                   <a>1</a>
                 </color>
-                <time>0.555886149</time>
+                <time>0.908827364</time>
               </GradientColorKey>
               <GradientColorKey>
                 <color>
-                  <r>0.6792453</r>
-                  <g>0.6556569</g>
-                  <b>0.6440014</b>
+                  <r>0.7885814</r>
+                  <g>0.8901173</g>
+                  <b>0.9339623</b>
                   <a>1</a>
                 </color>
-                <time>0.702937365</time>
+                <time>0.970595837</time>
               </GradientColorKey>
             </colorKeys>
             <alphaKeys>
@@ -200,56 +245,56 @@
         </ModuleData>
         <ModuleData xsi:type="PlanetViewModuleData">
           <NoiseSettings>
-            <Frequency>5</Frequency>
+            <Frequency>10</Frequency>
             <Lacunarity>7,45</Lacunarity>
             <Persistence>0,2</Persistence>
             <Vector3>
-              <x>0</x>
+              <x>3</x>
               <y>0</y>
               <z>0</z>
             </Vector3>
             <Octaves>3</Octaves>
             <MinValue>0,5</MinValue>
-            <Strength>0,2</Strength>
+            <Strength>0,05</Strength>
           </NoiseSettings>
           <PlanetRadius>1.9</PlanetRadius>
           <LandGradient>
             <colorKeys>
               <GradientColorKey>
                 <color>
-                  <r>0.3679245</r>
-                  <g>0.30253467</g>
-                  <b>0.269001424</b>
+                  <r>0.5813902</r>
+                  <g>0.587622464</g>
+                  <b>0.6132076</b>
                   <a>1</a>
                 </color>
-                <time>0.305882365</time>
+                <time>0.5029374</time>
               </GradientColorKey>
               <GradientColorKey>
                 <color>
-                  <r>0.468</r>
-                  <g>0.315006524</g>
-                  <b>0.235872</b>
+                  <r>0.207458168</r>
+                  <g>0.300329953</g>
+                  <b>0.6981132</b>
                   <a>1</a>
                 </color>
-                <time>0.4647135</time>
+                <time>0.7882353</time>
               </GradientColorKey>
               <GradientColorKey>
                 <color>
-                  <r>0.745098054</r>
-                  <g>0.4876241</g>
-                  <b>0.356862724</b>
+                  <r>0.257431477</r>
+                  <g>0.483839124</g>
+                  <b>0.8396226</b>
                   <a>1</a>
                 </color>
-                <time>0.5147021</time>
+                <time>0.908827364</time>
               </GradientColorKey>
               <GradientColorKey>
                 <color>
-                  <r>0.958</r>
-                  <g>0.625221</g>
-                  <b>0.458831549</b>
+                  <r>0.7885814</r>
+                  <g>0.8901173</g>
+                  <b>0.9339623</b>
                   <a>1</a>
                 </color>
-                <time>0.635294139</time>
+                <time>0.970595837</time>
               </GradientColorKey>
             </colorKeys>
             <alphaKeys>
@@ -266,10 +311,19 @@
                 <time>0.6852979</time>
               </GradientAlphaKey>
             </alphaKeys>
-            <mode>Fixed</mode>
+            <mode>Blend</mode>
           </LandGradient>
           <WaterGradient>
             <colorKeys>
+              <GradientColorKey>
+                <color>
+                  <r>0.6132076</r>
+                  <g>0.6132076</g>
+                  <b>0.6132076</b>
+                  <a>1</a>
+                </color>
+                <time>0.232349128</time>
+              </GradientColorKey>
               <GradientColorKey>
                 <color>
                   <r>0.144647062</r>
@@ -277,16 +331,7 @@
                   <b>0.2238334</b>
                   <a>1</a>
                 </color>
-                <time>0.558831155</time>
-              </GradientColorKey>
-              <GradientColorKey>
-                <color>
-                  <r>0</r>
-                  <g>0</g>
-                  <b>0</b>
-                  <a>1</a>
-                </color>
-                <time>0.60589</time>
+                <time>0.6147097</time>
               </GradientColorKey>
               <GradientColorKey>
                 <color>
@@ -295,7 +340,7 @@
                   <b>0.6509434</b>
                   <a>1</a>
                 </color>
-                <time>0.632349133</time>
+                <time>0.802945</time>
               </GradientColorKey>
             </colorKeys>
             <alphaKeys>
@@ -399,12 +444,21 @@
             <colorKeys>
               <GradientColorKey>
                 <color>
+                  <r>0.3679245</r>
+                  <g>0.30253467</g>
+                  <b>0.269001424</b>
+                  <a>1</a>
+                </color>
+                <time>0.305882365</time>
+              </GradientColorKey>
+              <GradientColorKey>
+                <color>
                   <r>0.468</r>
                   <g>0.315006524</g>
                   <b>0.235872</b>
                   <a>1</a>
                 </color>
-                <time>0.282352954</time>
+                <time>0.4647135</time>
               </GradientColorKey>
               <GradientColorKey>
                 <color>
@@ -413,7 +467,7 @@
                   <b>0.356862724</b>
                   <a>1</a>
                 </color>
-                <time>0.555886149</time>
+                <time>0.5147021</time>
               </GradientColorKey>
               <GradientColorKey>
                 <color>
@@ -422,7 +476,7 @@
                   <b>0.458831549</b>
                   <a>1</a>
                 </color>
-                <time>0.702937365</time>
+                <time>0.635294139</time>
               </GradientColorKey>
             </colorKeys>
             <alphaKeys>
@@ -439,7 +493,7 @@
                 <time>0.6852979</time>
               </GradientAlphaKey>
             </alphaKeys>
-            <mode>Blend</mode>
+            <mode>Fixed</mode>
           </LandGradient>
           <WaterGradient>
             <colorKeys>
@@ -450,7 +504,7 @@
                   <b>0.6981132</b>
                   <a>1</a>
                 </color>
-                <time>0.282352954</time>
+                <time>0.470588237</time>
               </GradientColorKey>
               <GradientColorKey>
                 <color>
@@ -459,7 +513,7 @@
                   <b>0.8396226</b>
                   <a>1</a>
                 </color>
-                <time>0.432349116</time>
+                <time>0.6205844</time>
               </GradientColorKey>
               <GradientColorKey>
                 <color>
@@ -468,7 +522,7 @@
                   <b>0.9339623</b>
                   <a>1</a>
                 </color>
-                <time>0.582360566</time>
+                <time>0.65882355</time>
               </GradientColorKey>
             </colorKeys>
             <alphaKeys>
@@ -485,7 +539,7 @@
                 <time>0.6852979</time>
               </GradientAlphaKey>
             </alphaKeys>
-            <mode>Blend</mode>
+            <mode>Fixed</mode>
           </WaterGradient>
           <GeneratedMesh>
             <name />

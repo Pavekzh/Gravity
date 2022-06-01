@@ -17,6 +17,8 @@ namespace Assets.SceneEditor.Models
             get => noiseSettings;
             set
             {
+
+                this.MeshProvider.NoiseSettings = value;
                 this.noiseSettings = value;
                 this.noiseSetsBinding.ChangeValue(value,this);
             }
@@ -26,6 +28,8 @@ namespace Assets.SceneEditor.Models
             get { return planetRadius; }
             set
             {
+
+                this.MeshProvider.PlanetRadius = value;
                 this.planetRadius = value;
                 this.radiusBinding.ChangeValue(value,this);
             }
@@ -39,21 +43,20 @@ namespace Assets.SceneEditor.Models
         private PlanetMeshProvider meshProvider;
         private PlanetMaterialProvider materialProvider;
 
-        public IMeshProvider MeshProvider 
+        public PlanetMeshProvider MeshProvider 
         { 
             get
             {
                 if (meshProvider != null) return meshProvider;
                 else
                 {
-                    materialProvider = new PlanetMaterialProvider(LandGradient,WaterGradient);
                     meshProvider = new PlanetMeshProvider(GeneratedMesh,NoiseSettings,planetRadius);
                     return meshProvider;
                 }
                                     
             } 
         }
-        public IMaterialProvider MaterialProvider 
+        public PlanetMaterialProvider MaterialProvider 
         {
             get
             {
@@ -61,7 +64,6 @@ namespace Assets.SceneEditor.Models
                 else
                 {
                     materialProvider = new PlanetMaterialProvider(LandGradient, WaterGradient);
-                    meshProvider = new PlanetMeshProvider(GeneratedMesh, NoiseSettings,planetRadius);
                     return materialProvider;
                 }
             }
@@ -72,6 +74,14 @@ namespace Assets.SceneEditor.Models
 
         private ConvertibleBinding<float, string[]> radiusBinding;
         private ConvertibleBinding<NoiseSettings, string[]> noiseSetsBinding;
+
+        [XmlIgnore]
+        public override List<PropertyViewData> Properties { get; } = new List<PropertyViewData>();
+        public override string Name => Key;
+        [XmlIgnore]
+        public override PlanetData Planet { get; set; }
+        public Binding<Mesh> MeshBinding { get; } = new Binding<Mesh>();
+        public Binding<Material> MaterialBinding { get; } = new Binding<Material>();
 
         public PlanetViewModuleData()
         {
@@ -98,7 +108,6 @@ namespace Assets.SceneEditor.Models
                 meshProvider.NoiseSettings = value;
                 this.noiseSettings = value;
                 UpdateView();
-
             }
         }
 
@@ -111,15 +120,6 @@ namespace Assets.SceneEditor.Models
                 UpdateView();
             }
         }
-
-        [XmlIgnore]
-        public override List<PropertyViewData> Properties { get; } = new List<PropertyViewData>();
-        public override string Name => Key;
-        [XmlIgnore]
-        public override PlanetData Planet { get; set; }
-        public Binding<Mesh> MeshBinding { get; } = new Binding<Mesh>();
-        public Binding<Material> MaterialBinding { get; } = new Binding<Material>();
-
 
         public override object Clone()
         {
@@ -139,10 +139,10 @@ namespace Assets.SceneEditor.Models
             UpdateView();
         }        
         
-        private void UpdateView()
+        public void UpdateView()
         {
             MeshBinding.ChangeValue(MeshProvider.GetMesh(), this);
-            materialProvider.UpdateMinMax(new Vector2(PlanetShapeGenerator.ElevationMinMax.Min, PlanetShapeGenerator.ElevationMinMax.Max));
+            MaterialProvider.UpdateMinMax(new Vector2(PlanetShapeGenerator.ElevationMinMax.Min, PlanetShapeGenerator.ElevationMinMax.Max));
             MaterialBinding.ChangeValue(MaterialProvider.GetMaterial(), this);
         }
 

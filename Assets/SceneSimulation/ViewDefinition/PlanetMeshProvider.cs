@@ -5,7 +5,7 @@ using BasicTools;
 namespace Assets.SceneSimulation
 {
     [Serializable]
-    public class PlanetMeshProvider : IMeshProvider
+    public class PlanetMeshProvider
     {
         public NoiseSettings NoiseSettings 
         {

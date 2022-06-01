@@ -9,6 +9,7 @@ namespace Assets.SceneEditor.Models
     {
         Binding<Mesh> MeshBinding { get; }
         Binding<Material> MaterialBinding { get; }
+        void UpdateView();
         ModuleData GetModuleData();
     }
 }

@@ -27,6 +27,17 @@ namespace BasicTools
 
         public NoiseSettings() { }
 
+        public NoiseSettings(NoiseSettings source)
+        {
+            this.frequency = source.frequency;
+            this.lacunarity = source.lacunarity;
+            this.persistence = source.persistence;
+            this.centre = source.centre;
+            this.octaves = source.octaves;
+            this.minValue = source.minValue;
+            this.strength = source.strength;
+        }
+
         public NoiseSettings(float frequency,float lacunarity,float persistence,Vector3 center,int octaves,float minValue,float strength)
         {
             this.frequency = frequency;
@@ -96,20 +107,17 @@ namespace BasicTools
         }
 
         public override bool Equals(object obj)
-        {
-            if(obj != null)
-            {
-                NoiseSettings comparable = obj as NoiseSettings;
-                if (comparable != null
-                    && comparable.Frequency == this.Frequency
-                    && comparable.Lacunarity == this.Lacunarity
-                    && comparable.Persistence == this.Persistence
-                    && comparable.Center == this.Center
-                    && comparable.Octaves == this.Octaves
-                    && comparable.MinValue == this.MinValue
-                    && comparable.Strength == this.Strength)
-                    return true;
-            }
+        {                
+            NoiseSettings comparable = obj as NoiseSettings;
+            if (comparable != null
+                && comparable.Frequency == this.Frequency
+                && comparable.Lacunarity == this.Lacunarity
+                && comparable.Persistence == this.Persistence
+                && comparable.Center == this.Center
+                && comparable.Octaves == this.Octaves
+                && comparable.MinValue == this.MinValue
+                && comparable.Strength == this.Strength)
+                return true;
             return false;
         }
     }

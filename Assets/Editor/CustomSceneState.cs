@@ -6,42 +6,45 @@ using Assets.SceneEditor.Models;
 using Assets.SceneSimulation;
 using System.Linq;
 
-[CustomEditor(typeof(SceneStateManager))]
-public class CustomSceneState:UnityEditor.Editor
+namespace Assets.Editor
 {
-
-    public override void OnInspectorGUI()
+    [CustomEditor(typeof(SceneStateManager))]
+    public class CustomSceneState : UnityEditor.Editor
     {
-        DrawDefaultInspector();
-        SceneStateManager manager = target as SceneStateManager;
-        PlanetData[] planets = new PlanetData[0];
 
-        if (GUILayout.Button("Save start scene"))
+        public override void OnInspectorGUI()
         {
+            DrawDefaultInspector();
+            SceneStateManager manager = target as SceneStateManager;
+            PlanetData[] planets = new PlanetData[0];
 
-            SceneState sceneState = new SceneState();            
-            sceneState.Name = "SavedByInspector";
-            foreach(Transform planet in PlanetBuildSettings.Instance.PlanetsParent.transform)
+            if (GUILayout.Button("Save start scene"))
             {
-                Module[] modules = planet.GetComponents<Module>();
 
-                if(modules.Length != 0)
+                SceneState sceneState = new SceneState();
+                sceneState.Name = "SavedByInspector";
+                foreach (Transform planet in PlanetBuildSettings.Instance.PlanetsParent.transform)
                 {
-                    Dictionary<string, ModuleData> modulesData = new Dictionary<string, ModuleData>();
+                    Module[] modules = planet.GetComponents<Module>();
 
-                    foreach(Module module in modules)
+                    if (modules.Length != 0)
                     {
-                        ModuleData moduleData = module.InstatiateModuleData();
-                        modulesData.Add(moduleData.Name, moduleData);
+                        Dictionary<string, ModuleData> modulesData = new Dictionary<string, ModuleData>();
+
+                        foreach (Module module in modules)
+                        {
+                            ModuleData moduleData = module.InstatiateModuleData();
+                            modulesData.Add(moduleData.Name, moduleData);
+                        }
+
+                        PlanetData planetData = new PlanetData(modulesData, planet.name, new DefaultSceneObjectBuilder());
+
+                        sceneState.Planets.Add(planetData);
                     }
-
-                    PlanetData planetData = new PlanetData(modulesData,planet.name, new DefaultSceneObjectBuilder());
-
-                    sceneState.Planets.Add(planetData);
                 }
-            }
-            manager.SaveStartScene(sceneState);
+                manager.SaveStartScene(sceneState);
 
+            }
         }
     }
 }

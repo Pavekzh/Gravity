@@ -52,7 +52,7 @@ namespace Assets.Services
             }
             catch (System.Exception ex)
             {
-                ErrorManager.Instance.ShowErrorMessage(ex.InnerException.Message, this);
+                ErrorManager.Instance.ShowErrorMessage(ex.Message, this);
             }
         }
 

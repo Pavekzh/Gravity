@@ -34,10 +34,28 @@ namespace Assets.SceneEditor.Models
                 this.radiusBinding.ChangeValue(value,this);
             }
         }
-        public Gradient LandGradient { get; set; } = new Gradient();
-        public Gradient WaterGradient { get; set; } = new Gradient();
+        public Gradient LandGradient
+        {
+            get { return landGradient; }
+            set
+            {
+                this.MaterialProvider.LandGradient = value;
+                this.landGradient = value;
+            } 
+        } 
+        public Gradient WaterGradient
+        {
+            get { return waterGradient; }
+            set
+            {
+                this.MaterialProvider.WaterGradient = value;
+                this.waterGradient = value;
+            }
+        }
         public Mesh GeneratedMesh { get; set; } = new Mesh();
 
+        private Gradient landGradient;
+        private Gradient waterGradient;
         private NoiseSettings noiseSettings = new NoiseSettings();
         private float planetRadius = 1;
         private PlanetMeshProvider meshProvider;

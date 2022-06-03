@@ -1,4 +1,5 @@
 ﻿using Assets.SceneEditor.Models;
+using Assets.Services;
 using System;
 using UnityEngine;
 using UnityEditor;
@@ -9,11 +10,11 @@ namespace Assets.SceneSimulation
     [RequireComponent(typeof(MeshFilter))]
     [RequireComponent(typeof(MeshRenderer))]
     public class ViewDefinitionModule : Module
-    {
-        [SerializeField]
-        private ViewModuleScriptableObject settingsObject;
+    {   
         [SerializeField]
         private bool autoUpdate = true;
+        [SerializeField]
+        private ViewModuleScriptableObject settingsObject;
 
         private MeshFilter meshFilter;
         private MeshRenderer meshRenderer;
@@ -48,10 +49,14 @@ namespace Assets.SceneSimulation
                 }
 
                 this.moduleData = value;
-                value.MeshBinding.ValueChanged += setMesh;
-                value.MaterialBinding.ValueChanged += setMaterial;
-                value.MeshBinding.ForceUpdate();
-                value.MaterialBinding.ForceUpdate();
+                if(value != null)
+                {
+                    value.MeshBinding.ValueChanged += setMesh;
+                    value.MaterialBinding.ValueChanged += setMaterial;
+                    value.MeshBinding.ForceUpdate();
+                    value.MaterialBinding.ForceUpdate();
+                }
+
             }
         }
 
@@ -72,12 +77,22 @@ namespace Assets.SceneSimulation
 
         public void UpdateView()
         {
-            SettingsObject.UpdateModule(ModuleData);
+            if (SettingsObject != null)
+                SettingsObject.UpdateModule(ModuleData);
+            else
+                Debug.LogError("Settings object is null");
         }
 
         public override ModuleData InstatiateModuleData()
         {
             return ModuleData.GetModuleData();
+        }
+
+        public void ResetModuleData()
+        {
+            Debug.Log("Reset");
+            Debug.Log(SettingsObject.name);
+            //moduleData = SettingsObject.CreateModuleData();
         }
 
         private void setMesh(Mesh mesh,object sender)

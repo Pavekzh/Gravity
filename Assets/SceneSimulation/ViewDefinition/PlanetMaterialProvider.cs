@@ -7,9 +7,12 @@ namespace Assets.SceneSimulation
     {
         private const int textureResolution = 50;
         private Material loadedMaterial;
-        private Gradient LandGradient = new Gradient();
-        private Gradient WaterGradient = new Gradient();
-        
+        private Gradient landGradient = new Gradient();
+        private Gradient waterGradient = new Gradient();
+
+        public Gradient LandGradient { get => landGradient; set => landGradient = value; }
+        public Gradient WaterGradient { get => waterGradient; set => waterGradient = value; }
+
         public void UpdateMinMax(Vector2 MinMax)
         {
             loadedMaterial.SetVector("_elevationMinMax", MinMax);
@@ -23,11 +26,11 @@ namespace Assets.SceneSimulation
             {
                 if (i < textureResolution)
                 {
-                    colors[i] = WaterGradient.Evaluate(i / (textureResolution - 1f));
+                    colors[i] = waterGradient.Evaluate(i / (textureResolution - 1f));
                 }
                 else
                 {
-                    colors[i] = LandGradient.Evaluate((i - textureResolution) / (textureResolution - 1f));
+                    colors[i] = landGradient.Evaluate((i - textureResolution) / (textureResolution - 1f));
                 }
 
             }
@@ -40,8 +43,8 @@ namespace Assets.SceneSimulation
         public PlanetMaterialProvider(Gradient landGradient,Gradient waterGradient)
         {
             loadedMaterial = new Material(Resources.Load<Material>("Source/ViewModule/PlanetView/PlanetMaterial"));
-            this.LandGradient = landGradient;
-            this.WaterGradient = waterGradient;
+            this.landGradient = landGradient;
+            this.waterGradient = waterGradient;
         }
 
         public PlanetMaterialProvider()
@@ -50,11 +53,11 @@ namespace Assets.SceneSimulation
 
             GradientColorKey startLand = new GradientColorKey(new Color(0.5f,0.5f,0.5f), 0);
             GradientColorKey endLand = new GradientColorKey(new Color(1f, 1f, 1f), 1);            
-            LandGradient.colorKeys = new GradientColorKey[2] {startLand,endLand };
+            landGradient.colorKeys = new GradientColorKey[2] {startLand,endLand };
 
             GradientColorKey startWater = new GradientColorKey(new Color(0f, 0f, 0f), 0);
             GradientColorKey endWater = new GradientColorKey(new Color(0.5f, 0.5f, 0.5f), 1);
-            WaterGradient.colorKeys = new GradientColorKey[2] { startWater, endWater };
+            waterGradient.colorKeys = new GradientColorKey[2] { startWater, endWater };
 
         }
 

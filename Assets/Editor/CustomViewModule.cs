@@ -2,41 +2,61 @@
 using UnityEngine;
 using Assets.SceneSimulation;
 
-
-[CustomEditor(typeof(ViewDefinitionModule))]
-public class CustomViewModule : Editor
+namespace Assets.Editor
 {
-    ViewDefinitionModule module;
-    Editor settingsEditor;
-
-    private void OnEnable()
+    [CustomEditor(typeof(ViewDefinitionModule))]
+    public class CustomViewModule : UnityEditor.Editor
     {
-        module = target as ViewDefinitionModule;
-    }
+        ViewDefinitionModule module;
+        UnityEditor.Editor settingsEditor;
+        SerializedProperty settingsObjectProperty;
+        SerializedProperty autoUpdateProperty;
 
-    public override void OnInspectorGUI()
-    {
-        DrawDefaultInspector();
-        if(module.SettingsObject != null)
+        private void OnEnable()
         {
-            module.SettingsFoldout = EditorGUILayout.InspectorTitlebar(module.SettingsFoldout, module.SettingsObject);
-            if (module.SettingsFoldout)
-            {
-                CreateCachedEditor(module.SettingsObject, null, ref settingsEditor);
+            module = target as ViewDefinitionModule;
+            settingsObjectProperty = serializedObject.FindProperty("settingsObject");
+            autoUpdateProperty = serializedObject.FindProperty("autoUpdate");
+        }
 
-                using(var check = new EditorGUI.ChangeCheckScope())
+        public override void OnInspectorGUI()
+        {
+            DrawDefaultInspector();
+            //serializedObject.Update();
+
+            //EditorGUILayout.PropertyField(autoUpdateProperty);
+            //using(var check = new EditorGUI.ChangeCheckScope())
+            //{
+            //    EditorGUILayout.PropertyField(settingsObjectProperty);
+            //    if (check.changed)
+            //        module.ResetModuleData();
+
+            //}
+
+            //serializedObject.ApplyModifiedProperties();
+
+
+            if (module.SettingsObject != null)
+            {
+                module.SettingsFoldout = EditorGUILayout.InspectorTitlebar(module.SettingsFoldout, module.SettingsObject);
+                if (module.SettingsFoldout)
                 {
-                    settingsEditor.OnInspectorGUI();
-                    if (check.changed && module.AutoUpdate)
+                    CreateCachedEditor(module.SettingsObject, null, ref settingsEditor);
+
+                    using (var check = new EditorGUI.ChangeCheckScope())
                     {
-                        module.UpdateView();
+                        settingsEditor.OnInspectorGUI();
+                        if (check.changed && module.AutoUpdate)
+                        {
+                            module.UpdateView();
+                        }
                     }
                 }
             }
-        }
-        if (GUILayout.Button("Update view"))
-        {
-            module.UpdateView();
+            if (GUILayout.Button("Update view"))
+            {
+                module.UpdateView();
+            }
         }
     }
 }

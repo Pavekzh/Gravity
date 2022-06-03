@@ -42,14 +42,14 @@ namespace Assets.SceneSimulation
 
         public PlanetMaterialProvider(Gradient landGradient,Gradient waterGradient)
         {
-            loadedMaterial = new Material(Resources.Load<Material>("Source/ViewModule/PlanetView/PlanetMaterial"));
+            loadedMaterial = new Material(Resources.Load<Material>("ViewModule/PlanetView/PlanetMaterial"));
             this.landGradient = landGradient;
             this.waterGradient = waterGradient;
         }
 
         public PlanetMaterialProvider()
         {
-            loadedMaterial = new Material(Resources.Load<Material>("Source/ViewModule/PlanetView/PlanetMaterial"));
+            loadedMaterial = new Material(Resources.Load<Material>("ViewModule/PlanetView/PlanetMaterial"));
 
             GradientColorKey startLand = new GradientColorKey(new Color(0.5f,0.5f,0.5f), 0);
             GradientColorKey endLand = new GradientColorKey(new Color(1f, 1f, 1f), 1);            

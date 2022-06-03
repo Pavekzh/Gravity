@@ -56,8 +56,6 @@ namespace Assets.Services
             }
         }
 
-
-
         public void Delete(string fullPath)
         {
             try

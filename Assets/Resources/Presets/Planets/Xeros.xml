@@ -2,6 +2,17 @@
 <PlanetData Name="Xeros">
   <SceneObjectBuilder xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="DefaultSceneObjectBuilder" />
   <Modules>
+    <ModuleData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="GravityModuleData">
+      <Mass>1</Mass>
+      <Position>
+        <x>11.44</x>
+        <y>-3.96</y>
+      </Position>
+      <Velocity>
+        <x>0</x>
+        <y>0</y>
+      </Velocity>
+    </ModuleData>
     <ModuleData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="PlanetViewModuleData">
       <NoiseSettings>
         <Frequency>7</Frequency>
@@ -154,17 +165,6 @@
         <triangles />
         <boneWeights />
       </GeneratedMesh>
-    </ModuleData>
-    <ModuleData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="GravityModuleData">
-      <Mass>1</Mass>
-      <Position>
-        <x>11.44</x>
-        <y>-3.96</y>
-      </Position>
-      <Velocity>
-        <x>0</x>
-        <y>11</y>
-      </Velocity>
     </ModuleData>
   </Modules>
 </PlanetData>

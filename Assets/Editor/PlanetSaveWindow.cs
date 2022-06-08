@@ -18,7 +18,7 @@ namespace Assets.Editor
         }
 
         private SaveSystemEnum saveSystemEnum;
-        private string savesDirectory = "Planets/";
+        private string savesDirectory = "Resources/Presets/Planets/";
         private ISaveSystem saveSystem;
 
         private Module[] selectedPlanetModules;

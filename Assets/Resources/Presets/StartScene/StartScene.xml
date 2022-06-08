@@ -182,7 +182,7 @@
           </Position>
           <Velocity>
             <x>0</x>
-            <y>11</y>
+            <y>7</y>
           </Velocity>
         </ModuleData>
         <ModuleData xsi:type="PlanetViewModuleData">
@@ -535,7 +535,7 @@
           </Position>
           <Velocity>
             <x>0</x>
-            <y>11</y>
+            <y>10</y>
           </Velocity>
         </ModuleData>
       </Modules>
@@ -907,7 +907,7 @@
           </Position>
           <Velocity>
             <x>0</x>
-            <y>11</y>
+            <y>15</y>
           </Velocity>
         </ModuleData>
         <ModuleData xsi:type="PlanetViewModuleData">

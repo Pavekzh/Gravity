@@ -104,7 +104,8 @@ namespace Assets.SceneEditor.Models
 
         public object Clone()
         {
-            PlanetData clonedData = this.MemberwiseClone() as PlanetData;
+            PlanetData clonedData = new PlanetData();
+            clonedData.Name = this.Name;
             clonedData.PlanetBuilder = this.PlanetBuilder.Clone() as SceneObjectBuilder;                
             clonedData.Modules = new Dictionary<string, ModuleData>();
             foreach(KeyValuePair<string,ModuleData> mData in Modules)
@@ -114,6 +115,7 @@ namespace Assets.SceneEditor.Models
                 clonedData.Modules.Add(mData.Key, clonedModule);
 
             }
+
             return clonedData;
         }
     }

@@ -31,7 +31,7 @@ namespace Assets.SceneEditor.Controllers
         public void Build(PlanetData planetData)
         {
             this.inputSystem.IsInputEnabled = true;
-            PlanetController controller = planetData.CreateSceneObject();
+            PlanetController controller = (planetData.Clone() as PlanetData).CreateSceneObject();
             Services.PlanetSelectSystem.Instance.ForceSelect(controller);
             MovePlanetTool.EnableTool(inputSystem);
         }

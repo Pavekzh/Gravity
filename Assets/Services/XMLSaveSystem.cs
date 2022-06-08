@@ -11,7 +11,7 @@ namespace Assets.Services
     {
         public string Extension => ".xml";
 
-        object ISaveSystem.Load(string fullPath, Type type)
+        public object Load(string fullPath, Type type)
         {
             try
             {
@@ -35,7 +35,7 @@ namespace Assets.Services
             return null;
         }
 
-        void ISaveSystem.Save(object state, string fullPath)
+        public void Save(object state, string fullPath)
         {
             try
             {
@@ -66,6 +66,35 @@ namespace Assets.Services
             {
                 ErrorManager.Instance.ShowErrorMessage(ex.Message, this);
             }
+        }
+
+        public void Save(object state, Stream source)
+        {
+            try
+            {
+                XmlSerializer serializer = new XmlSerializer(state.GetType());
+                serializer.Serialize(source, state);
+            }
+            catch(Exception ex)
+            {
+                ErrorManager.Instance.ShowErrorMessage(ex.Message, this);
+            }
+        }
+
+        public object Load(Stream source, Type type)
+        {
+            try
+            {
+                object state;
+                XmlSerializer serializer = new XmlSerializer(type);
+                state = serializer.Deserialize(source);
+                return state;
+            }
+            catch(System.Exception ex)
+            {
+                ErrorManager.Instance.ShowErrorMessage(ex.Message, this);
+            }
+            return null;
         }
     }
 }

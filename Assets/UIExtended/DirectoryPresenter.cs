@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using System.Collections;
+using System;
 using System.IO;
 using TMPro;
 using UnityEngine.UI;
@@ -8,39 +8,24 @@ using BasicTools;
 
 namespace UIExtended
 {
+    [RequireComponent(typeof(CollectionPresenter))]
     public class DirectoryPresenter : MonoBehaviour
     {
-        [SerializeField] FilePresenter filePresenter;
-        [SerializeField] RectTransform container;
-        [SerializeField] RectTransform panelRect;
-        [SerializeField] Vector2 fileViewSize;
-        [SerializeField] float margin;
-        [SerializeField] [Min(0)] float startMargin;
+        [SerializeField] private CollectionPresenter collectionPresenter;    
 
+        public FileItemPresenter FilePresenter { get; set; }
         public string Directory { get; set; }
         public string FileExtension { get; set; }
-        public FilePresenter FilePresenter { get => filePresenter; set => filePresenter = value; }
 
         bool isOpened = false;
 
-        private void Start()
+        private void Awake()
         {
-            if (panelRect == null)
-                panelRect = this.GetComponent<RectTransform>();
-            if (filePresenter == null)
-                ErrorManager.Instance.ShowErrorMessage("FilePresenter has not set", this);
-            if (container == null)
-                ErrorManager.Instance.ShowErrorMessage("Container has not set", this);
-        }
-
-        private void AddFileView(string filePath, float offset)
-        {
-            RectTransform fileView = this.filePresenter.GetFileView(System.IO.Path.GetFileNameWithoutExtension(filePath), fileViewSize);
-            fileView.parent = container;
-            fileView.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, fileViewSize.x);
-            fileView.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, fileViewSize.y);
-            fileView.localScale = Vector3.one;
-            fileView.anchoredPosition = new Vector2((fileViewSize.x / 2) + offset, -(container.rect.height / 2));
+            if (collectionPresenter == null)
+            {
+                Debug.Log("CollectionPresenter not set, searching instance");
+                collectionPresenter = GetComponent<CollectionPresenter>();
+            }
         }
 
         public void ChangeDisplayState()
@@ -57,20 +42,19 @@ namespace UIExtended
 
         public void ClosePanel()
         {
-            foreach (Transform child in container.transform)
+            if (isOpened)
             {
-                GameObject.Destroy(child.gameObject);
+                collectionPresenter.ClosePanel();
+                isOpened = false;
             }
-            isOpened = false;
         }
 
         public void OpenPanel()
         {
             if (isOpened)
-            {
                 ClosePanel();
-            }
             isOpened = true;
+
             string[] files = null;
             try
             {
@@ -80,29 +64,17 @@ namespace UIExtended
             {
                 ErrorManager.Instance.ShowErrorMessage(ex.Message, this);
             }
-            if (files != null && files.Length != 0)
-            {
-                float width = (files.Length * fileViewSize.x) + ((files.Length - 1) * margin);
-                container.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, width);
-                if (width < panelRect.rect.width)
-                {
-                    container.anchoredPosition = new Vector2(0, container.anchoredPosition.y);
-                    container.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, panelRect.rect.width);
-                }
-                else
-                {
-                    container.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, width);
-                    container.anchoredPosition = new Vector2(width / 2, container.anchoredPosition.y);
-                }
 
-                float offset = startMargin;
-                for (int i = 0; i < files.Length; i++)
-                {
-                    AddFileView(files[i], offset);
-                    offset += fileViewSize.x + margin;
-                }
+            List<FileItemPresenter> itemsList = new List<FileItemPresenter>();
+            foreach(string path in files)
+            {
+                FileItemPresenter fPresenter = FilePresenter.Clone() as FileItemPresenter;
+                fPresenter.Path = Path.GetFileNameWithoutExtension(path);
+                itemsList.Add(fPresenter);
             }
 
+            collectionPresenter.Collection = itemsList;
+            collectionPresenter.OpenPanel();
         }
     }
 

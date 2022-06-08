@@ -136,21 +136,21 @@ namespace Assets.Services
         {
             if (startScenePath != "")
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(SceneState));
-                File.Delete(startScenePath);
-                using (FileStream file = new FileStream(startScenePath, FileMode.OpenOrCreate))
-                {
-                    serializer.Serialize(file, startScene);
-                }
+                if (saveSystem == null)
+                    saveSystem = saveSystemFactory.GetSaveSystem();
+                saveSystem.Save(startScene, startScenePath);
             }
         }
 
         private SceneState LoadStartScene()
         {
-            StringReader stringReader = new System.IO.StringReader(startScene.text);
-            XmlSerializer serializer = new XmlSerializer(typeof(SceneState));
-            return serializer.Deserialize(stringReader) as SceneState;
+            SceneState state;
+            using (Stream stream = new MemoryStream(startScene.bytes))
+            {
+                state = saveSystem.Load(stream, typeof(SceneState)) as SceneState;
+            }
 
+            return state;
         }
 
         private void SetScene(SceneState sceneState)

@@ -10,33 +10,33 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 844ec03b529190f47bb530d12c80c320, type: 3}
-  m_Name: TitanView
+  m_Name: GeaView
   m_EditorClassIdentifier: 
-  planetRadius: 1.6
+  planetRadius: 2
   noiseSettings:
     frequency: 3
     lacunarity: 7.45
     persistence: 0.2
-    centre: {x: 0, y: 0, z: 0}
+    centre: {x: 8, y: 0, z: 0}
     octaves: 3
     minValue: 0.5
-    strength: 0.2
+    strength: 0.15
   landGradient:
     serializedVersion: 2
     key0: {r: 0.29556784, g: 0.3426909, b: 0.509434, a: 1}
     key1: {r: 0.43297637, g: 0.51760215, b: 0.80546045, a: 1}
-    key2: {r: 0.8102928, g: 0.8518696, b: 0.5183358, a: 1}
-    key3: {r: 0.51503986, g: 0.6784314, b: 0.43137255, a: 1}
-    key4: {r: 0.62352943, g: 0.56885815, b: 0.4392157, a: 0}
-    key5: {r: 0.46226418, g: 0.46226418, b: 0.46226418, a: 0}
+    key2: {r: 0.6374892, g: 0.41389284, b: 0.6698113, a: 1}
+    key3: {r: 0.3962264, g: 0.1439124, b: 0.2774904, a: 1}
+    key4: {r: 0.7075472, g: 0.37828192, b: 0.3571111, a: 0}
+    key5: {r: 0.5943396, g: 0.5943396, b: 0.5943396, a: 0}
     key6: {r: 1, g: 1, b: 1, a: 0}
     key7: {r: 1, g: 1, b: 1, a: 0}
     ctime0: 3662
     ctime1: 6361
-    ctime2: 11565
-    ctime3: 17733
-    ctime4: 22359
-    ctime5: 36237
+    ctime2: 9252
+    ctime3: 23323
+    ctime4: 44333
+    ctime5: 50693
     ctime6: 43947
     ctime7: 43947
     atime0: 26600
@@ -48,11 +48,11 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
-    m_NumColorKeys: 7
+    m_NumColorKeys: 6
     m_NumAlphaKeys: 3
   waterGradient:
     serializedVersion: 2
-    key0: {r: 0.34607512, g: 0.41910037, b: 0.7264151, a: 1}
+    key0: {r: 0.3584906, g: 0.22152013, b: 0.34046176, a: 1}
     key1: {r: 0.20745817, g: 0.30032995, b: 0.6981132, a: 1}
     key2: {r: 0.25743148, g: 0.48383912, b: 0.8396226, a: 1}
     key3: {r: 0.7885814, g: 0.8901173, b: 0.9339623, a: 0}
@@ -60,7 +60,7 @@ MonoBehaviour:
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 32960
+    ctime0: 7710
     ctime1: 51657
     ctime2: 59560
     ctime3: 63608

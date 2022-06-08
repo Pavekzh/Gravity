@@ -10,6 +10,7 @@ namespace UIExtended
     public class ShowElement : StateChanger
     {
         [SerializeField] GameObject displayObject;
+        [SerializeField] bool defaultInactive = true;
 
         public override State State
         {
@@ -19,11 +20,11 @@ namespace UIExtended
                 state = value;
                 if (value == State.Default)
                 {
-                    displayObject.SetActive(false);
+                    displayObject.SetActive(false == defaultInactive);
                 }
                 else if (value == State.Changed)
                 {
-                    displayObject.SetActive(true);
+                    displayObject.SetActive(true == defaultInactive);
                 }
             }
         }

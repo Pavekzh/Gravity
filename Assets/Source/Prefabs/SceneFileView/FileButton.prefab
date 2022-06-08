@@ -92,7 +92,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   StateChanger: {fileID: 9077936107525570733}
-  filePath: Xrenoten
+  filePath: NewScene
 --- !u!114 &9077936107525570733
 MonoBehaviour:
   m_ObjectHideFlags: 0

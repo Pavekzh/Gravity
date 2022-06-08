@@ -22,19 +22,6 @@ namespace Assets.Editor
         public override void OnInspectorGUI()
         {
             DrawDefaultInspector();
-            //serializedObject.Update();
-
-            //EditorGUILayout.PropertyField(autoUpdateProperty);
-            //using(var check = new EditorGUI.ChangeCheckScope())
-            //{
-            //    EditorGUILayout.PropertyField(settingsObjectProperty);
-            //    if (check.changed)
-            //        module.ResetModuleData();
-
-            //}
-
-            //serializedObject.ApplyModifiedProperties();
-
 
             if (module.SettingsObject != null)
             {

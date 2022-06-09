@@ -14,7 +14,7 @@ namespace Assets.SceneEditor.Controllers
 
         public static string StaticKey => "BuildTool";
 
-        public override void DisableTool()
+        protected override void ForceDisableTool()
         {
             if(inputSystem != null)
             {
@@ -22,7 +22,7 @@ namespace Assets.SceneEditor.Controllers
             }
         }
 
-        public override void EnableTool(InputSystem inputSystem)
+        protected override void ForceEnableTool(InputSystem inputSystem)
         {
             inputSystem.OnTouchRelease += StopCreating;
             this.inputSystem = inputSystem;

@@ -12,26 +12,26 @@ namespace Assets.SceneEditor.Controllers
 
         public override string DefaultKey => "MoveTool";
 
-        public override void DisableTool()
+        protected override void ForceDisableTool()
         {                
             if(this.inputSystem != null)
             {
                 this.inputSystem.OnTouchContinues -= Touch;
                 this.inputSystem = null;
                 EditorController.Instance.ToolsController.EnableSceneControl();
-                Services.TimeManager.Instance.ResumePhysics();
             }
+            base.ForceDisableTool();
         }
 
-        public override void EnableTool(InputSystem inputSystem)
+        protected override void ForceEnableTool(InputSystem inputSystem)
         {
             if(this.inputSystem == null)
             {
                 inputSystem.OnTouchContinues += Touch;
                 this.inputSystem = inputSystem;
                 EditorController.Instance.ToolsController.DisableSceneControl();
-                Services.TimeManager.Instance.StopPhysics();
             }
+            base.ForceEnableTool(inputSystem);
         }
 
         private void Touch(Touch touch)

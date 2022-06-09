@@ -10,12 +10,14 @@ namespace Assets.Services
         private float defaultFixedDeltaTime;
 
         public Binding<float> TimeBinding { get; private set; }
-        [SerializeField] private float timeScale = 1;
+
         [SerializeField] private bool simulationState = true;
         [SerializeField] private float maxTimeScale = 2;
 
-        public float TimeScale { get => timeScale; }
+        private bool savedSimulationState;
+
         public bool SimulationState { get => simulationState; }
+        public bool TimeFlowLocked { get; private set; } = false;
 
         private ValueChangedHandler<bool> timeStateChanged;
         public event ValueChangedHandler<bool> TimeStateChanged
@@ -31,30 +33,45 @@ namespace Assets.Services
             }
         }
 
-        //method for external pause game
-        public void StopPhysics()
+        public void SetPhysicsState(bool state)
         {
-            TimeBinding.ChangeValue(0, this);
-            SetTimeFlow(false);
-        }
-        //method for external resume game
-        public void ResumePhysics()
-        {
-            TimeBinding.ChangeValue(Time.timeScale, this);
-            SetTimeFlow(true);
+            if(state)
+            {
+                TimeBinding.ChangeValue(Time.timeScale, this);
+                SetTimeFlow(true);
+            }
+            else
+            {
+                TimeBinding.ChangeValue(0, this);
+                SetTimeFlow(false);
+            }
         }
 
         public void ChangePhysicsState()
         {
-            if (simulationState)
+            SetPhysicsState(!simulationState);
+        }
+
+        public void LockTimeFlow()
+        {
+            if (!TimeFlowLocked)
             {
-                StopPhysics();
-            }
-            else
-            {
-                ResumePhysics();
+                savedSimulationState = simulationState;
+                SetPhysicsState(false);
+                TimeFlowLocked = true;
             }
         }
+
+        public void UnlockTimeFlow()
+        {
+            if (TimeFlowLocked)
+            {
+                TimeFlowLocked = false;
+                SetPhysicsState(savedSimulationState);
+                savedSimulationState = simulationState;
+            }
+        }
+
 
         private bool ValidateTimeChanges(float value, object source)
         {
@@ -77,7 +94,6 @@ namespace Assets.Services
             defaultFixedDeltaTime = Time.fixedDeltaTime;
             TimeBinding.ValueChanged += ResetTimeScale;
             TimeBinding.ValidateValue += ValidateTimeChanges;
-            ResetTimeScale(timeScale);
 
             if (simulationState == false)
             {
@@ -91,7 +107,6 @@ namespace Assets.Services
 
         private void ResetTimeScale(float value)
         {
-            Debug.Log(value);
             if (Mathf.Approximately(value, 0))
             {
                 Time.timeScale = 1;
@@ -120,34 +135,12 @@ namespace Assets.Services
 
         private void SetTimeFlow(bool state)
         {
-            if (state)
+            if(simulationState != state && !TimeFlowLocked)
             {
-                timeStateChanged?.Invoke(true, this);
-                timeScale = Time.timeScale;
-                simulationState = true;
-            }
-            else
-            {
-                timeStateChanged?.Invoke(false, this);
-                timeScale = 0;
-                simulationState = false;
+                timeStateChanged?.Invoke(state, this);
+                simulationState = state;
             }
         }
 
-        //method used when time stoped by setting TimeScale to 0
-        private void LocalStopPhysics()
-        {
-            timeStateChanged?.Invoke(false,this);
-            
-            timeScale = 0;
-            simulationState = false;
-        }
-        //method used when time resume by setting TimeScale not to 0
-        private void LocalResumePhysics()
-        {
-            timeStateChanged?.Invoke(true,this);
-            timeScale = Time.timeScale;
-            simulationState = true;
-        }
     }
 }

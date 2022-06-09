@@ -63,24 +63,24 @@ namespace Assets.SceneEditor.Controllers
                 inputBinding.ChangeValue(ComputeInputVector(value.GetVector3()),source);
         }
 
-        public override void DisableTool()
+        protected override void ForceDisableTool()
         {
+
             if(inputSystem != null)
             {
                 inputManipulator.InputReadingStarted -= ManipulatorActivates;
                 inputManipulator.InputReadingStoped -= ManipulatorDeactivates;
                 inputManipulator.InputBinding.ValueChanged -= InputChanged;
 
-                if (Services.TimeManager.Instance != null)
-                    Services.TimeManager.Instance.ResumePhysics();
             }
             inputManipulator.DisableTool();
             inputBinding = null;
             outputManipulator.IsVisible = false;
-            ToolSelectedAndWorking = false;
+            ToolSelectedAndWorking = false;            
+            base.ForceDisableTool();
         }
 
-        public override void EnableTool(InputSystem inputSystem)
+        protected override void ForceEnableTool(InputSystem inputSystem)
         {            
             ToolSelectedAndWorking = true;
             this.inputBinding = inputManipulator.InputBinding;
@@ -94,9 +94,8 @@ namespace Assets.SceneEditor.Controllers
                 outputManipulator.IsVisible = true;
                 selectedGravityInteractor.VelocityProperty.Binding.ForceUpdate();
             }
-            Services.TimeManager.Instance.StopPhysics();
             this.inputSystem = inputSystem;
-
+            base.ForceEnableTool(inputSystem);
         }
 
         private void InputChanged(Vector3 value, object source)

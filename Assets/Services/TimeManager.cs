@@ -35,13 +35,13 @@ namespace Assets.Services
         public void StopPhysics()
         {
             TimeBinding.ChangeValue(0, this);
-            LocalStopPhysics();
+            SetTimeFlow(false);
         }
         //method for external resume game
         public void ResumePhysics()
         {
             TimeBinding.ChangeValue(Time.timeScale, this);
-            LocalResumePhysics();
+            SetTimeFlow(true);
         }
 
         public void ChangePhysicsState()
@@ -81,32 +81,31 @@ namespace Assets.Services
 
             if (simulationState == false)
             {
-                LocalStopPhysics();
+                SetTimeFlow(false);
             }
             else
             {
-                LocalResumePhysics();
+                SetTimeFlow(true);
             }
         }
 
         private void ResetTimeScale(float value)
         {
-            if (value != 0 && timeScale != 0)
+            Debug.Log(value);
+            if (Mathf.Approximately(value, 0))
             {
-                timeScale = value;
-                Time.timeScale = value;
-                Time.fixedDeltaTime = defaultFixedDeltaTime * value;
-            }
-            else if (value != 0 && timeScale == 0)
-            {
-                timeScale = value;
-                Time.timeScale = value;
-                Time.fixedDeltaTime = defaultFixedDeltaTime * value;
-                LocalResumePhysics();
+                Time.timeScale = 1;
+                Time.fixedDeltaTime = defaultFixedDeltaTime;
+                SetTimeFlow(false);
             }
             else
-            {
-                LocalStopPhysics();
+            {                    
+                Time.timeScale = value;
+                Time.fixedDeltaTime = defaultFixedDeltaTime * value;
+                if (!simulationState)
+                {
+                    SetTimeFlow(true);
+                }
             }
 
         }
@@ -115,23 +114,23 @@ namespace Assets.Services
         {
             if (source != (System.Object)this)
             {
-                if (value != 0 && timeScale != 0)
-                {
-                    timeScale = value;
-                    Time.timeScale = value;
-                    Time.fixedDeltaTime = defaultFixedDeltaTime * value;
-                }
-                else if (value != 0 && timeScale == 0)
-                {
-                    timeScale = value;
-                    Time.timeScale = value;
-                    Time.fixedDeltaTime = defaultFixedDeltaTime * value;
-                    LocalResumePhysics();
-                }
-                else
-                {
-                    LocalStopPhysics();
-                }
+                ResetTimeScale(value);
+            }
+        }
+
+        private void SetTimeFlow(bool state)
+        {
+            if (state)
+            {
+                timeStateChanged?.Invoke(true, this);
+                timeScale = Time.timeScale;
+                simulationState = true;
+            }
+            else
+            {
+                timeStateChanged?.Invoke(false, this);
+                timeScale = 0;
+                simulationState = false;
             }
         }
 

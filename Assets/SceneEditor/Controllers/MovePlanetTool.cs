@@ -17,6 +17,8 @@ namespace Assets.SceneEditor.Controllers
             if(this.inputSystem != null)
             {
                 this.inputSystem.OnTouchContinues -= Touch;
+                inputSystem.OnTouchDown -= TouchStarted;
+                inputSystem.OnTouchRelease -= TouchEnded;
                 this.inputSystem = null;
                 EditorController.Instance.ToolsController.EnableSceneControl();
             }
@@ -28,10 +30,22 @@ namespace Assets.SceneEditor.Controllers
             if(this.inputSystem == null)
             {
                 inputSystem.OnTouchContinues += Touch;
+                inputSystem.OnTouchDown += TouchStarted;
+                inputSystem.OnTouchRelease += TouchEnded;
                 this.inputSystem = inputSystem;
                 EditorController.Instance.ToolsController.DisableSceneControl();
             }
             base.ForceEnableTool(inputSystem);
+        }
+
+        private void TouchEnded(Touch touch)
+        {
+            Services.PlanetSelectSystem.Instance.UnlockSelection();
+        }
+
+        private void TouchStarted(Touch touch)
+        {
+            Services.PlanetSelectSystem.Instance.LockSelection();
         }
 
         private void Touch(Touch touch)

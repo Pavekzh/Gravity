@@ -16,6 +16,7 @@ namespace Assets.Services
 
         private int layerMask;
         private InputSystem inputSystem;
+        private bool isSelectionLocked;
        
         [SerializeField] private PlanetController planet;
         [SerializeField] private string planetsLayerName;
@@ -28,8 +29,11 @@ namespace Assets.Services
             get => planet;
             private set
             {
-                planet = value;
-                SelectedPlanetChanged?.Invoke(this, value);
+                if (!isSelectionLocked)
+                {
+                    planet = value;
+                    SelectedPlanetChanged?.Invoke(this, value);
+                }
             }
         }
 
@@ -38,6 +42,17 @@ namespace Assets.Services
             if(planet != null)
                 this.SelectedPlanet = planet;
         }
+
+        public void LockSelection()
+        {
+            isSelectionLocked = true;
+        }
+
+        public void UnlockSelection()
+        {
+            isSelectionLocked = false;
+        }
+
 
         private void Start()
         {
@@ -49,7 +64,7 @@ namespace Assets.Services
 
         private void FixedUpdate()
         {
-            if(Input.touchCount == 1)
+            if(Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began)
             {
                 TouchDown(Input.GetTouch(0));
             }
@@ -70,7 +85,6 @@ namespace Assets.Services
 
         private void TouchDown(Touch touch)
         {
-
             Ray ray = Camera.main.ScreenPointToRay(touch.position);
             RaycastHit hitinfo;
             if (Physics.SphereCast(ray, selectSphereRadius, out hitinfo, Mathf.Infinity, layerMask))

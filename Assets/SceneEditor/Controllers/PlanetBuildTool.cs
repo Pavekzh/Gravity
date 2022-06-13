@@ -30,7 +30,7 @@ namespace Assets.SceneEditor.Controllers
 
         public void Build(PlanetData planetData)
         {
-            this.inputSystem.IsInputEnabled = true;
+            this.inputSystem.LockInputReading(true);
             PlanetController controller = (planetData.Clone() as PlanetData).CreateSceneObject();
             Services.PlanetSelectSystem.Instance.ForceSelect(controller);
             MovePlanetTool.EnableTool(inputSystem);
@@ -39,6 +39,7 @@ namespace Assets.SceneEditor.Controllers
         public void StopCreating(Touch touch)
         {
             MovePlanetTool.DisableTool();
+            this.inputSystem.UnlockInputReading();
             this.DisableTool();
         }
     }

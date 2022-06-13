@@ -122,10 +122,11 @@ namespace Assets.SceneEditor.Controllers
         private void BuildPlanet(PlanetData pData)
         {
             if(pData != null)
-            {
+            {                
                 PlanetBuildTool buildTool = EditorController.Instance.ToolsController.EnableTool(PlanetBuildTool.StaticKey) as PlanetBuildTool;
-                buildTool.Build(pData);
+                buildTool.Build(pData);                
                 Close();
+
             }
         }
 

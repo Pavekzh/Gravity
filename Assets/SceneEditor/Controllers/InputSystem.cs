@@ -21,8 +21,20 @@ namespace Assets.SceneEditor.Controllers
         public event SeveralTouches OnTwoTouchesContinue;
         public event SeveralTouches OnTwoTouchesRelease;
 
-        public bool IsInputEnabled { get; set; } = true;
+        public bool IsInputEnabled 
+        {
+            get => isInputEnabled;
+            set
+            {
+                if (!isInputReadingLocked)
+                {
+                    isInputEnabled = value;
+                }
+            }
+        }
 
+        bool isInputEnabled = true;
+        bool isInputReadingLocked;
         List<int> UITouches = new List<int>();
 
         //we need to detect touch down and touch release in Update but move or stationary in FixedUpdate
@@ -72,7 +84,7 @@ namespace Assets.SceneEditor.Controllers
             }
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             if (Input.touchCount > 0)
             {
@@ -112,6 +124,17 @@ namespace Assets.SceneEditor.Controllers
                         OnTwoTouchesContinue?.Invoke(new Touch[] { Input.GetTouch(0), Input.GetTouch(1) });
                 }
             }
+        }
+    
+        public void LockInputReading(bool isInputEnabled)
+        {
+            IsInputEnabled = isInputEnabled;
+            isInputReadingLocked = true;
+        }
+
+        public void UnlockInputReading()
+        {
+            isInputReadingLocked = false;
         }
     }
 }

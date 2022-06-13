@@ -26,15 +26,22 @@ namespace Assets.SceneEditor.Controllers
             planetView.anchorMin = new Vector2(0, 0);
             planetView.anchorMax = new Vector2(1, 1);
             planetView.pivot = new Vector2(0.5f, 0.5f);
-            TMP_Text nameLabel = GameObject.Instantiate(ValuesPanelTemplate.Instance.PlanetLabelPrefab, planetView);
-            nameLabel.text = PlanetData.Name;
+            TMP_InputField nameField = GameObject.Instantiate(ValuesPanelTemplate.Instance.PlanetNameFieldPrefab, planetView);
+            nameField.text = PlanetData.Name;
+            UnityEngine.Events.UnityAction<string> nameChangedAction = new UnityEngine.Events.UnityAction<string>(NameChanged);
+            nameField.onValueChanged.AddListener(nameChangedAction);
 
-            float offset = ValuesPanelTemplate.Instance.StartMargin + nameLabel.rectTransform.rect.height;
+            float offset = ValuesPanelTemplate.Instance.StartMargin + nameField.GetComponent<RectTransform>().rect.height;
             foreach(ModuleController controller in controllers)
             {
                 controller.CreateView(planetView, offset);
                 offset += controller.ModuleOffset + ValuesPanelTemplate.Instance.PropertiesMargin;
             }
+        }
+
+        private void NameChanged(string name)
+        {
+            this.PlanetData.Name = name;
         }
 
         public void CloseView()

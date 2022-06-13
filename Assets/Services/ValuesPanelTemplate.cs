@@ -8,19 +8,19 @@ namespace Assets.Services
     {
         [Header("Base")]        
         [SerializeField] RectTransform emptyPrefab;
-        [SerializeField] TMP_Text moduleLabelPrefab;
+        [SerializeField] TMP_InputField planetNameFieldPrefab;
         [SerializeField] RectTransform shortViewPrefab;
 
-        [Header("Module properties")]
+        [Header("Module properties")]        
+        [SerializeField] TMP_Text moduleLabelPrefab;
         [SerializeField] TMP_InputField inputFieldPrefab;
         [SerializeField] TMP_Text propertyLabelPrefab;
         [SerializeField] TMP_Text lineLabelPrefab;
-        [SerializeField] TMP_Text planetLabelPrefab;
         [SerializeField] float startMargin = 10;
         [SerializeField] float propertiesMargin = 10;
         [SerializeField] float lineMargin = 5;
 
-        public TMP_Text PlanetLabelPrefab { get => planetLabelPrefab; set => planetLabelPrefab = value; }
+        public TMP_InputField PlanetNameFieldPrefab { get => planetNameFieldPrefab; set => planetNameFieldPrefab = value; }
         public TMP_Text PropertyLabelPrefab { get => propertyLabelPrefab; set => propertyLabelPrefab = value; }
         public TMP_Text LineLabelPrefab { get => lineLabelPrefab; set => lineLabelPrefab = value; }
         public float StartMargin { get => startMargin; set => startMargin = value; }

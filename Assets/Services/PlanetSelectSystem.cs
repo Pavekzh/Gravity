@@ -62,7 +62,7 @@ namespace Assets.Services
                 FindPlanet();
         }
 
-        private void FixedUpdate()
+        private void Update()
         {
             if(Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began)
             {
@@ -87,6 +87,7 @@ namespace Assets.Services
         {
             Ray ray = Camera.main.ScreenPointToRay(touch.position);
             RaycastHit hitinfo;
+
             if (Physics.SphereCast(ray, selectSphereRadius, out hitinfo, Mathf.Infinity, layerMask))
             {
                 PlanetController controller = hitinfo.collider.gameObject.GetComponent<PlanetController>();

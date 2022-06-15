@@ -14,28 +14,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   planetRadius: 1.3
   noiseSettings:
-    frequency: 5
+    frequency: 4
     lacunarity: 7.45
     persistence: 0.2
     centre: {x: 0, y: 0.76, z: 0}
     octaves: 3
     minValue: 0.5
-    strength: 0.2
+    strength: 0.15
   landGradient:
     serializedVersion: 2
-    key0: {r: 0.21698111, g: 0.21698111, b: 0.21698111, a: 1}
-    key1: {r: 0.3679245, g: 0.30253467, b: 0.26900142, a: 1}
-    key2: {r: 0.8301887, g: 0.31385642, b: 0.26237094, a: 1}
-    key3: {r: 0.468, g: 0.31500652, b: 0.235872, a: 0}
-    key4: {r: 0.74509805, g: 0.4876241, b: 0.35686272, a: 0}
+    key0: {r: 0.3679245, g: 0.30253467, b: 0.26900142, a: 1}
+    key1: {r: 0.8301887, g: 0.31385642, b: 0.26237094, a: 1}
+    key2: {r: 0.74509805, g: 0.4876241, b: 0.35686272, a: 1}
+    key3: {r: 0.958, g: 0.625221, b: 0.45883155, a: 0}
+    key4: {r: 0.468, g: 0.31500652, b: 0.235872, a: 0}
     key5: {r: 0.958, g: 0.625221, b: 0.45883155, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 3662
-    ctime1: 7325
-    ctime2: 17540
-    ctime3: 19661
-    ctime4: 35273
+    ctime0: 7325
+    ctime1: 16191
+    ctime2: 35273
+    ctime3: 38743
+    ctime4: 54548
     ctime5: 38743
     ctime6: 0
     ctime7: 0
@@ -48,23 +48,23 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
-    m_NumColorKeys: 6
+    m_NumColorKeys: 5
     m_NumAlphaKeys: 3
   waterGradient:
     serializedVersion: 2
-    key0: {r: 0.8207547, g: 0.29862273, b: 0.18970275, a: 1}
-    key1: {r: 0.74509805, g: 0.4876241, b: 0.35686272, a: 1}
-    key2: {r: 0.958, g: 0.625221, b: 0.45883155, a: 1}
-    key3: {r: 0.958, g: 0.625221, b: 0.45883155, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
+    key0: {r: 0.41509432, g: 0.41133088, b: 0.40530434, a: 1}
+    key1: {r: 0.7264151, g: 0.27517748, b: 0.20901564, a: 1}
+    key2: {r: 0.8773585, g: 0.68510324, b: 0.46764863, a: 1}
+    key3: {r: 0.74509805, g: 0.4876241, b: 0.35686272, a: 0}
+    key4: {r: 0.958, g: 0.625221, b: 0.45883155, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 32575
-    ctime1: 52428
-    ctime2: 61102
-    ctime3: 46067
-    ctime4: 0
+    ctime0: 5975
+    ctime1: 32575
+    ctime2: 40285
+    ctime3: 52428
+    ctime4: 61102
     ctime5: 0
     ctime6: 0
     ctime7: 0
@@ -77,5 +77,5 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
-    m_NumColorKeys: 3
+    m_NumColorKeys: 5
     m_NumAlphaKeys: 3

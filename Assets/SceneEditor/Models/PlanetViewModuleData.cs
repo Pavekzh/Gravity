@@ -10,7 +10,7 @@ using System.Xml;
 
 namespace Assets.SceneEditor.Models
 {
-    public class PlanetViewModuleData : ModuleData, IViewModuleData
+    public class PlanetViewModuleData : ModuleData,IViewModuleData
     {
         public NoiseSettings NoiseSettings
         {
@@ -27,11 +27,9 @@ namespace Assets.SceneEditor.Models
         {
             get { return planetRadius; }
             set
-            {
-
-                this.MeshProvider.PlanetRadius = value;
+            {                
                 this.planetRadius = value;
-                this.radiusBinding.ChangeValue(value,this);
+                this.ScaleBinding.ChangeValue(value, this);
             }
         }
         public Gradient LandGradient
@@ -54,10 +52,10 @@ namespace Assets.SceneEditor.Models
         }
         public Mesh GeneratedMesh { get; set; } = new Mesh();
 
+        protected float planetRadius = 1;
         private Gradient landGradient;
         private Gradient waterGradient;
         private NoiseSettings noiseSettings = new NoiseSettings();
-        private float planetRadius = 1;
         private PlanetMeshProvider meshProvider;
         private PlanetMaterialProvider materialProvider;
 
@@ -68,7 +66,7 @@ namespace Assets.SceneEditor.Models
                 if (meshProvider != null) return meshProvider;
                 else
                 {
-                    meshProvider = new PlanetMeshProvider(GeneratedMesh,NoiseSettings,planetRadius);
+                    meshProvider = new PlanetMeshProvider(GeneratedMesh,NoiseSettings,1);
                     return meshProvider;
                 }
                                     
@@ -90,8 +88,10 @@ namespace Assets.SceneEditor.Models
 
         public static string Key = "PlanetView";
 
-        private ConvertibleBinding<float, string[]> radiusBinding;
-        private ConvertibleBinding<NoiseSettings, string[]> noiseSetsBinding;
+        [XmlIgnore]
+        public Binding<float> ScaleBinding { get; private set; }
+        [XmlIgnore]
+        public Binding<NoiseSettings> noiseSetsBinding { get; private set; }
 
         [XmlIgnore]
         public override List<PropertyViewData> Properties { get; } = new List<PropertyViewData>();
@@ -101,9 +101,10 @@ namespace Assets.SceneEditor.Models
         public Binding<Mesh> MeshBinding { get; } = new Binding<Mesh>();
         public Binding<Material> MaterialBinding { get; } = new Binding<Material>();
 
-        public PlanetViewModuleData()
+        public PlanetViewModuleData():base()
         {
-            noiseSetsBinding = new BasicTools.ConvertibleBinding<NoiseSettings, string[]>(new NoiseSetsStringConverter());
+            ConvertibleBinding<NoiseSettings,string[]> noiseSetsBinding = new BasicTools.ConvertibleBinding<NoiseSettings, string[]>(new NoiseSetsStringConverter());
+            this.noiseSetsBinding = noiseSetsBinding;
             noiseSetsBinding.ValueChanged += setNoiseSetsBinding; 
             CommonPropertyViewData<NoiseSettings> noiseSettingsProperty = new CommonPropertyViewData<NoiseSettings>();
             noiseSettingsProperty.Binding = noiseSetsBinding;
@@ -111,7 +112,8 @@ namespace Assets.SceneEditor.Models
             noiseSettingsProperty.Components = new string[] {"Scale","Lacunarity","Persistence","OffsetX","OffsetY","OffsetZ","Octaves","LowLevel","Strength" };
             Properties.Add(noiseSettingsProperty);
 
-            radiusBinding = new BasicTools.ConvertibleBinding<float, string[]>(new FloatStringConverter());
+            ConvertibleBinding<float,string[]> radiusBinding = new BasicTools.ConvertibleBinding<float, string[]>(new FloatStringConverter());
+            this.ScaleBinding = radiusBinding;
             radiusBinding.ValueChanged += setRadius;
             CommonPropertyViewData<float> radiusProperty = new CommonPropertyViewData<float>();
             radiusProperty.Binding = radiusBinding;
@@ -129,11 +131,10 @@ namespace Assets.SceneEditor.Models
             }
         }
 
-        private void setRadius(float value, object source)
+        protected void setRadius(float value, object source)
         {
             if(source != this && value != this.planetRadius)
             {
-                meshProvider.PlanetRadius = value;
                 this.planetRadius = value;
                 UpdateView();
             }
@@ -142,7 +143,6 @@ namespace Assets.SceneEditor.Models
         public override object Clone()
         {
             PlanetViewModuleData moduleData = (PlanetViewModuleData)this.MemberwiseClone();
-
             return moduleData;
         }
 

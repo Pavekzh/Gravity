@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   planetRadius: 1.9
   noiseSettings:
-    frequency: 10
+    frequency: 3
     lacunarity: 7.45
     persistence: 0.2
     centre: {x: 0, y: 0, z: 0}
     octaves: 3
     minValue: 0.5
-    strength: 0.05
+    strength: 0.1
   landGradient:
     serializedVersion: 2
     key0: {r: 0.2811499, g: 0.3318797, b: 0.509434, a: 1}

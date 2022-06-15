@@ -10,12 +10,12 @@
       </Position>
       <Velocity>
         <x>0</x>
-        <y>0</y>
+        <y>10</y>
       </Velocity>
     </ModuleData>
     <ModuleData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="PlanetViewModuleData">
       <NoiseSettings>
-        <Frequency>7</Frequency>
+        <Frequency>5</Frequency>
         <Lacunarity>7,45</Lacunarity>
         <Persistence>0,2</Persistence>
         <Vector3>

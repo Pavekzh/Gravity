@@ -10,7 +10,7 @@
       </Position>
       <Velocity>
         <x>0</x>
-        <y>0</y>
+        <y>15</y>
       </Velocity>
     </ModuleData>
     <ModuleData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="PlanetViewModuleData">
@@ -27,7 +27,7 @@
         <MinValue>0,5</MinValue>
         <Strength>0,15</Strength>
       </NoiseSettings>
-      <PlanetRadius>2</PlanetRadius>
+      <PlanetRadius>1.6</PlanetRadius>
       <LandGradient>
         <colorKeys>
           <GradientColorKey>

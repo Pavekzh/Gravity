@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 844ec03b529190f47bb530d12c80c320, type: 3}
   m_Name: GeaView
   m_EditorClassIdentifier: 
-  planetRadius: 2
+  planetRadius: 1.6
   noiseSettings:
     frequency: 3
     lacunarity: 7.45

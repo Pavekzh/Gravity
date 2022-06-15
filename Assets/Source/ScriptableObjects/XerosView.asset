@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   planetRadius: 1.1
   noiseSettings:
-    frequency: 7
+    frequency: 5
     lacunarity: 7.45
     persistence: 0.2
     centre: {x: 6, y: 0, z: 0}

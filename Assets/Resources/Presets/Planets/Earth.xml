@@ -10,7 +10,7 @@
       </Position>
       <Velocity>
         <x>0</x>
-        <y>0</y>
+        <y>11</y>
       </Velocity>
     </ModuleData>
     <ModuleData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="PlanetViewModuleData">
@@ -46,16 +46,25 @@
               <b>0.5183358</b>
               <a>1</a>
             </color>
-            <time>0.158831164</time>
+            <time>0.07058824</time>
           </GradientColorKey>
           <GradientColorKey>
             <color>
-              <r>0.623529434</r>
-              <g>0.568858147</g>
-              <b>0.4392157</b>
+              <r>0.490993232</r>
+              <g>0.6037736</g>
+              <b>0.116767526</b>
               <a>1</a>
             </color>
-            <time>0.197055012</time>
+            <time>0.126466781</time>
+          </GradientColorKey>
+          <GradientColorKey>
+            <color>
+              <r>0.6320754</r>
+              <g>0.5237532</g>
+              <b>0.432315737</b>
+              <a>1</a>
+            </color>
+            <time>0.323537052</time>
           </GradientColorKey>
           <GradientColorKey>
             <color>
@@ -64,7 +73,7 @@
               <b>0.46226418</b>
               <a>1</a>
             </color>
-            <time>0.6088197</time>
+            <time>0.361760885</time>
           </GradientColorKey>
           <GradientColorKey>
             <color>
@@ -73,7 +82,7 @@
               <b>1</b>
               <a>1</a>
             </color>
-            <time>0.670588255</time>
+            <time>0.958831131</time>
           </GradientColorKey>
         </colorKeys>
         <alphaKeys>
@@ -96,21 +105,30 @@
         <colorKeys>
           <GradientColorKey>
             <color>
-              <r>0.144647062</r>
-              <g>0.144647062</g>
-              <b>0.2238334</b>
+              <r>0.169900313</r>
+              <g>0.169900313</g>
+              <b>0.4339623</b>
               <a>1</a>
             </color>
-            <time>0.00294499123</time>
+            <time>0.4617685</time>
           </GradientColorKey>
           <GradientColorKey>
             <color>
-              <r>0.389951944</r>
-              <g>0.5076121</g>
-              <b>0.6509434</b>
+              <r>0.195888221</r>
+              <g>0.323112279</g>
+              <b>0.5849056</b>
               <a>1</a>
             </color>
-            <time>0.908827364</time>
+            <time>0.60294497</time>
+          </GradientColorKey>
+          <GradientColorKey>
+            <color>
+              <r>0.508632958</r>
+              <g>0.6610616</g>
+              <b>0.8490566</b>
+              <a>1</a>
+            </color>
+            <time>0.9852903</time>
           </GradientColorKey>
           <GradientColorKey>
             <color>
@@ -119,7 +137,7 @@
               <b>1</b>
               <a>1</a>
             </color>
-            <time>0.9735256</time>
+            <time>1</time>
           </GradientColorKey>
         </colorKeys>
         <alphaKeys>

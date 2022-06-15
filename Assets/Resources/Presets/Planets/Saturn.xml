@@ -15,7 +15,7 @@
     </ModuleData>
     <ModuleData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="PlanetViewModuleData">
       <NoiseSettings>
-        <Frequency>10</Frequency>
+        <Frequency>3</Frequency>
         <Lacunarity>7,45</Lacunarity>
         <Persistence>0,2</Persistence>
         <Vector3>
@@ -25,7 +25,7 @@
         </Vector3>
         <Octaves>3</Octaves>
         <MinValue>0,5</MinValue>
-        <Strength>0,05</Strength>
+        <Strength>0,1</Strength>
       </NoiseSettings>
       <PlanetRadius>1.9</PlanetRadius>
       <LandGradient>

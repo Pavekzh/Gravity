@@ -34,6 +34,8 @@ namespace Assets.SceneSimulation
                     this.moduleData = SettingsObject.CreateModuleData();
                     this.moduleData.MeshBinding.ValueChanged += setMesh;
                     this.moduleData.MaterialBinding.ValueChanged += setMaterial;
+                    this.moduleData.ScaleBinding.ValueChanged += setScale;
+                    this.moduleData.ScaleBinding.ForceUpdate();
                     this.moduleData.MeshBinding.ForceUpdate();
                     this.moduleData.MaterialBinding.ForceUpdate();
                     return moduleData;
@@ -46,6 +48,7 @@ namespace Assets.SceneSimulation
                 {
                     this.moduleData.MeshBinding.ValueChanged -= setMesh;
                     this.moduleData.MaterialBinding.ValueChanged -= setMaterial;
+                    this.moduleData.ScaleBinding.ValueChanged -= setScale;
                 }
 
                 this.moduleData = value;
@@ -53,12 +56,16 @@ namespace Assets.SceneSimulation
                 {
                     value.MeshBinding.ValueChanged += setMesh;
                     value.MaterialBinding.ValueChanged += setMaterial;
+                    value.ScaleBinding.ValueChanged += setScale;
+                    value.ScaleBinding.ForceUpdate();
                     value.MeshBinding.ForceUpdate();
                     value.MaterialBinding.ForceUpdate();
                 }
 
             }
         }
+
+
 
         private void Awake()
         {
@@ -72,6 +79,7 @@ namespace Assets.SceneSimulation
             {
                 moduleData.MeshBinding.ValueChanged -= setMesh;
                 moduleData.MaterialBinding.ValueChanged -= setMaterial;
+                moduleData.ScaleBinding.ValueChanged -= setScale;
             }
         }
 
@@ -88,13 +96,6 @@ namespace Assets.SceneSimulation
             return ModuleData.GetModuleData();
         }
 
-        public void ResetModuleData()
-        {
-            Debug.Log("Reset");
-            Debug.Log(SettingsObject.name);
-            //moduleData = SettingsObject.CreateModuleData();
-        }
-
         private void setMesh(Mesh mesh,object sender)
         {
             if(this.meshFilter != null)
@@ -105,6 +106,11 @@ namespace Assets.SceneSimulation
         {
             if(this.meshRenderer != null)
                 this.meshRenderer.material = material;
+        }        
+        
+        private void setScale(float value, object source)
+        {
+            this.transform.localScale = new Vector3(value,value,value);
         }
     }
 }

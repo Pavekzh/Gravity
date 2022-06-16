@@ -383,17 +383,6 @@
     <PlanetData Name="Xeros">
       <SceneObjectBuilder xsi:type="DefaultSceneObjectBuilder" />
       <Modules>
-        <ModuleData xsi:type="GravityModuleData">
-          <Mass>1</Mass>
-          <Position>
-            <x>11.44</x>
-            <y>-3.96</y>
-          </Position>
-          <Velocity>
-            <x>0</x>
-            <y>10</y>
-          </Velocity>
-        </ModuleData>
         <ModuleData xsi:type="PlanetViewModuleData">
           <NoiseSettings>
             <Frequency>5</Frequency>
@@ -464,16 +453,25 @@
                   <b>0.3068263</b>
                   <a>1</a>
                 </color>
-                <time>0</time>
+                <time>0.5382315</time>
               </GradientColorKey>
               <GradientColorKey>
                 <color>
-                  <r>0.2924528</r>
-                  <g>0.289106816</g>
-                  <b>0.288314342</b>
+                  <r>0.6037736</r>
+                  <g>0.417748123</g>
+                  <b>0.236383051</b>
                   <a>1</a>
                 </color>
-                <time>0.720592</time>
+                <time>0.582360566</time>
+              </GradientColorKey>
+              <GradientColorKey>
+                <color>
+                  <r>0.608193457</r>
+                  <g>0.431266159</g>
+                  <b>0.261463761</b>
+                  <a>1</a>
+                </color>
+                <time>0.6970626</time>
               </GradientColorKey>
               <GradientColorKey>
                 <color>
@@ -482,7 +480,7 @@
                   <b>0.5575828</b>
                   <a>1</a>
                 </color>
-                <time>0.870588243</time>
+                <time>0.7382315</time>
               </GradientColorKey>
             </colorKeys>
             <alphaKeys>
@@ -547,22 +545,22 @@
             <boneWeights />
           </GeneratedMesh>
         </ModuleData>
+        <ModuleData xsi:type="GravityModuleData">
+          <Mass>1</Mass>
+          <Position>
+            <x>11.44</x>
+            <y>-3.96</y>
+          </Position>
+          <Velocity>
+            <x>0</x>
+            <y>10</y>
+          </Velocity>
+        </ModuleData>
       </Modules>
     </PlanetData>
     <PlanetData Name="Earth">
       <SceneObjectBuilder xsi:type="DefaultSceneObjectBuilder" />
       <Modules>
-        <ModuleData xsi:type="GravityModuleData">
-          <Mass>1</Mass>
-          <Position>
-            <x>8.16</x>
-            <y>0</y>
-          </Position>
-          <Velocity>
-            <x>0</x>
-            <y>11</y>
-          </Velocity>
-        </ModuleData>
         <ModuleData xsi:type="PlanetViewModuleData">
           <NoiseSettings>
             <Frequency>3</Frequency>
@@ -755,6 +753,17 @@
             <triangles />
             <boneWeights />
           </GeneratedMesh>
+        </ModuleData>
+        <ModuleData xsi:type="GravityModuleData">
+          <Mass>1</Mass>
+          <Position>
+            <x>8.16</x>
+            <y>0</y>
+          </Position>
+          <Velocity>
+            <x>0</x>
+            <y>11</y>
+          </Velocity>
         </ModuleData>
       </Modules>
     </PlanetData>

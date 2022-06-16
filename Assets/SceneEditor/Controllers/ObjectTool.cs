@@ -56,7 +56,7 @@ namespace Assets.SceneEditor.Controllers
 
         protected virtual void ForceEnableTool(InputSystem inputSystem)
         {
-            TimeManager.Instance.LockTimeFlow();
+            TimeManager.Instance.LockTimeFlow(ToolName);
         }
 
         protected virtual void ForceDisableTool()

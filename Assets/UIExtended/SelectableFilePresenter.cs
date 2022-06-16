@@ -38,29 +38,29 @@ namespace UIExtended
         {
             if (labelRect == null)
             {
-                ErrorManager.Instance.ShowErrorMessage("LabelRect has not set", this);
+                MessagingSystem.Instance.ShowErrorMessage("LabelRect has not set", this);
             }
             if (selectorRect == null)
             {
-                ErrorManager.Instance.ShowErrorMessage("SelectorRect has not set", this);
+                MessagingSystem.Instance.ShowErrorMessage("SelectorRect has not set", this);
             }
             if (selector == null)
             {
-                ErrorManager.Instance.ShowErrorMessage("Selector has not set", this);
+                MessagingSystem.Instance.ShowErrorMessage("Selector has not set", this);
             }
 
             if (fileViewPrefab == null)
             {
-                ErrorManager.Instance.ShowErrorMessage("FileViewPrefab has not set", this);
+                MessagingSystem.Instance.ShowErrorMessage("FileViewPrefab has not set", this);
             }
 
             if (label == null)
             {
-                ErrorManager.Instance.ShowErrorMessage("LabelPrefab has not set", this);
+                MessagingSystem.Instance.ShowErrorMessage("LabelPrefab has not set", this);
             }
             if (PathBinding == null)
             {
-                ErrorManager.Instance.ShowErrorMessage("SelectSystem has not set", this);
+                MessagingSystem.Instance.ShowErrorMessage("SelectSystem has not set", this);
             }
         }
 

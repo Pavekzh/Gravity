@@ -38,12 +38,12 @@ namespace UIExtended
                 button.onClick.AddListener(ChangeState);
         }
 
-        public void Show()
+        public virtual void Show()
         {
             State = State.Changed;
         }
 
-        public void Hide()
+        public virtual void Hide()
         {
             State = State.Default;
         }

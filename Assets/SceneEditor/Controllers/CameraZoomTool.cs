@@ -12,6 +12,8 @@ namespace Assets.SceneEditor.Controllers
         private bool isZooming;
         private InputSystem inputSystem;
 
+        public override string ToolName => "Camera zoom tool";
+
         public override void DisableTool()
         {
             if (inputSystem != null)

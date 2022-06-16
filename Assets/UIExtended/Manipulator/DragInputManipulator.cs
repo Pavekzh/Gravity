@@ -46,7 +46,7 @@ namespace UIExtended
         {
             pointerCollider = touchPointer.GetComponent<Collider>();
             if (pointerCollider == null)
-                BasicTools.ErrorManager.Instance.ShowErrorMessage("Touch pointer have no collider", this);
+                BasicTools.MessagingSystem.Instance.ShowErrorMessage("Touch pointer have no collider", this);
 
             touchScale = touchPointer.transform.localScale;
             lineScaleFactor = new Vector3(1 / (line.mesh.bounds.extents.x * 2), 1 / (line.mesh.bounds.extents.y * 2), 1 / (line.mesh.bounds.extents.z * 2));

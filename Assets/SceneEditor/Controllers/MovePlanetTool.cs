@@ -12,6 +12,8 @@ namespace Assets.SceneEditor.Controllers
 
         public override string DefaultKey => "MoveTool";
 
+        public override string ToolName => "Position set tool";
+
         protected override void ForceDisableTool()
         {                
             if(this.inputSystem != null)

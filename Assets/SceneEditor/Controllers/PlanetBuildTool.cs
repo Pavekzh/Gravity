@@ -14,6 +14,8 @@ namespace Assets.SceneEditor.Controllers
 
         public static string StaticKey => "BuildTool";
 
+        public override string ToolName => "Object build tool";
+
         protected override void ForceDisableTool()
         {
             if(inputSystem != null)

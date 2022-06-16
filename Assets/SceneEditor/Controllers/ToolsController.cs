@@ -74,7 +74,7 @@ namespace Assets.SceneEditor.Controllers
                 return tool;
             }
             else
-                BasicTools.ErrorManager.Instance.ShowErrorMessage("Tool was not found", this);
+                BasicTools.MessagingSystem.Instance.ShowErrorMessage("Tool was not found", this);
             return null;
 
         }

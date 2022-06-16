@@ -8,6 +8,7 @@ namespace Assets.Services
     public class TimeManager : BasicTools.Singleton<TimeManager>
     {
         private float defaultFixedDeltaTime;
+        private string timeLockerName;
 
         public Binding<float> TimeBinding { get; private set; }
 
@@ -52,10 +53,11 @@ namespace Assets.Services
             SetPhysicsState(!simulationState);
         }
 
-        public void LockTimeFlow()
+        public void LockTimeFlow(string lockerName)
         {
             if (!TimeFlowLocked)
             {
+                timeLockerName = lockerName;
                 savedSimulationState = simulationState;
                 SetPhysicsState(false);
                 TimeFlowLocked = true;
@@ -135,11 +137,19 @@ namespace Assets.Services
 
         private void SetTimeFlow(bool state)
         {
-            if(simulationState != state && !TimeFlowLocked)
+            if (!TimeFlowLocked)
             {
-                timeStateChanged?.Invoke(state, this);
-                simulationState = state;
+                if (simulationState != state)
+                {
+                    timeStateChanged?.Invoke(state, this);
+                    simulationState = state;
+                }
             }
+            else
+            {
+                MessagingSystem.Instance.ShowMessage("Time flow locked by " + timeLockerName,this);
+            }
+
         }
 
     }

@@ -28,7 +28,7 @@ namespace UIExtended
             if (visibleArea == null)
                 visibleArea = this.GetComponent<RectTransform>();
             if (contentContainer == null)
-                ErrorManager.Instance.ShowErrorMessage("Container has not set", this);
+                MessagingSystem.Instance.ShowErrorMessage("Container has not set", this);
         }
 
         public virtual void ChangeDisplayState()

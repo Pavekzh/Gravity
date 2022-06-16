@@ -66,7 +66,6 @@ namespace Assets.SceneSimulation
         }
 
 
-
         private void Awake()
         {
             meshFilter = GetComponent<MeshFilter>();

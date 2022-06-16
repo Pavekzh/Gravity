@@ -94,7 +94,7 @@ namespace Assets.Services
 
                 if (controller == null)
                 {
-                    Services.CommonErrorManager.Instance.ShowErrorMessage("SelectedObject must have Planet component", this);
+                    Services.CommonMessagingSystem.Instance.ShowErrorMessage("SelectedObject must have Planet component", this);
                 }
                 else
                 {

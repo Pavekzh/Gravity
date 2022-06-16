@@ -9,6 +9,7 @@ namespace Assets.SceneEditor.Controllers
 {
     public abstract class EditorTool:MonoBehaviour
     {
+        public abstract string ToolName { get; }
         //used to off input reaction
         public abstract void DisableTool();
         //used to subscribe methods to inputSystem

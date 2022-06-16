@@ -18,7 +18,7 @@ namespace Assets.SceneSimulation
             {
                 if (PlanetBuildSettings.Instance.BasePlanetPrefab == null)
                 {
-                    CommonErrorManager.Instance.ShowErrorMessage("BasePlanet prefab was not set", this);
+                    CommonMessagingSystem.Instance.ShowErrorMessage("BasePlanet prefab was not set", this);
                 }
                 GameObject planetObject = GameObject.Instantiate(PlanetBuildSettings.Instance.BasePlanetPrefab, PlanetBuildSettings.Instance.PlanetsParent);
                 planetObject.name = data.Name;

@@ -97,7 +97,7 @@ namespace Assets.Services
                 SetScene(state);
             }
             else
-                ErrorManager.Instance.ShowErrorMessage("Saved state didn't load properly ", this);
+                MessagingSystem.Instance.ShowErrorMessage("Saved state didn't load properly ", this);
         }
 
         public void Load()
@@ -108,7 +108,7 @@ namespace Assets.Services
                 SetScene(state);
             }
             else
-                ErrorManager.Instance.ShowErrorMessage("Saved state didn't load properly ", this);
+                MessagingSystem.Instance.ShowErrorMessage("Saved state didn't load properly ", this);
 
         }
 

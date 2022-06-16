@@ -33,7 +33,7 @@ namespace Assets.SceneEditor.Controllers
         {
             if (inputSystem == null)
             {
-                Services.CommonErrorManager.Instance.ShowErrorMessage("Input system not set", this);
+                Services.CommonMessagingSystem.Instance.ShowErrorMessage("Input system not set", this);
             }
 
             inputSystem.OnUITouch += LockInputControl;

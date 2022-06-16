@@ -70,7 +70,7 @@ namespace Assets.SceneEditor.Controllers
             }
             catch (Exception ex)
             {
-                BasicTools.ErrorManager.Instance.ShowErrorMessage(ex.Message, this);
+                BasicTools.MessagingSystem.Instance.ShowErrorMessage(ex.Message, this);
             }
         }
 
@@ -144,7 +144,7 @@ namespace Assets.SceneEditor.Controllers
                 BuildPlanet(planetData);
             }
             else
-                CommonErrorManager.Instance.ShowErrorMessage("PlanetData didn't load properly", this);
+                CommonMessagingSystem.Instance.ShowErrorMessage("PlanetData didn't load properly", this);
         }
 
         public void SavePlanet()

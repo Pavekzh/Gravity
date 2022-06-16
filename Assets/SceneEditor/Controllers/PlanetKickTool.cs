@@ -19,6 +19,8 @@ namespace Assets.SceneEditor.Controllers
 
         public override string DefaultKey { get => "PlanetKickTool"; }
 
+        public override string ToolName => "Velocity set tool";
+
         protected override void Awake()
         {
             base.Awake();

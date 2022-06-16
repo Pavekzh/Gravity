@@ -11,6 +11,8 @@ namespace Assets.SceneEditor.Controllers
 
         private InputSystem inputSystem;
 
+        public override string ToolName => "Camera rotation tool";
+
         public override void DisableTool()
         {
             if(IsToolActive != false)

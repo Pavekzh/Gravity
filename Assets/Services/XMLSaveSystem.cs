@@ -30,7 +30,7 @@ namespace Assets.Services
             }
             catch (System.Exception ex)
             {
-                ErrorManager.Instance.ShowErrorMessage(ex.Message, this);
+                MessagingSystem.Instance.ShowErrorMessage(ex.Message, this);
             }
             return null;
         }
@@ -52,7 +52,7 @@ namespace Assets.Services
             }
             catch (System.Exception ex)
             {
-                ErrorManager.Instance.ShowErrorMessage(ex.Message, this);
+                MessagingSystem.Instance.ShowErrorMessage(ex.Message, this);
             }
         }
 
@@ -64,7 +64,7 @@ namespace Assets.Services
             }
             catch (System.Exception ex)
             {
-                ErrorManager.Instance.ShowErrorMessage(ex.Message, this);
+                MessagingSystem.Instance.ShowErrorMessage(ex.Message, this);
             }
         }
 
@@ -77,7 +77,7 @@ namespace Assets.Services
             }
             catch(Exception ex)
             {
-                ErrorManager.Instance.ShowErrorMessage(ex.Message, this);
+                MessagingSystem.Instance.ShowErrorMessage(ex.Message, this);
             }
         }
 
@@ -92,7 +92,7 @@ namespace Assets.Services
             }
             catch(System.Exception ex)
             {
-                ErrorManager.Instance.ShowErrorMessage(ex.Message, this);
+                MessagingSystem.Instance.ShowErrorMessage(ex.Message, this);
             }
             return null;
         }

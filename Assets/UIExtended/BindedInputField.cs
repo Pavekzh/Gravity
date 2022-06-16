@@ -32,7 +32,7 @@ namespace UIExtended
         {
             if (inputField == null)
             {
-                BasicTools.ErrorManager.Instance.ShowErrorMessage("InputField value not set", this);
+                BasicTools.MessagingSystem.Instance.ShowErrorMessage("InputField value not set", this);
             }
             inputField.onValueChanged.AddListener(ValueChanged);
         }
@@ -48,7 +48,7 @@ namespace UIExtended
                 }
                 catch (Exception ex)
                 {
-                    ErrorManager.Instance.ShowErrorMessage(ex.Message, this);
+                    MessagingSystem.Instance.ShowErrorMessage(ex.Message, this);
                 }
             }
             else bindingChanges = false;

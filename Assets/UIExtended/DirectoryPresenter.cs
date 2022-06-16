@@ -62,7 +62,7 @@ namespace UIExtended
             }
             catch (IOException ex)
             {
-                ErrorManager.Instance.ShowErrorMessage(ex.Message, this);
+                MessagingSystem.Instance.ShowErrorMessage(ex.Message, this);
             }
 
             List<FileItemPresenter> itemsList = new List<FileItemPresenter>();

@@ -44,6 +44,11 @@ namespace Assets.Editor
             {
                 module.UpdateView();
             }
+
+            if(GUILayout.Button("Update material"))
+            {
+                module.RecreateModuleData();
+            }
         }
     }
 }

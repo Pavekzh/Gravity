@@ -91,6 +91,12 @@ namespace Assets.SceneSimulation
                 Debug.LogError("Settings object is null");
         }
 
+        public void RecreateModuleData()
+        {
+            ModuleData = settingsObject.CreateModuleData();
+            settingsObject.UpdateModule(ModuleData);
+        }
+
         public override ModuleData InstatiateModuleData()
         {
             return ModuleData.GetModuleData();

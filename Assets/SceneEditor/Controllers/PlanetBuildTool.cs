@@ -8,7 +8,7 @@ namespace Assets.SceneEditor.Controllers
     class PlanetBuildTool : ObjectTool
     {
         private InputSystem inputSystem;
-        [SerializeField] private MovePlanetTool MovePlanetTool;
+        [SerializeField] private MoveObjectTool MoveTool;
 
         public override string DefaultKey => StaticKey;
 
@@ -16,7 +16,7 @@ namespace Assets.SceneEditor.Controllers
 
         public override string ToolName => "Object build tool";
 
-        protected override void ForceDisableTool()
+        protected override void DoDisable()
         {
             if(inputSystem != null)
             {
@@ -24,7 +24,7 @@ namespace Assets.SceneEditor.Controllers
             }
         }
 
-        protected override void ForceEnableTool(InputSystem inputSystem)
+        protected override void DoEnable(InputSystem inputSystem)
         {
             inputSystem.OnTouchRelease += StopCreating;
             this.inputSystem = inputSystem;
@@ -35,12 +35,15 @@ namespace Assets.SceneEditor.Controllers
             this.inputSystem.LockInputReading(true);
             PlanetController controller = (planetData.Clone() as PlanetData).CreateSceneObject();
             Services.PlanetSelectSystem.Instance.ForceSelect(controller);
-            MovePlanetTool.EnableTool(inputSystem);
+            MoveTool.EnableTool(inputSystem);
+            MoveTool.EnableImmediatelyInputReading();            
+            MoveTool.DisableToolUI();
         }
 
         public void StopCreating(Touch touch)
         {
-            MovePlanetTool.DisableTool();
+            MoveTool.DisableTool();
+
             this.inputSystem.UnlockInputReading();
             this.DisableTool();
         }

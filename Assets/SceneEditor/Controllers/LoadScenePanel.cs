@@ -35,26 +35,27 @@ namespace Assets.SceneEditor.Controllers
             if(fileName != "")
             {
                 Assets.Services.SceneStateManager.Instance.Load(fileName);
+                this.RestorablePanel = null;
                 Close();
             }
         }
 
-        public override void Close()
-        {
-            directoryPresenter.ClosePanel();
-            visibleManager.Hide();
-        }
-
-        public override void Open()
+        protected override void DoOpen()
         {
             visibleManager.Show();
             directoryPresenter.OpenPanel();
         }
 
+        protected override void DoClose()
+        {
+            directoryPresenter.ClosePanel();
+            visibleManager.Hide();
+        }
+
         public void Delete() 
         {
             Services.SceneStateManager.Instance.Delete(fileName);
-            Open();
+            directoryPresenter.OpenPanel();
         }
     }
 }

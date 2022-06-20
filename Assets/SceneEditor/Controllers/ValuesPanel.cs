@@ -35,7 +35,7 @@ namespace Assets.SceneEditor.Controllers
                 Close();
         }
 
-        public override void Close()
+        protected override void DoClose()
         {
             foreach(Transform child in containerTransform)
             {
@@ -44,9 +44,8 @@ namespace Assets.SceneEditor.Controllers
             visibleManager.State = BasicTools.State.Default;
         }
 
-        public override void Open()
+        protected override void DoOpen()
         {
-            EditorController.Instance.Panel = this;
             visibleManager.State = BasicTools.State.Changed;
             Services.PlanetSelectSystem.Instance.SelectedPlanet.OpenView(this.containerTransform);
         }

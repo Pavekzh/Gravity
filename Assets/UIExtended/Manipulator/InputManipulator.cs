@@ -1,22 +1,21 @@
-﻿using System.Collections;
+﻿using System;
 using UnityEngine;
 using BasicTools;
 
 namespace UIExtended
 {
-    public abstract class InputManipulator : MonoBehaviour
+    public abstract class InputManipulator<T> : MonoBehaviour
     {
-        public delegate void InputReadingHandler();
-        public abstract event InputReadingHandler InputReadingStarted;
-        public abstract event InputReadingHandler InputReadingStoped;
+        public abstract event Action InputReadingStarted;
+        public abstract event Action InputReadingStoped;
 
         public virtual float ScaleFactor { get; set; }
 
-        public virtual Binding<Vector3> InputBinding { get; protected set; } = new Binding<Vector3>();
+        public virtual Binding<T> InputBinding { get; protected set; } = new Binding<T>();
 
-        public abstract void EnableTool(Binding<Vector2> originBinding);
+        public abstract void Enable(Binding<Vector2> manipulatorTargetPosition);
 
-        public abstract void DisableTool();        
+        public abstract void Disable();        
 
     }
 }

@@ -10,7 +10,6 @@ namespace Assets.SceneEditor.Controllers
         [SerializeField] private string individualKey;
         [SerializeField] protected ToolsController toolsController;
 
-        protected bool ToolSelectedAndWorking = false;
         protected bool IsToolEnabled;
 
         public abstract string DefaultKey { get; }
@@ -19,7 +18,7 @@ namespace Assets.SceneEditor.Controllers
         {
             if (IsToolEnabled)
             {
-                ForceDisableTool();
+                DoDisable();
                 IsToolEnabled = false;
             }
 
@@ -30,7 +29,7 @@ namespace Assets.SceneEditor.Controllers
             if (!IsToolEnabled)
             {
                 IsToolEnabled = true;
-                ForceEnableTool(inputSystem);
+                DoEnable(inputSystem);
             }
         }
 
@@ -54,27 +53,25 @@ namespace Assets.SceneEditor.Controllers
             this.DisableTool();
         }
 
-        protected virtual void ForceEnableTool(InputSystem inputSystem)
+        protected virtual void DoEnable(InputSystem inputSystem)
         {
             TimeManager.Instance.LockTimeFlow(ToolName);
         }
 
-        protected virtual void ForceDisableTool()
+        protected virtual void DoDisable()
         {
             TimeManager.Instance.UnlockTimeFlow();
         }
 
         public virtual void SwitchActiveState()
         {
-            if(ToolSelectedAndWorking)
+            if(IsToolEnabled)
             {
                 this.DisableTool();
-                ToolSelectedAndWorking = false;
             }
             else
             {
                 this.toolsController.EnableTool(this.Key);
-                ToolSelectedAndWorking = true;
             }
         }
     }

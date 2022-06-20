@@ -1,12 +1,12 @@
 ﻿using BasicTools;
-using System.Collections;
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace UIExtended
 {
     [RequireComponent(typeof(RectTransform))]
-    public class Joystick : InputManipulator
+    public class Joystick : InputManipulator<Vector3>
     {
         private RectTransform rectTransform;
         [SerializeField]
@@ -23,8 +23,8 @@ namespace UIExtended
         public float SpaceRadius { get => spaceRadius * rectTransform.lossyScale.x; }
         public Vector2 Origin { get => rectTransform.position; }
 
-        public override event InputReadingHandler InputReadingStarted;
-        public override event InputReadingHandler InputReadingStoped;
+        public override event Action InputReadingStarted;
+        public override event Action InputReadingStoped;
 
         private void Start()
         {
@@ -49,16 +49,16 @@ namespace UIExtended
             }
         }
 
-        public override void DisableTool()
+        public override void Disable()
         {
             InputReadingStoped?.Invoke();
             isEnabled = false;
         }
 
-        public override void EnableTool(Binding<Vector2> originBinding)
+        public override void Enable(Binding<Vector2> originBinding)
         {
             if (isEnabled)
-                DisableTool();
+                Disable();
 
             isEnabled = true;
         }
@@ -75,6 +75,7 @@ namespace UIExtended
                     pointerPosition = Origin - (direction);
                 }
                 stick.position = pointerPosition;
+
                 InputBinding.ChangeValue(direction.GetVector3(), this);
             }
         }

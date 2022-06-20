@@ -6,14 +6,14 @@
       <SceneObjectBuilder xsi:type="DefaultSceneObjectBuilder" />
       <Modules>
         <ModuleData xsi:type="GravityModuleData">
-          <Mass>1000</Mass>
+          <Mass>100</Mass>
           <Position>
             <x>0.03812918</x>
             <y>0.0360647365</y>
           </Position>
           <Velocity>
-            <x>0.146061063</x>
-            <y>0.186729625</y>
+            <x>0.6105921</x>
+            <y>0.4901088</y>
           </Velocity>
         </ModuleData>
         <ModuleData xsi:type="PlanetViewModuleData">

@@ -4,7 +4,7 @@ using BasicTools;
 
 namespace UIExtended
 {
-    public class DragInputManipulator : InputManipulator
+    public class DragInputManipulator : InputManipulator<Vector3>
     {
         [SerializeField][Tooltip("Line object must be aligned along the z axis")] private MeshFilter line;
         [SerializeField][Tooltip("Object must be aligned along the z axis")] private MeshFilter touchPointer;
@@ -19,8 +19,8 @@ namespace UIExtended
         private bool isVisible;
         private Binding<Vector2> originBinding;
 
-        public override event InputReadingHandler InputReadingStarted;
-        public override event InputReadingHandler InputReadingStoped;
+        public override event Action InputReadingStarted;
+        public override event Action InputReadingStoped;
 
         public bool IsEnabled
         {
@@ -83,10 +83,10 @@ namespace UIExtended
             this.originPosition = value.GetVector3();
         }
 
-        public override void EnableTool(Binding<Vector2> originBinding)
+        public override void Enable(Binding<Vector2> originBinding)
         {
             if (this.IsEnabled)
-                this.DisableTool();
+                this.Disable();
 
             this.originBinding = originBinding;
             this.originBinding.ValueChanged += SetOriginPosition;            
@@ -94,7 +94,7 @@ namespace UIExtended
             this.IsEnabled = true;
         }
 
-        public override void DisableTool()
+        public override void Disable()
         {
             if (IsEnabled)
             {

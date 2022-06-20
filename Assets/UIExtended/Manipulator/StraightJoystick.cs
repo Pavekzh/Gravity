@@ -1,11 +1,11 @@
 ﻿using BasicTools;
-using System.Collections;
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace UIExtended
 {
-    public class StraightJoystick : InputManipulator
+    public class StraightJoystick : InputManipulator<float>
     {
         [SerializeField]
         private RectTransform positivePoint;
@@ -24,19 +24,19 @@ namespace UIExtended
         public Vector2 NegativePoint { get => negativePoint.position; }
         public Vector2 lineDirection { get => PositivePoint - NegativePoint; }
 
-        public override event InputReadingHandler InputReadingStarted;
-        public override event InputReadingHandler InputReadingStoped;
+        public override event Action InputReadingStarted;
+        public override event Action InputReadingStoped;
 
-        public override void DisableTool()
+        public override void Disable()
         {
             InputReadingStoped?.Invoke();
             isEnabled = false;
         }
 
-        public override void EnableTool(Binding<Vector2> originBinding)
+        public override void Enable(Binding<Vector2> originBinding)
         {
             if (isEnabled)
-                DisableTool();
+                Disable();
 
             isEnabled = true;
         }
@@ -59,7 +59,7 @@ namespace UIExtended
                 stick.position = pointOverLine;
                 Vector2 inputVector = pointOverLine - LineCenter;
 
-                InputBinding.ChangeValue(inputVector.GetVector3(), this);
+                InputBinding.ChangeValue(GetRangedFloatInput(inputVector), this);
             }
 
         }
@@ -78,7 +78,7 @@ namespace UIExtended
             if (returnStickToOrigin)
             {
                 stick.position = LineCenter;            
-                InputBinding.ChangeValue(Vector3.zero, this);
+                InputBinding.ChangeValue(0, this);
             }
 
         }

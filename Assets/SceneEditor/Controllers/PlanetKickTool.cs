@@ -8,13 +8,30 @@ namespace Assets.SceneEditor.Controllers
 {
     public class PlanetKickTool : ObjectTool
     {
-        [SerializeField] private InputManipulator inputManipulator;
         [SerializeField] private OutputManipulator outputManipulator;
 
-        private Binding<Vector3> inputBinding;
+        private VariableMagnitudeVectorJoystickSystem joystickSystem;
         private InputSystem inputSystem;
-        private PlanetController selectedPlanet { get => Services.PlanetSelectSystem.Instance.SelectedPlanet; }
-        private GravityModuleData selectedGravityInteractor { get => Services.PlanetSelectSystem.Instance.SelectedPlanet.PlanetData.GetModule<GravityModuleData>(GravityModuleData.Key); }
+        private PlanetController selectedPlanet;
+        private PlanetController SelectedPlanet 
+        { 
+            get
+            {
+                if (selectedPlanet == null)
+                    return SelectedPlanet = Services.PlanetSelectSystem.Instance.SelectedPlanet;
+                else
+                    return selectedPlanet;
+            }
+            set
+            {
+                selectedPlanet = value;
+                if (selectedPlanet != null)
+                    selectedGravityInteractor = selectedPlanet.PlanetData.GetModule<GravityModuleData>(GravityModuleData.Key);
+                else
+                    selectedGravityInteractor = null;
+            }
+        }
+        private GravityModuleData selectedGravityInteractor;
         private Binding<Vector2> velocityBinding;
 
         public override string DefaultKey { get => "PlanetKickTool"; }
@@ -24,87 +41,78 @@ namespace Assets.SceneEditor.Controllers
         protected override void Awake()
         {
             base.Awake();
-            EditorController.Instance.Camera.ZoomChanged += SceneZoomChanged;
-            inputManipulator.ScaleFactor = EditorController.Instance.Camera.ScaleFactor;
             Services.PlanetSelectSystem.Instance.SelectedPlanetChanged += SelectedPlanetChanged;
         }
 
-        private void SceneZoomChanged(float value, object sender)
-        {
-            inputManipulator.ScaleFactor = (sender as CameraModel).ScaleFactor;
-        }
 
         private void SelectedPlanetChanged(object sender, PlanetController planet)
-        {               
+        {
             if(planet != null)
-            { 
-                GravityModuleData gravityModuleData = planet.PlanetData.GetModule<GravityModuleData>(GravityModuleData.Key);
-
-                if(velocityBinding != null)
-                    velocityBinding.ValueChanged -= VelocityChanged;
-                velocityBinding = gravityModuleData.VelocityProperty.Binding;
-                velocityBinding.ValueChanged += VelocityChanged;
-
-                if (this.ToolSelectedAndWorking)
+            {
+                if (this.IsToolEnabled)
                 {
-                    inputManipulator.EnableTool(planet.PlanetData.GetModule<GravityModuleData>(GravityModuleData.Key).PositionProperty.Binding);
+                    if (selectedPlanet == null)
+                    {
+                        joystickSystem.EnableManipulator(inputSystem);
+                    }
+                    SelectedPlanet = planet;
+
                     outputManipulator.IsVisible = true;
-                    gravityModuleData.VelocityProperty.Binding.ForceUpdate();
+                    outputManipulator.UpdateManipulatorView(selectedGravityInteractor.Data.Position, selectedGravityInteractor.Data.Velocity, EditorController.Instance.Camera.ScaleFactor);
                 }
+                else
+                    SelectedPlanet = planet;
             }
             else
             {
-                inputManipulator.DisableTool();
-                outputManipulator.IsVisible = false;
+                SelectedPlanet = null;
+                if (IsToolEnabled)
+                {
+                    outputManipulator.IsVisible = false;
+                }
             }
         }
 
-        private void VelocityChanged(Vector2 value, object source)
+        protected override void DoDisable()
         {
-            if(ToolSelectedAndWorking && source != (object)this)
-                inputBinding.ChangeValue(ComputeInputVector(value.GetVector3()),source);
-        }
-
-        protected override void ForceDisableTool()
-        {
-
             if(inputSystem != null)
             {
-                inputManipulator.InputReadingStarted -= ManipulatorActivates;
-                inputManipulator.InputReadingStoped -= ManipulatorDeactivates;
-                inputManipulator.InputBinding.ValueChanged -= InputChanged;
+                joystickSystem.InputReadingStarted -= ManipulatorActivates;
+                joystickSystem.InputReadingStoped -= ManipulatorDeactivates;
+                joystickSystem.InputBinding.ValueChanged -= InputChanged;
 
             }
-            inputManipulator.DisableTool();
-            inputBinding = null;
+            joystickSystem.DisableManipulator();
             outputManipulator.IsVisible = false;
-            ToolSelectedAndWorking = false;            
-            base.ForceDisableTool();
+            IsToolEnabled = false;            
+            base.DoDisable();
         }
 
-        protected override void ForceEnableTool(InputSystem inputSystem)
-        {            
-            ToolSelectedAndWorking = true;
-            this.inputBinding = inputManipulator.InputBinding;
-            if(selectedPlanet != null)
-            {            
-                inputManipulator.EnableTool(selectedGravityInteractor.PositionProperty.Binding);
-                inputManipulator.InputReadingStarted += ManipulatorActivates;
-                inputManipulator.InputReadingStoped += ManipulatorDeactivates;
-                inputManipulator.InputBinding.ValueChanged += InputChanged;
+        protected override void DoEnable(InputSystem inputSystem)
+        {
+            IsToolEnabled = true;
+            this.joystickSystem = EditorController.Instance.ManipulatorsController.EnableManipulator<VariableMagnitudeVectorJoystickSystem>(VariableMagnitudeVectorJoystickSystem.DefaultKey);
+            joystickSystem.InputReadingStarted += ManipulatorActivates;
+            joystickSystem.InputReadingStoped += ManipulatorDeactivates;
+            joystickSystem.InputBinding.ValueChanged += InputChanged;
 
+            if (SelectedPlanet != null)
+            {            
                 outputManipulator.IsVisible = true;
-                selectedGravityInteractor.VelocityProperty.Binding.ForceUpdate();
+                outputManipulator.UpdateManipulatorView(selectedGravityInteractor.Data.Position, selectedGravityInteractor.Data.Velocity, EditorController.Instance.Camera.ScaleFactor);
             }
             this.inputSystem = inputSystem;
-            base.ForceEnableTool(inputSystem);
+            base.DoEnable(inputSystem);
         }
 
         private void InputChanged(Vector3 value, object source)
         {
             Vector3 outputVector = ComputeOutputVector(value);
-            selectedGravityInteractor.VelocityProperty.Binding.ChangeValue(outputVector.GetVectorXZ(),this);
-            outputManipulator.UpdateManipulatorView(selectedGravityInteractor.Position.GetVector3(), outputVector, EditorController.Instance.Camera.ScaleFactor);
+            if(selectedGravityInteractor != null)
+            {
+                selectedGravityInteractor.VelocityProperty.Binding.ChangeValue(outputVector.GetVectorXZ(), this);
+                outputManipulator.UpdateManipulatorView(selectedGravityInteractor.Position.GetVector3(), outputVector, EditorController.Instance.Camera.ScaleFactor);
+            }
         }
 
 

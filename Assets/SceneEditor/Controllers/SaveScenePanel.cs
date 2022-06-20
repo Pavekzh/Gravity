@@ -9,18 +9,19 @@ namespace Assets.SceneEditor.Controllers
         [SerializeField] private TMPro.TMP_InputField inputField;
         [SerializeField] private ShowElement visibleManager;
 
-        public override void Open()
+        protected override void DoOpen()
         {
             visibleManager.Show();
         }
 
-        public override void Close()
+        protected override void DoClose()
         {
             visibleManager.Hide();
         }
 
         public void Save()
         {
+            this.RestorablePanel = null;
             Assets.Services.SceneStateManager.Instance.SaveState(inputField.text);
             Close();
         }

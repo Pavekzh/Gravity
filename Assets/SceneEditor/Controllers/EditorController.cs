@@ -9,24 +9,43 @@ namespace Assets.SceneEditor.Controllers
     {
         [SerializeField] private new Assets.SceneEditor.Models.CameraModel camera;
         [SerializeField] private InputSystem inputSystem;
-        [SerializeField] private PanelController panel;
+
         [SerializeField] private ToolsController toolsController;
+        [SerializeField] private ManipulatorsController manipulatorsController;
 
-        public Models.CameraModel Camera { get => camera; set => camera = value; }
+        private PanelController panelToRestore;
+        private PanelController panel;
+
+        public Models.CameraModel Camera { get => camera; }
        
-        public ToolsController ToolsController { get => toolsController; set => toolsController = value; }
+        public ToolsController ToolsController { get => toolsController; }
+        public ManipulatorsController ManipulatorsController { get => manipulatorsController; }
 
-        public PanelController Panel
+
+        public void OpenPanel(PanelController panel)
         {
-            get => panel;
-            set
+            if(panel != this.panel && panel != null)
             {
-                if(panel != null)
-                    panel.Close();
+                if (this.panel != null)
+                {
+                    if (this.panel.RestorePanel)
+                        panel.RestorablePanel = this.panel;
+                    else if(this.panel.RestorablePanel != null)
+                    {
+                        panel.RestorablePanel = this.panel.RestorablePanel;
+                        this.panel.RestorablePanel = null;
+                    }
 
-                panel = value;
+
+                    this.panel.CloseWithoutRestore();
+                }
+                this.panel = panel;
             }
+        }
 
+        public void ClosePanel()
+        {
+            this.panel = null;
         }
 
         private void Start()
@@ -36,10 +55,11 @@ namespace Assets.SceneEditor.Controllers
                 Services.CommonMessagingSystem.Instance.ShowErrorMessage("Input system not set", this);
             }
 
-            inputSystem.OnUITouch += LockInputControl;
-            inputSystem.OnUIRelease += UnlockInputControl;
+            //inputSystem.OnUITouch += LockInputControl;
+            //inputSystem.OnUIRelease += UnlockInputControl;
 
             toolsController.InputSystem = this.inputSystem;
+            manipulatorsController.InputSystem = this.inputSystem;
         }
 
         private void LockInputControl()

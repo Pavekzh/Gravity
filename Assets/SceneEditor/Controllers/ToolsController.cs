@@ -13,6 +13,7 @@ namespace Assets.SceneEditor.Controllers
 
         private EditorTool sceneTool;
         private List<EditorTool> sceneManageTools = new List<EditorTool>();
+        private EditorTool objectTool;
 
         void Start()
         {
@@ -74,11 +75,11 @@ namespace Assets.SceneEditor.Controllers
                 return tool;
             }
             else
-                BasicTools.MessagingSystem.Instance.ShowErrorMessage("Tool was not found", this);
+                BasicTools.MessagingSystem.Instance.ShowErrorMessage("Tool " + key + " was not found", this);
             return null;
 
         }
 
-        private EditorTool objectTool;
+
     }
 }

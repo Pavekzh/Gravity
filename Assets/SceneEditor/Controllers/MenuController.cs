@@ -10,11 +10,19 @@ namespace Assets.SceneEditor.Controllers
         [SerializeField] LoadScenePanel loadScenePanel;
         [SerializeField] SaveScenePanel saveScenePanel;
 
+        protected bool restorePanel = false;
 
-        public override void Open()
+        public override bool RestorePanel => restorePanel;
+
+        protected override void DoOpen()
         {
-            EditorController.Instance.Panel = this;
+            restorePanel = false;
             visibleManager.Show();
+        }
+
+        protected override void DoClose()
+        {
+            visibleManager.Hide();
         }
 
         public void ChangeVisibleState()
@@ -25,11 +33,6 @@ namespace Assets.SceneEditor.Controllers
                 Close();
         }
 
-        public override void Close()
-        {
-            visibleManager.Hide();
-        }
-
         public void Save()
         {
             Assets.Services.SceneStateManager.Instance.SaveState();
@@ -37,13 +40,13 @@ namespace Assets.SceneEditor.Controllers
 
         public void SaveAs()
         {
-            EditorController.Instance.Panel = saveScenePanel;
+            this.restorePanel = true;
             saveScenePanel.Open();
         }
 
         public void Load()
         {
-            EditorController.Instance.Panel = loadScenePanel;
+            this.restorePanel = true;
             loadScenePanel.Open();
         }
 

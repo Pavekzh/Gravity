@@ -74,16 +74,14 @@ namespace Assets.SceneEditor.Controllers
             }
         }
 
-        public override void Close()
+        protected override void DoClose()
         {
             visibleManager.State = BasicTools.State.Default;
             userPlanetsPresenter.ClosePanel();
             presetsPresenter.ClosePanel();
         }
-
-        public override void Open()
+        protected override void DoOpen()
         {
-            EditorController.Instance.Panel = this;
             visibleManager.State = BasicTools.State.Changed;
             OpenTab(panelTab);
         }
@@ -122,7 +120,8 @@ namespace Assets.SceneEditor.Controllers
         private void BuildPlanet(PlanetData pData)
         {
             if(pData != null)
-            {                
+            {
+                this.RestorablePanel = null;
                 PlanetBuildTool buildTool = EditorController.Instance.ToolsController.EnableTool(PlanetBuildTool.StaticKey) as PlanetBuildTool;
                 buildTool.Build(pData);                
                 Close();

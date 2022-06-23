@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.SceneSimulation
 {
-    public class PlanetMaterialProvider
+    public class PlanetMaterialProvider:ICloneable
     {
         private const int textureResolution = 50;
         private Material loadedMaterial;
@@ -64,6 +64,12 @@ namespace Assets.SceneSimulation
         public Material GetMaterial()
         {
             return loadedMaterial;
+        }
+
+        public object Clone()
+        {
+            PlanetMaterialProvider materialProvider = new PlanetMaterialProvider(this.landGradient, this.waterGradient);
+            return materialProvider;
         }
     }
 }

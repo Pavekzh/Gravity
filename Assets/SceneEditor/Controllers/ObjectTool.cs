@@ -44,6 +44,7 @@ namespace Assets.SceneEditor.Controllers
             }
         }
 
+
         protected virtual void Awake()
         {
             if (toolsController == null)

@@ -132,8 +132,11 @@ namespace Assets.SceneEditor.Models
         }
         private void setPosition(Vector2 value,object sender)
         {
+
             if (sender != this)
+            {
                 this.data.Position = value;
+            }
         }
         private void setVelocity(Vector2 value, object sender)
         {

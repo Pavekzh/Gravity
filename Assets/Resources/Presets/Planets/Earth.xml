@@ -14,6 +14,7 @@
       </Velocity>
     </ModuleData>
     <ModuleData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="PlanetViewModuleData">
+      <ObjectScale>1.4</ObjectScale>
       <NoiseSettings>
         <Frequency>3</Frequency>
         <Lacunarity>7,45</Lacunarity>
@@ -27,7 +28,6 @@
         <MinValue>0,5</MinValue>
         <Strength>0,2</Strength>
       </NoiseSettings>
-      <PlanetRadius>1.6</PlanetRadius>
       <LandGradient>
         <colorKeys>
           <GradientColorKey>

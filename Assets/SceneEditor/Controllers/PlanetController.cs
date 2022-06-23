@@ -35,7 +35,7 @@ namespace Assets.SceneEditor.Controllers
             foreach(ModuleController controller in controllers)
             {
                 controller.CreateView(planetView, offset);
-                offset += controller.ModuleOffset + ValuesPanelTemplate.Instance.PropertiesMargin;
+                offset += controller.ModuleOffset;
             }
         }
 

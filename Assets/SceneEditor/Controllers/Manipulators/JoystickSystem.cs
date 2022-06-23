@@ -20,6 +20,11 @@ namespace Assets.SceneEditor.Controllers
         protected abstract void DoDisable();
         protected abstract void DoEnable();
 
+        private void OnDestroy()
+        {
+            DisableManipulator();
+        }
+
         public void DisableManipulator()
         {
 
@@ -44,20 +49,12 @@ namespace Assets.SceneEditor.Controllers
 
         protected sealed override void DoOpen()
         {
-            if (isEnabled)
-                visibleStateManager.State = BasicTools.State.Changed;
-            else
-                EnableManipulator(this.inputSystem);
+            visibleStateManager.State = BasicTools.State.Changed;
         }        
         
         protected sealed override void DoClose()
         {
-            if (isEnabled)
-            {
-                DisableManipulator();
-            }
-            else
-                visibleStateManager.State = BasicTools.State.Default;
+            visibleStateManager.State = BasicTools.State.Default;
         }
 
     }

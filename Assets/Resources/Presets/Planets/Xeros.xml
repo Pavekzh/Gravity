@@ -83,16 +83,16 @@
               <b>0.3068263</b>
               <a>1</a>
             </color>
-            <time>0</time>
+            <time>0.5382315</time>
           </GradientColorKey>
           <GradientColorKey>
             <color>
-              <r>0.2924528</r>
-              <g>0.289106816</g>
-              <b>0.288314342</b>
+              <r>0.6037736</r>
+              <g>0.417748123</g>
+              <b>0.236383051</b>
               <a>1</a>
             </color>
-            <time>0.720592</time>
+            <time>0.8294194</time>
           </GradientColorKey>
           <GradientColorKey>
             <color>
@@ -101,7 +101,16 @@
               <b>0.5575828</b>
               <a>1</a>
             </color>
-            <time>0.870588243</time>
+            <time>0.9000076</time>
+          </GradientColorKey>
+          <GradientColorKey>
+            <color>
+              <r>0.608193457</r>
+              <g>0.431266159</g>
+              <b>0.261463761</b>
+              <a>1</a>
+            </color>
+            <time>0.958831131</time>
           </GradientColorKey>
         </colorKeys>
         <alphaKeys>

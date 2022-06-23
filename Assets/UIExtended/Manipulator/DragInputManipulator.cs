@@ -8,6 +8,7 @@ namespace UIExtended
     {
         [SerializeField][Tooltip("Line object must be aligned along the z axis")] private MeshFilter line;
         [SerializeField][Tooltip("Object must be aligned along the z axis")] private MeshFilter touchPointer;
+        [SerializeField] private CombinedInteraction UIVisibleStateManager;
         [SerializeField] private Vector3 originPosition = Vector3.zero;
         [SerializeField] private float lineWidth = 1f;
         [SerializeField] private float manipulatorScale = 10f;
@@ -19,6 +20,36 @@ namespace UIExtended
         private bool isVisible;
         private Binding<Vector2> originBinding;
 
+        public Binding<Vector2> OriginBinding
+        {
+            get => originBinding;
+            set
+            {
+                if(originBinding == null && value != null)
+                {
+                    this.originBinding = value;
+                    this.originBinding.ValueChanged += SetOriginPosition;
+                    this.originBinding.ForceUpdate();
+                }
+                if(originBinding != null)
+                {               
+                    if(value == null)
+                    {
+                        this.originBinding.ValueChanged -= SetOriginPosition;
+                        this.originBinding = value;
+                    }
+                    else
+                    {
+                        this.originBinding.ValueChanged -= SetOriginPosition;
+                        this.originBinding = value;
+                        this.originBinding.ValueChanged += SetOriginPosition;
+                        this.originBinding.ForceUpdate();
+                        
+                    }
+                }
+
+            }
+        }
         public override event Action InputReadingStarted;
         public override event Action InputReadingStoped;
 
@@ -88,9 +119,8 @@ namespace UIExtended
             if (this.IsEnabled)
                 this.Disable();
 
-            this.originBinding = originBinding;
-            this.originBinding.ValueChanged += SetOriginPosition;            
-            originBinding.ForceUpdate();
+            UIVisibleStateManager.State = State.Changed;
+            OriginBinding = originBinding;       
             this.IsEnabled = true;
         }
 
@@ -98,8 +128,8 @@ namespace UIExtended
         {
             if (IsEnabled)
             {
-                this.originBinding.ValueChanged -= SetOriginPosition;                
-                this.originBinding = null;
+                UIVisibleStateManager.State = State.Default;
+                OriginBinding = null;
                 this.isManipulatorActive = false;
                 this.IsEnabled = false;
             }

@@ -6,10 +6,10 @@ using Assets.SceneEditor.Models;
 
 public abstract class ViewModuleScriptableObject : ScriptableObject
 {
-    public abstract IViewModuleData CreateModuleData();
-    protected abstract void UpdateViewModule(IViewModuleData moduleData);
+    public abstract ViewModuleData CreateModuleData();
+    protected abstract void UpdateViewModule(ViewModuleData moduleData);
 
-    public void UpdateModule(IViewModuleData moduleData)
+    public void UpdateModule(ViewModuleData moduleData)
     {
         this.UpdateViewModule(moduleData);
         moduleData.UpdateView();

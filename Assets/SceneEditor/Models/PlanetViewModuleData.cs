@@ -10,7 +10,7 @@ using System.Xml;
 
 namespace Assets.SceneEditor.Models
 {
-    public class PlanetViewModuleData : ModuleData,IViewModuleData
+    public class PlanetViewModuleData : ViewModuleData
     {
         public NoiseSettings NoiseSettings
         {
@@ -23,15 +23,6 @@ namespace Assets.SceneEditor.Models
                 this.noiseSetsBinding.ChangeValue(value,this);
             }
         } 
-        public float PlanetRadius 
-        {
-            get { return planetRadius; }
-            set
-            {                
-                this.planetRadius = value;
-                this.ScaleBinding.ChangeValue(value, this);
-            }
-        }
         public Gradient LandGradient
         {
             get { return landGradient; }
@@ -52,7 +43,6 @@ namespace Assets.SceneEditor.Models
         }
         public Mesh GeneratedMesh { get; set; } = new Mesh();
 
-        protected float planetRadius = 1;
         private Gradient landGradient;
         private Gradient waterGradient;
         private NoiseSettings noiseSettings = new NoiseSettings();
@@ -86,10 +76,6 @@ namespace Assets.SceneEditor.Models
         
         }
 
-        public static string Key = "PlanetView";
-
-        [XmlIgnore]
-        public Binding<float> ScaleBinding { get; private set; }
         [XmlIgnore]
         public Binding<NoiseSettings> noiseSetsBinding { get; private set; }
 
@@ -98,11 +84,9 @@ namespace Assets.SceneEditor.Models
         public override string Name => Key;
         [XmlIgnore]
         public override PlanetData Planet { get; set; }
-        public Binding<Mesh> MeshBinding { get; } = new Binding<Mesh>();
-        public Binding<Material> MaterialBinding { get; } = new Binding<Material>();
 
         public PlanetViewModuleData():base()
-        {
+        {            
             ConvertibleBinding<NoiseSettings,string[]> noiseSetsBinding = new BasicTools.ConvertibleBinding<NoiseSettings, string[]>(new NoiseSetsStringConverter());
             this.noiseSetsBinding = noiseSetsBinding;
             noiseSetsBinding.ValueChanged += setNoiseSetsBinding; 
@@ -111,14 +95,6 @@ namespace Assets.SceneEditor.Models
             noiseSettingsProperty.Name = "Relief settings";
             noiseSettingsProperty.Components = new string[] {"Scale","Lacunarity","Persistence","OffsetX","OffsetY","OffsetZ","Octaves","LowLevel","Strength" };
             Properties.Add(noiseSettingsProperty);
-
-            ConvertibleBinding<float,string[]> radiusBinding = new BasicTools.ConvertibleBinding<float, string[]>(new FloatStringConverter());
-            this.ScaleBinding = radiusBinding;
-            radiusBinding.ValueChanged += setRadius;
-            CommonPropertyViewData<float> radiusProperty = new CommonPropertyViewData<float>();
-            radiusProperty.Binding = radiusBinding;
-            radiusProperty.Name = "Radius";
-            Properties.Add(radiusProperty);
         }
 
         private void setNoiseSetsBinding(NoiseSettings value, object source)
@@ -131,18 +107,16 @@ namespace Assets.SceneEditor.Models
             }
         }
 
-        protected void setRadius(float value, object source)
-        {
-            if(source != this && value != this.planetRadius)
-            {
-                this.planetRadius = value;
-                UpdateView();
-            }
-        }
-
         public override object Clone()
         {
-            PlanetViewModuleData moduleData = (PlanetViewModuleData)this.MemberwiseClone();
+            PlanetViewModuleData moduleData = new PlanetViewModuleData();
+            moduleData.meshProvider = this.meshProvider.Clone() as PlanetMeshProvider;
+            moduleData.materialProvider = this.materialProvider.Clone() as PlanetMaterialProvider;
+            moduleData.LandGradient = this.LandGradient;
+            moduleData.WaterGradient = this.WaterGradient;
+            moduleData.NoiseSettings = this.NoiseSettings;
+            moduleData.ObjectScale = this.ObjectScale;
+            moduleData.UpdateView();
             return moduleData;
         }
 
@@ -157,7 +131,7 @@ namespace Assets.SceneEditor.Models
             UpdateView();
         }        
         
-        public void UpdateView()
+        public override void UpdateView()
         {
             MeshBinding.ChangeValue(MeshProvider.GetMesh(), this);
             MaterialProvider.UpdateMinMax(new Vector2(PlanetShapeGenerator.ElevationMinMax.Min, PlanetShapeGenerator.ElevationMinMax.Max));

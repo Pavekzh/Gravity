@@ -5,7 +5,7 @@ using BasicTools;
 namespace Assets.SceneSimulation
 {
     [Serializable]
-    public class PlanetMeshProvider
+    public class PlanetMeshProvider:ICloneable
     {
         public NoiseSettings NoiseSettings 
         {
@@ -71,6 +71,12 @@ namespace Assets.SceneSimulation
             this.planetMesh = resultMesh;
             this.isSavedMeshValid = true;
             return resultMesh;
+        }
+
+        public object Clone()
+        {
+            PlanetMeshProvider meshProvider = new PlanetMeshProvider(this.planetMesh, this.noiseSettings, this.PlanetRadius);
+            return meshProvider;
         }
     }
 }

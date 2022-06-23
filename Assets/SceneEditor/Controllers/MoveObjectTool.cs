@@ -46,10 +46,13 @@ namespace Assets.SceneEditor.Controllers
             base.Awake();
             Services.PlanetSelectSystem.Instance.SelectedPlanetChanged += selectedObjectChanged;
         }
+
         protected void FixedUpdate()
         {
-            if (joystickInput != Vector2.zero)
-                selectedGravity.PositionProperty.Binding.ChangeValue(selectedGravity.Data.Position + (joystickInput * moveSpeed),this);
+            if (IsToolEnabled && joystickInput != Vector2.zero)
+            {
+                selectedGravity.PositionProperty.Binding.ChangeValue(selectedGravity.Data.Position + (joystickInput * moveSpeed), this);
+            }
         }
 
         private void selectedObjectChanged(object sender, PlanetController planet)

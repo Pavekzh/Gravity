@@ -22,10 +22,10 @@ public class PlanetViewScriptableObject : ViewModuleScriptableObject
     public Gradient LandGradient { get => landGradient; set => landGradient = value; }
     public Gradient WaterGradient { get => waterGradient; set => waterGradient = value; }
 
-    public override IViewModuleData CreateModuleData()
+    public override ViewModuleData CreateModuleData()
     {
         PlanetViewModuleData modData = new PlanetViewModuleData();
-        modData.PlanetRadius = PlanetRadius;
+        modData.ObjectScale = PlanetRadius;
         modData.NoiseSettings = new NoiseSettings(NoiseSettings);
         modData.WaterGradient = WaterGradient;
         modData.LandGradient = LandGradient;
@@ -33,14 +33,14 @@ public class PlanetViewScriptableObject : ViewModuleScriptableObject
         return modData;
     }
 
-    protected override void UpdateViewModule(IViewModuleData moduleData)
+    protected override void UpdateViewModule(ViewModuleData moduleData)
     {
         PlanetViewModuleData data = moduleData as PlanetViewModuleData;
         if(data == null)
             data = this.CreateModuleData() as PlanetViewModuleData;
 
         else
-            if (this.planetRadius != data.PlanetRadius) data.PlanetRadius = this.planetRadius;
+            if (this.planetRadius != data.ObjectScale) data.ObjectScale = this.planetRadius;
             if (!this.noiseSettings.Equals(data.NoiseSettings)) data.NoiseSettings = new NoiseSettings(this.noiseSettings);
             if (!this.landGradient.Equals(data.LandGradient)) data.LandGradient = this.landGradient;
             if (!this.waterGradient.Equals(data.WaterGradient)) data.WaterGradient = this.waterGradient;

@@ -51,10 +51,6 @@ namespace Assets.SceneEditor.Controllers
             {
                 if (this.IsToolEnabled)
                 {
-                    if (selectedPlanet == null)
-                    {
-                        joystickSystem.EnableManipulator(inputSystem);
-                    }
                     SelectedPlanet = planet;
 
                     outputManipulator.IsVisible = true;

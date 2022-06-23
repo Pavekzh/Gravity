@@ -14,6 +14,7 @@
       </Velocity>
     </ModuleData>
     <ModuleData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="PlanetViewModuleData">
+      <ObjectScale>1.4</ObjectScale>
       <NoiseSettings>
         <Frequency>3</Frequency>
         <Lacunarity>7,45</Lacunarity>
@@ -27,7 +28,6 @@
         <MinValue>0,5</MinValue>
         <Strength>0,15</Strength>
       </NoiseSettings>
-      <PlanetRadius>1.6</PlanetRadius>
       <LandGradient>
         <colorKeys>
           <GradientColorKey>
@@ -105,12 +105,21 @@
         <colorKeys>
           <GradientColorKey>
             <color>
+              <r>0.343125045</r>
+              <g>0.2959238</g>
+              <b>0.4716981</b>
+              <a>1</a>
+            </color>
+            <time>0.476478219</time>
+          </GradientColorKey>
+          <GradientColorKey>
+            <color>
               <r>0.3584906</r>
               <g>0.221520126</g>
               <b>0.340461761</b>
               <a>1</a>
             </color>
-            <time>0.117647059</time>
+            <time>0.5382315</time>
           </GradientColorKey>
           <GradientColorKey>
             <color>
@@ -119,7 +128,7 @@
               <b>0.6981132</b>
               <a>1</a>
             </color>
-            <time>0.7882353</time>
+            <time>0.6147097</time>
           </GradientColorKey>
           <GradientColorKey>
             <color>

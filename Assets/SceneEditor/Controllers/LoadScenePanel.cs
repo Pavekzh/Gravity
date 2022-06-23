@@ -35,7 +35,11 @@ namespace Assets.SceneEditor.Controllers
             if(fileName != "")
             {
                 Assets.Services.SceneStateManager.Instance.Load(fileName);
-                this.RestorablePanel = null;
+
+                PanelController panelBeforeMenu = RestorablePanel.RestorablePanel;                
+                this.RestorablePanel.RestorablePanel = null;
+                this.RestorablePanel = panelBeforeMenu;
+                
                 Close();
             }
         }

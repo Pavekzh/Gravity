@@ -18,12 +18,12 @@ namespace Assets.SceneSimulation
 
         private MeshFilter meshFilter;
         private MeshRenderer meshRenderer;
-        private IViewModuleData moduleData;
+        private ViewModuleData moduleData;
 
         public bool AutoUpdate { get => autoUpdate; }
         public bool SettingsFoldout { get; set; } = true;
         public ViewModuleScriptableObject SettingsObject { get => settingsObject; set => settingsObject = value; }
-        public IViewModuleData ModuleData 
+        public ViewModuleData ModuleData 
         { 
             get
             {
@@ -98,7 +98,7 @@ namespace Assets.SceneSimulation
 
         public override ModuleData InstatiateModuleData()
         {
-            return ModuleData.GetModuleData();
+            return ModuleData;
         }
 
         private void setMesh(Mesh mesh,object sender)

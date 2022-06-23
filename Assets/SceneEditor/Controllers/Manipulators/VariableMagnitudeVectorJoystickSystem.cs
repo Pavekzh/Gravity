@@ -101,7 +101,7 @@ namespace Assets.SceneEditor.Controllers
         private void RoundJoystickInputChanged(Vector3 value, object source)
         {
             if (isEnabled && source != (object)this)
-            {            
+            {
                 roundJoystickInput = value.GetVectorXZ().normalized * (value.magnitude / roundJoystick.SpaceRadius);
                 Vector2 resultVector = roundJoystickInput * ResultVectorMagnitudeRange;
                 InputBinding.ChangeValue(resultVector.GetVector3(), this);

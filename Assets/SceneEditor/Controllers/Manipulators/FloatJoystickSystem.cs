@@ -34,12 +34,22 @@ namespace Assets.SceneEditor.Controllers
             }
         }
 
+        protected float input;
+
         protected virtual void Start()
         {
             if (manipulatorName != "")
                 EditorController.Instance.ManipulatorsController.Manipulators.Add(manipulatorName, this);
             else
                 EditorController.Instance.ManipulatorsController.Manipulators.Add(DefaultKey, this);
+        }
+
+        protected virtual void FixedUpdate()
+        {
+            if(isEnabled && !Mathf.Approximately(input, 0))
+            {
+                InputBinding.ChangeValue(input,this);
+            }
         }
 
         protected override void DoDisable()
@@ -56,7 +66,7 @@ namespace Assets.SceneEditor.Controllers
 
         protected virtual void joystickInput(float value, object source)
         {
-            this.InputBinding.ChangeValue(value,this);
+            this.input = value;
         }
     }
 }

@@ -61,14 +61,6 @@ namespace Assets.SceneEditor.Controllers
             }
         }
 
-        private void FixedUpdate()
-        {                
-            if (IsToolEnabled && !Mathf.Approximately(joystickInput, 0))
-            {
-                selectedView.ScaleBinding.ChangeValue(selectedView.ObjectScale + selectedView.ObjectScale * joystickInput * scaleSpeed,this);
-                joystick.InputBinding.ChangeValue(selectedView.ObjectScale, this);
-            }
-        }
 
         protected override void DoDisable()
         {            
@@ -113,15 +105,19 @@ namespace Assets.SceneEditor.Controllers
 
         private void input(float value, object source)
         {
-            if (source != (System.Object)this && SelectedObject != null)
+
+            if (IsToolEnabled && source != (System.Object)this && SelectedObject != null)
             {
-                
                 if (dragging)
                 {
                     selectedView.ScaleBinding.ChangeValue(value,this);
                 }
                 else
-                    joystickInput = value;
+                {
+                    selectedView.ScaleBinding.ChangeValue(selectedView.ObjectScale + selectedView.ObjectScale * value * scaleSpeed, this);
+                    joystick.InputBinding.ChangeValue(selectedView.ObjectScale, this);
+                }
+
             }
 
         }

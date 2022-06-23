@@ -12,7 +12,6 @@ namespace Assets.SceneEditor.Controllers
         [SerializeField] bool useRelativeTouchScale;
         [SerializeField] float touchRelativeScale = 0.1f;
 
-
         public new static string DefaultKey => "ScaleManipulator";
 
         public event Action DragInputStarted
@@ -73,10 +72,13 @@ namespace Assets.SceneEditor.Controllers
             this.InputBinding.ValueChanged += exteranlValueChanged;
         }
 
+        private float savedValue;
+
         private void exteranlValueChanged(float value, object source)
         {
             if(source != (System.Object)this && OriginBiding != null)
             {
+                savedValue = value + dragTouchDistance;
                 inputDetector.InputBinding.ChangeValue(new Vector3(0,0,value + dragTouchDistance), this);
             }
         }
@@ -86,6 +88,7 @@ namespace Assets.SceneEditor.Controllers
             if(isEnabled && InputBinding != null)
             {        
                 inputDetector.ScaleFactor = EditorController.Instance.Camera.ScaleFactor;
+                inputDetector.UpdateView(new Vector3(0, 0, savedValue), this);
             }
         }
 
@@ -103,7 +106,11 @@ namespace Assets.SceneEditor.Controllers
         private void dragInput(Vector3 value, object source)
         {
             if(source != (System.Object)this)
+            {
+                savedValue = value.magnitude;
                 this.InputBinding.ChangeValue(value.magnitude - dragTouchDistance, this);
+            }
+                
         }
 
         private void enableDragInput()

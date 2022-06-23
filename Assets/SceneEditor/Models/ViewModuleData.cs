@@ -9,6 +9,7 @@ namespace Assets.SceneEditor.Models
     {
         protected float objectScale = 1;
 
+        private const float MinRadius = 0.5f;
         public static string Key = "ViewModule";
 
         public float ObjectScale
@@ -34,10 +35,25 @@ namespace Assets.SceneEditor.Models
             ConvertibleBinding<float, string[]> radiusBinding = new BasicTools.ConvertibleBinding<float, string[]>(new FloatStringConverter());
             this.ScaleBinding = radiusBinding;
             radiusBinding.ValueChanged += setRadius;
+            radiusBinding.ValidateValue += validateRadius;
             CommonPropertyViewData<float> radiusProperty = new CommonPropertyViewData<float>();
             radiusProperty.Binding = radiusBinding;
             radiusProperty.Name = "Radius";
             Properties.Add(radiusProperty);
+        }
+
+        private bool validateRadius(float value, object source)
+        {
+
+            if(value >= MinRadius)
+            {
+                return true;
+            }
+            else
+            {
+                ScaleBinding.ChangeValue(MinRadius, this);
+                return false;
+            }
         }
 
         protected virtual void setRadius(float value, object source)

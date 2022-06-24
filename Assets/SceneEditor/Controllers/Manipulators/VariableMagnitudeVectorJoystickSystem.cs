@@ -26,12 +26,12 @@ namespace Assets.SceneEditor.Controllers
 
         public override bool RestorePanel => true;
 
-
         protected override void DoDisable()
         {
             roundJoystick.InputBinding.ValueChanged -= RoundJoystickInputChanged;
             roundJoystick.InputReadingStoped -= RoundJoystickDown;
             roundJoystick.InputReadingStoped -= RoundJoystickUp;
+
 
             straightJoystick.InputBinding.ValueChanged -= StraightJoystickInputChanged;
             straightJoystick.InputReadingStoped -= StraightJoystickUp;
@@ -47,6 +47,7 @@ namespace Assets.SceneEditor.Controllers
             roundJoystick.InputBinding.ValueChanged += RoundJoystickInputChanged;
             roundJoystick.InputReadingStoped += RoundJoystickDown;
             roundJoystick.InputReadingStoped += RoundJoystickUp;
+            roundJoystick.ReturnStickToOrigin = false;
 
             straightJoystick.InputBinding.ValueChanged += StraightJoystickInputChanged;
             straightJoystick.InputReadingStoped += StraightJoystickUp;

@@ -15,7 +15,6 @@ namespace Assets.SceneEditor.Controllers
         protected bool touchReading = false;
         protected GravityModuleData selectedGravity;
         protected PlanetController selectedObject;
-        protected Vector2 joystickInput;
 
         protected PlanetController SelectedObject
         {
@@ -47,14 +46,6 @@ namespace Assets.SceneEditor.Controllers
             Services.PlanetSelectSystem.Instance.SelectedPlanetChanged += selectedObjectChanged;
         }
 
-        protected void FixedUpdate()
-        {
-            if (IsToolEnabled && joystickInput != Vector2.zero)
-            {
-                selectedGravity.PositionProperty.Binding.ChangeValue(selectedGravity.Data.Position + (joystickInput * moveSpeed), this);
-            }
-        }
-
         private void selectedObjectChanged(object sender, PlanetController planet)
         {
             SelectedObject = planet;
@@ -72,7 +63,6 @@ namespace Assets.SceneEditor.Controllers
             }else
             {
                 joystickSystem.InputBinding.ValueChanged -= JoystickInput;
-                joystickSystem.JoystickInputReadingEnded -= JoystickUp;
             }
 
 
@@ -88,21 +78,14 @@ namespace Assets.SceneEditor.Controllers
         {
             joystickSystem = EditorController.Instance.ManipulatorsController.EnableManipulator<PositioningJoystickSystem>(PositioningJoystickSystem.DefaultKey);
             joystickSystem.InputBinding.ValueChanged += JoystickInput;
-            joystickSystem.JoystickInputReadingEnded += JoystickUp;
             joystickSystem.TouchInputReadingStarted += TouchInputEnabled;
             joystickSystem.TouchInputReadingEnded += TouchInputDisabled;
             base.DoEnable(inputSystem);
         }
 
-        private void JoystickUp()
-        {
-            joystickInput = Vector2.zero;
-        }
-
         private void TouchInputDisabled()
         {
             joystickSystem.InputBinding.ValueChanged += JoystickInput;            
-            joystickSystem.JoystickInputReadingEnded += JoystickUp;
   
             joystickSystem.InputBinding.ValueChanged -= TouchInput;
             touchReading = false;
@@ -114,7 +97,6 @@ namespace Assets.SceneEditor.Controllers
         private void TouchInputEnabled()
         {
             joystickSystem.InputBinding.ValueChanged -= JoystickInput;
-            joystickSystem.JoystickInputReadingEnded -= JoystickUp;
 
             joystickSystem.InputBinding.ValueChanged += TouchInput;
             touchReading = true;
@@ -132,7 +114,7 @@ namespace Assets.SceneEditor.Controllers
         private void JoystickInput(Vector3 value, object source)
         {
             if(selectedObject != null)
-                joystickInput = -value.GetVectorXZ();
+                selectedGravity.PositionProperty.Binding.ChangeValue( selectedGravity.Data.Position - (value.GetVectorXZ() * moveSpeed), this);
         }
 
 

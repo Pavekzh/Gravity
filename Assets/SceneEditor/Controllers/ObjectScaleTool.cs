@@ -13,7 +13,6 @@ namespace Assets.SceneEditor.Controllers
         protected ScaleManipulator joystick;
         protected PlanetController selectedObject;
         protected ViewModuleData selectedView;
-        protected float joystickInput;
         protected bool dragging;
 
         protected PlanetController SelectedObject
@@ -65,7 +64,6 @@ namespace Assets.SceneEditor.Controllers
         protected override void DoDisable()
         {            
             joystick.InputBinding.ValueChanged -= input;
-            joystick.JoystickInputReadingStoped -= joystickInputStoped;
             joystick.DragInputStarted -= dragStarted;
             joystick.DragInputEnded -= dragEnded;
             joystick.DisableManipulator();
@@ -79,7 +77,6 @@ namespace Assets.SceneEditor.Controllers
             joystick.DragInputStarted += dragStarted;
             joystick.DragInputEnded += dragEnded;
             joystick.InputBinding.ValueChanged += input;
-            joystick.JoystickInputReadingStoped += joystickInputStoped;
             base.DoEnable(inputSystem);
         }
 
@@ -94,13 +91,7 @@ namespace Assets.SceneEditor.Controllers
         {
             EditorController.Instance.ToolsController.DisableSceneControl();
             Services.PlanetSelectSystem.Instance.LockSelection();
-            joystickInputStoped();
             dragging = true;
-        }
-
-        private void joystickInputStoped()
-        {
-            joystickInput = 0;
         }
 
         private void input(float value, object source)

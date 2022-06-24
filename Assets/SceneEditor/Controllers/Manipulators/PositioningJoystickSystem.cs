@@ -12,6 +12,8 @@ namespace Assets.SceneEditor.Controllers
 
         public override bool RestorePanel => true;
 
+        private Vector3 input;
+
         public event Action JoystickInputReadingStarted
         {
             add
@@ -58,6 +60,14 @@ namespace Assets.SceneEditor.Controllers
                 EditorController.Instance.ManipulatorsController.Manipulators.Add(DefaultKey, this);
         }
 
+        protected void FixedUpdate()
+        {
+            if(isEnabled && input != Vector3.zero)
+            {
+                InputBinding.ChangeValue(input, this);
+            }
+        }
+
         protected override void DoDisable()
         {
             roundJoystick.InputBinding.ValueChanged -= JoystickTouch;
@@ -71,7 +81,9 @@ namespace Assets.SceneEditor.Controllers
         {
             roundJoystick.InputBinding.ValueChanged += JoystickTouch;
             roundJoystick.Enable(null);
+            roundJoystick.ReturnStickToOrigin = true;
         }
+
 
         public void EnableTouchPositioning()
         {
@@ -113,7 +125,7 @@ namespace Assets.SceneEditor.Controllers
 
         private void JoystickTouch(Vector3 value, object source)
         {
-            InputBinding.ChangeValue((value.GetVectorXZ().normalized * (value.magnitude / roundJoystick.SpaceRadius)).GetVector3(), this);
+            input = (value.GetVectorXZ().normalized * (value.magnitude / roundJoystick.SpaceRadius)).GetVector3();
         }
     }
 }

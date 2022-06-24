@@ -51,6 +51,7 @@ namespace UIExtended
 
         public override void Disable()
         {
+            InputBindingChanged(Vector3.zero, null);
             InputReadingStoped?.Invoke();
             isEnabled = false;
         }
@@ -91,8 +92,12 @@ namespace UIExtended
         {
             if(isEnabled)
                 InputReadingStoped?.Invoke();
-            if(returnStickToOrigin)
+            if (returnStickToOrigin)
+            {
                 stick.position = rectTransform.position;
+                InputBinding.ChangeValue(Vector3.zero, this);
+            }
+
 
             IsTouched = false;
         }

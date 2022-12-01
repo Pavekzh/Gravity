@@ -1,6 +1,7 @@
 ﻿using BasicTools;
 using UnityEngine;
 using Assets.SceneEditor.Models;
+using UIExtended;
 
 namespace Assets.SceneEditor.Controllers
 {
@@ -69,7 +70,6 @@ namespace Assets.SceneEditor.Controllers
             joystickSystem.DisableManipulator();
             joystickSystem.TouchInputReadingStarted -= TouchInputEnabled;
             joystickSystem.TouchInputReadingEnded -= TouchInputDisabled;
-
 
             base.DoDisable();
         }

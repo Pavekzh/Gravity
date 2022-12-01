@@ -48,6 +48,7 @@ namespace Assets.SceneEditor.Models
         private NoiseSettings noiseSettings = new NoiseSettings();
         private PlanetMeshProvider meshProvider;
         private PlanetMaterialProvider materialProvider;
+        private ViewDefinitionModule viewModule;
 
         public PlanetMeshProvider MeshProvider 
         { 
@@ -81,7 +82,6 @@ namespace Assets.SceneEditor.Models
 
         [XmlIgnore]
         public override List<PropertyViewData> Properties { get; } = new List<PropertyViewData>();
-        public override string Name => Key;
         [XmlIgnore]
         public override PlanetData Planet { get; set; }
 
@@ -122,7 +122,7 @@ namespace Assets.SceneEditor.Models
 
         public override void CreateModule(GameObject sceneObject)
         {
-            ViewDefinitionModule viewModule = sceneObject.AddComponent<ViewDefinitionModule>();
+            viewModule = sceneObject.AddComponent<ViewDefinitionModule>();
             viewModule.ModuleData = this;
         }
 
@@ -141,6 +141,16 @@ namespace Assets.SceneEditor.Models
         public ModuleData GetModuleData()
         {
             return this;
+        }
+
+        public override void DisableView()
+        {
+            viewModule.DisableView();
+        }
+
+        public override void EnableView()
+        {
+            viewModule.EnableView();
         }
     }
 }

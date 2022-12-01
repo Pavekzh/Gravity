@@ -50,15 +50,8 @@ namespace Assets.SceneEditor.Controllers
             }
         }
 
+        public override string ManipulatorKey => DefaultKey;
         public static string DefaultKey => "PositioningJoystickSystem";
-
-        protected void Start()
-        {
-            if (ManipulatorKey != "")
-                EditorController.Instance.ManipulatorsController.Manipulators.Add(ManipulatorKey, this);
-            else
-                EditorController.Instance.ManipulatorsController.Manipulators.Add(DefaultKey, this);
-        }
 
         protected void FixedUpdate()
         {

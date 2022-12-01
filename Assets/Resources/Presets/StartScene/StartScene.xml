@@ -6,7 +6,7 @@
       <SceneObjectBuilder xsi:type="DefaultSceneObjectBuilder" />
       <Modules>
         <ModuleData xsi:type="GravityModuleData">
-          <Mass>100</Mass>
+          <Mass>10</Mass>
           <Position>
             <x>0</x>
             <y>0</y>
@@ -123,6 +123,8 @@
             <name />
             <hideFlags>None</hideFlags>
             <indexFormat>UInt16</indexFormat>
+            <vertexBufferTarget>Vertex</vertexBufferTarget>
+            <indexBufferTarget>Index</indexBufferTarget>
             <bindposes />
             <subMeshCount>1</subMeshCount>
             <bounds>
@@ -332,6 +334,8 @@
             <name />
             <hideFlags>None</hideFlags>
             <indexFormat>UInt16</indexFormat>
+            <vertexBufferTarget>Vertex</vertexBufferTarget>
+            <indexBufferTarget>Index</indexBufferTarget>
             <bindposes />
             <subMeshCount>1</subMeshCount>
             <bounds>
@@ -457,12 +461,12 @@
               </GradientColorKey>
               <GradientColorKey>
                 <color>
-                  <r>0.6037736</r>
-                  <g>0.417748123</g>
-                  <b>0.236383051</b>
+                  <r>0.7735849</r>
+                  <g>0.501735449</g>
+                  <b>0.22988607</b>
                   <a>1</a>
                 </color>
-                <time>0.8294194</time>
+                <time>0.6882429</time>
               </GradientColorKey>
               <GradientColorKey>
                 <color>
@@ -471,16 +475,16 @@
                   <b>0.5575828</b>
                   <a>1</a>
                 </color>
-                <time>0.9000076</time>
+                <time>0.7323567</time>
               </GradientColorKey>
               <GradientColorKey>
                 <color>
-                  <r>0.608193457</r>
-                  <g>0.431266159</g>
-                  <b>0.261463761</b>
+                  <r>0.6792453</r>
+                  <g>0.263181418</g>
+                  <b>0.240299046</b>
                   <a>1</a>
                 </color>
-                <time>0.958831131</time>
+                <time>0.7882353</time>
               </GradientColorKey>
             </colorKeys>
             <alphaKeys>
@@ -499,6 +503,8 @@
             <name />
             <hideFlags>None</hideFlags>
             <indexFormat>UInt16</indexFormat>
+            <vertexBufferTarget>Vertex</vertexBufferTarget>
+            <indexBufferTarget>Index</indexBufferTarget>
             <bindposes />
             <subMeshCount>1</subMeshCount>
             <bounds>
@@ -562,7 +568,7 @@
       <SceneObjectBuilder xsi:type="DefaultSceneObjectBuilder" />
       <Modules>
         <ModuleData xsi:type="PlanetViewModuleData">
-          <ObjectScale>1.4</ObjectScale>
+          <ObjectScale>1.6</ObjectScale>
           <NoiseSettings>
             <Frequency>3</Frequency>
             <Lacunarity>7,45</Lacunarity>
@@ -612,7 +618,16 @@
                   <b>0.432315737</b>
                   <a>1</a>
                 </color>
-                <time>0.323537052</time>
+                <time>0.2264744</time>
+              </GradientColorKey>
+              <GradientColorKey>
+                <color>
+                  <r>0.5283019</r>
+                  <g>0.23447977</g>
+                  <b>0.196867213</b>
+                  <a>1</a>
+                </color>
+                <time>0.329411775</time>
               </GradientColorKey>
               <GradientColorKey>
                 <color>
@@ -621,7 +636,7 @@
                   <b>0.46226418</b>
                   <a>1</a>
                 </color>
-                <time>0.361760885</time>
+                <time>0.476478219</time>
               </GradientColorKey>
               <GradientColorKey>
                 <color>
@@ -667,16 +682,16 @@
                   <b>0.4339623</b>
                   <a>1</a>
                 </color>
-                <time>0.4617685</time>
+                <time>0.179415584</time>
               </GradientColorKey>
               <GradientColorKey>
                 <color>
-                  <r>0.195888221</r>
-                  <g>0.323112279</g>
-                  <b>0.5849056</b>
+                  <r>0.253426462</r>
+                  <g>0.375818163</g>
+                  <b>0.6320754</b>
                   <a>1</a>
                 </color>
-                <time>0.60294497</time>
+                <time>0.7882353</time>
               </GradientColorKey>
               <GradientColorKey>
                 <color>
@@ -685,7 +700,7 @@
                   <b>0.8490566</b>
                   <a>1</a>
                 </color>
-                <time>0.9852903</time>
+                <time>0.9499962</time>
               </GradientColorKey>
               <GradientColorKey>
                 <color>
@@ -717,6 +732,8 @@
             <name />
             <hideFlags>None</hideFlags>
             <indexFormat>UInt16</indexFormat>
+            <vertexBufferTarget>Vertex</vertexBufferTarget>
+            <indexBufferTarget>Index</indexBufferTarget>
             <bindposes />
             <subMeshCount>1</subMeshCount>
             <bounds>
@@ -893,6 +910,8 @@
             <name />
             <hideFlags>None</hideFlags>
             <indexFormat>UInt16</indexFormat>
+            <vertexBufferTarget>Vertex</vertexBufferTarget>
+            <indexBufferTarget>Index</indexBufferTarget>
             <bindposes />
             <subMeshCount>1</subMeshCount>
             <bounds>
@@ -1111,6 +1130,8 @@
             <name />
             <hideFlags>None</hideFlags>
             <indexFormat>UInt16</indexFormat>
+            <vertexBufferTarget>Vertex</vertexBufferTarget>
+            <indexBufferTarget>Index</indexBufferTarget>
             <bindposes />
             <subMeshCount>1</subMeshCount>
             <bounds>

@@ -1,19 +1,36 @@
 ﻿using Assets.SceneEditor.Models;
+using BasicTools;
 using UnityEngine;
 
 namespace Assets.SceneEditor.Controllers
 {
     public class ObjectScaleTool : ObjectTool
     {
-        [SerializeField] float scaleSpeed;
-
         public override string DefaultKey => "ScaleTool";
         public override string ToolName => "Set scale tool";
 
-        protected ScaleManipulator joystick;
+        protected ScalarJoystickSystem joystick;
         protected PlanetController selectedObject;
-        protected ViewModuleData selectedView;
         protected bool dragging;
+
+        protected virtual Binding<float> ScalePropertyBinding
+        {
+            get
+            {
+                if (SelectedObject != null)
+                    return SelectedObject.PlanetData.GetModule<ViewModuleData>(ViewModuleData.Key).ScaleBinding;
+                else return null;
+            }
+        }
+
+        protected virtual float ScalePropertyInitialValue
+        {
+            get
+            {
+                return SelectedObject.PlanetData.GetModule<ViewModuleData>(ViewModuleData.Key).ObjectScale;
+            }
+            
+        }
 
         protected PlanetController SelectedObject
         {
@@ -29,12 +46,6 @@ namespace Assets.SceneEditor.Controllers
             set
             {
                 selectedObject = value;
-                if (selectedObject != null)
-                {
-                    selectedView = selectedObject.PlanetData.GetModule<ViewModuleData>(ViewModuleData.Key);
-                }
-                else
-                    selectedView = null;
             }
 
         }
@@ -45,72 +56,97 @@ namespace Assets.SceneEditor.Controllers
             Services.PlanetSelectSystem.Instance.SelectedPlanetChanged += selectedObjectChanged;
         }
 
-        private void selectedObjectChanged(object sender, PlanetController planet)
+        protected virtual void selectedObjectChanged(object sender, PlanetController planet)
         {
+            if (IsToolEnabled)
+            {
+                if(ScalePropertyBinding != null)
+                    ScalePropertyBinding.ValueChanged -= ExternalValueChanged;
+            }
+
             SelectedObject = planet;
+
             if(IsToolEnabled)
             {
+                if(ScalePropertyBinding != null)
+                    ScalePropertyBinding.ValueChanged += ExternalValueChanged;
+
                 if (SelectedObject != null)
                 {
-                    joystick.OriginBiding = selectedObject.PlanetData.GetModule<GravityModuleData>(GravityModuleData.Key).PositionProperty.Binding;
-                    joystick.InputBinding.ChangeValue(selectedView.ObjectScale, this);
+                    joystick.OriginBinding = selectedObject.PlanetData.GetModule<GravityModuleData>(GravityModuleData.Key).PositionProperty.Binding;
+                    joystick.InputBinding.ChangeValue(ScalePropertyInitialValue, this);
                 }
                 else
-                    joystick.OriginBiding = null;
+                    joystick.OriginBinding = null;
             }
         }
 
-
         protected override void DoDisable()
-        {            
+        {
+            if(ScalePropertyBinding != null)
+                ScalePropertyBinding.ValueChanged -= ExternalValueChanged;
             joystick.InputBinding.ValueChanged -= input;
             joystick.DragInputStarted -= dragStarted;
             joystick.DragInputEnded -= dragEnded;
+            joystick.InputBinding.ValidateValue -= validateScale;
             joystick.DisableManipulator();
             base.DoDisable();
         }
         protected override void DoEnable(InputSystem inputSystem)
         {
-            joystick = EditorController.Instance.ManipulatorsController.EnableManipulator<ScaleManipulator>(ScaleManipulator.DefaultKey);
-            joystick.OriginBiding = selectedObject.PlanetData.GetModule<GravityModuleData>(GravityModuleData.Key).PositionProperty.Binding;
-            joystick.InputBinding.ChangeValue(selectedView.ObjectScale,this);
+            GetJoystick();
+            if(ScalePropertyBinding != null)
+                ScalePropertyBinding.ValueChanged += ExternalValueChanged;
+            joystick.OriginBinding = selectedObject.PlanetData.GetModule<GravityModuleData>(GravityModuleData.Key).PositionProperty.Binding;
+            joystick.InputBinding.ChangeValue(ScalePropertyInitialValue, this);
             joystick.DragInputStarted += dragStarted;
             joystick.DragInputEnded += dragEnded;
             joystick.InputBinding.ValueChanged += input;
-            base.DoEnable(inputSystem);
+            joystick.InputBinding.ValidateValue += validateScale;
+            base.DoEnable(inputSystem);        
         }
+
+        private void ExternalValueChanged(float value, object source)
+        {
+            if(source != (System.Object)this)
+            {
+                joystick.InputBinding.ChangeValue(value, source);
+            }
+        }
+
+        protected virtual bool validateScale(float value, object source)
+        {
+            if (value >= ViewModuleData.MinRadius)
+                return true;
+            else
+                joystick.InputBinding.ChangeValue(ViewModuleData.MinRadius,this);
+            return false;
+        }
+
+        protected virtual void GetJoystick()
+        {
+            joystick = EditorController.Instance.ManipulatorsController.EnableManipulator<ScaleJoystickSystem>(ScaleJoystickSystem.DefaultKey);
+        }
+
 
         private void dragEnded()
         {
             EditorController.Instance.ToolsController.EnableSceneControl();
             Services.PlanetSelectSystem.Instance.UnlockSelection();
-            dragging = false;
         }
 
         private void dragStarted()
         {
             EditorController.Instance.ToolsController.DisableSceneControl();
             Services.PlanetSelectSystem.Instance.LockSelection();
-            dragging = true;
         }
 
         private void input(float value, object source)
         {
-
             if (IsToolEnabled && source != (System.Object)this && SelectedObject != null)
             {
-                if (dragging)
-                {
-                    selectedView.ScaleBinding.ChangeValue(value,this);
-                }
-                else
-                {
-                    selectedView.ScaleBinding.ChangeValue(selectedView.ObjectScale + selectedView.ObjectScale * value * scaleSpeed, this);
-                    joystick.InputBinding.ChangeValue(selectedView.ObjectScale, this);
-                }
-
+                ScalePropertyBinding.ChangeValue(value,this);
             }
-
         }
     }
 }

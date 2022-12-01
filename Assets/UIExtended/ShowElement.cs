@@ -6,7 +6,6 @@ using BasicTools;
 
 namespace UIExtended
 {
-
     public class ShowElement : StateChanger
     {
         [SerializeField] GameObject displayObject;

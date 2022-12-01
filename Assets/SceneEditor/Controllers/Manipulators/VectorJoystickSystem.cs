@@ -33,14 +33,7 @@ namespace Assets.SceneEditor.Controllers
         }
 
         public static string DefaultKey => "VectorJoystickSystem";
-
-        protected void Start()
-        {
-            if (ManipulatorKey != "")
-                EditorController.Instance.ManipulatorsController.Manipulators.Add(ManipulatorKey, this);
-            else
-                EditorController.Instance.ManipulatorsController.Manipulators.Add(DefaultKey, this);
-        }
+        public override string ManipulatorKey => DefaultKey;
 
         protected override void DoDisable()
         {

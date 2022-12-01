@@ -8,15 +8,16 @@
         <ModuleData xsi:type="GravityModuleData">
           <Mass>100</Mass>
           <Position>
-            <x>0.03812918</x>
-            <y>0.0360647365</y>
+            <x>3.529106</x>
+            <y>5.662388</y>
           </Position>
           <Velocity>
-            <x>0.6105921</x>
-            <y>0.4901088</y>
+            <x>0.414761126</x>
+            <y>0.6889717</y>
           </Velocity>
         </ModuleData>
         <ModuleData xsi:type="PlanetViewModuleData">
+          <ObjectScale>1</ObjectScale>
           <NoiseSettings>
             <Frequency>10</Frequency>
             <Lacunarity>7,45</Lacunarity>
@@ -30,7 +31,6 @@
             <MinValue>0,5</MinValue>
             <Strength>0,05</Strength>
           </NoiseSettings>
-          <PlanetRadius>1.9</PlanetRadius>
           <LandGradient>
             <colorKeys>
               <GradientColorKey>
@@ -136,6 +136,8 @@
             <name />
             <hideFlags>None</hideFlags>
             <indexFormat>UInt16</indexFormat>
+            <vertexBufferTarget>Vertex</vertexBufferTarget>
+            <indexBufferTarget>Index</indexBufferTarget>
             <bindposes />
             <subMeshCount>1</subMeshCount>
             <bounds>
@@ -190,15 +192,16 @@
         <ModuleData xsi:type="GravityModuleData">
           <Mass>1</Mass>
           <Position>
-            <x>3.30755949</x>
-            <y>3.43934321</y>
+            <x>-314.6357</x>
+            <y>-138.50737</y>
           </Position>
           <Velocity>
-            <x>-46.0296669</x>
-            <y>-6.622119</y>
+            <x>-38.7117424</x>
+            <y>-17.4676228</y>
           </Velocity>
         </ModuleData>
         <ModuleData xsi:type="PlanetViewModuleData">
+          <ObjectScale>1</ObjectScale>
           <NoiseSettings>
             <Frequency>5</Frequency>
             <Lacunarity>7,45</Lacunarity>
@@ -212,7 +215,6 @@
             <MinValue>0,5</MinValue>
             <Strength>0,2</Strength>
           </NoiseSettings>
-          <PlanetRadius>1</PlanetRadius>
           <LandGradient>
             <colorKeys>
               <GradientColorKey>
@@ -336,6 +338,8 @@
             <name />
             <hideFlags>None</hideFlags>
             <indexFormat>UInt16</indexFormat>
+            <vertexBufferTarget>Vertex</vertexBufferTarget>
+            <indexBufferTarget>Index</indexBufferTarget>
             <bindposes />
             <subMeshCount>1</subMeshCount>
             <bounds>
@@ -388,6 +392,7 @@
       <SceneObjectBuilder xsi:type="DefaultSceneObjectBuilder" />
       <Modules>
         <ModuleData xsi:type="PlanetViewModuleData">
+          <ObjectScale>1</ObjectScale>
           <NoiseSettings>
             <Frequency>5</Frequency>
             <Lacunarity>7,45</Lacunarity>
@@ -401,7 +406,6 @@
             <MinValue>0,5</MinValue>
             <Strength>0,1</Strength>
           </NoiseSettings>
-          <PlanetRadius>0.8</PlanetRadius>
           <LandGradient>
             <colorKeys>
               <GradientColorKey>
@@ -490,6 +494,8 @@
             <name />
             <hideFlags>None</hideFlags>
             <indexFormat>UInt16</indexFormat>
+            <vertexBufferTarget>Vertex</vertexBufferTarget>
+            <indexBufferTarget>Index</indexBufferTarget>
             <bindposes />
             <subMeshCount>1</subMeshCount>
             <bounds>
@@ -539,12 +545,12 @@
         <ModuleData xsi:type="GravityModuleData">
           <Mass>1</Mass>
           <Position>
-            <x>5.100509</x>
-            <y>7.33416748</y>
+            <x>-86.4601059</x>
+            <y>-149.025818</y>
           </Position>
           <Velocity>
-            <x>-23.0675163</x>
-            <y>-10.5084906</y>
+            <x>-10.2398129</x>
+            <y>-18.9203262</y>
           </Velocity>
         </ModuleData>
       </Modules>
@@ -553,6 +559,7 @@
       <SceneObjectBuilder xsi:type="DefaultSceneObjectBuilder" />
       <Modules>
         <ModuleData xsi:type="PlanetViewModuleData">
+          <ObjectScale>1</ObjectScale>
           <NoiseSettings>
             <Frequency>3</Frequency>
             <Lacunarity>7,45</Lacunarity>
@@ -566,7 +573,6 @@
             <MinValue>0,5</MinValue>
             <Strength>0,2</Strength>
           </NoiseSettings>
-          <PlanetRadius>1.6</PlanetRadius>
           <LandGradient>
             <colorKeys>
               <GradientColorKey>
@@ -708,6 +714,8 @@
             <name />
             <hideFlags>None</hideFlags>
             <indexFormat>UInt16</indexFormat>
+            <vertexBufferTarget>Vertex</vertexBufferTarget>
+            <indexBufferTarget>Index</indexBufferTarget>
             <bindposes />
             <subMeshCount>1</subMeshCount>
             <bounds>
@@ -757,12 +765,12 @@
         <ModuleData xsi:type="GravityModuleData">
           <Mass>1</Mass>
           <Position>
-            <x>-16.0661449</x>
-            <y>-27.9267788</y>
+            <x>-649.3083</x>
+            <y>-1173.41113</y>
           </Position>
           <Velocity>
-            <x>-77.87669</x>
-            <y>-140.870392</y>
+            <x>-77.78774</x>
+            <y>-140.712677</y>
           </Velocity>
         </ModuleData>
       </Modules>

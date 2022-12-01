@@ -1,13 +1,17 @@
-﻿using System;
+﻿using BasicTools;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using UnityEngine;
-using BasicTools;
 
 namespace UIExtended
 {
-    public class DragInputManipulator : InputManipulator<Vector3>
+    public abstract class DragInputManipulator<T> : InputManipulator<T>
     {
-        [SerializeField][Tooltip("Line object must be aligned along the z axis")] private MeshFilter line;
-        [SerializeField][Tooltip("Object must be aligned along the z axis")] private MeshFilter touchPointer;
+        [SerializeField] [Tooltip("Line object must be aligned along the z axis")] private MeshFilter line;
+        [SerializeField] [Tooltip("Object must be aligned along the z axis")] private MeshFilter touchPointer;
         [SerializeField] private CombinedInteraction UIVisibleStateManager;
         [SerializeField] private Vector3 originPosition = Vector3.zero;
         [SerializeField] private float lineWidth = 1f;
@@ -19,21 +23,23 @@ namespace UIExtended
         private Vector3 touchScale;
         private bool isVisible;
         private Binding<Vector2> originBinding;
+        private float scaleFactor = 1;
+
 
         public Binding<Vector2> OriginBinding
         {
             get => originBinding;
             set
             {
-                if(originBinding == null && value != null)
+                if (originBinding == null && value != null)
                 {
                     this.originBinding = value;
                     this.originBinding.ValueChanged += SetOriginPosition;
                     this.originBinding.ForceUpdate();
                 }
-                if(originBinding != null)
-                {               
-                    if(value == null)
+                if (originBinding != null)
+                {
+                    if (value == null)
                     {
                         this.originBinding.ValueChanged -= SetOriginPosition;
                         this.originBinding = value;
@@ -44,7 +50,7 @@ namespace UIExtended
                         this.originBinding = value;
                         this.originBinding.ValueChanged += SetOriginPosition;
                         this.originBinding.ForceUpdate();
-                        
+
                     }
                 }
 
@@ -52,6 +58,16 @@ namespace UIExtended
         }
         public override event Action InputReadingStarted;
         public override event Action InputReadingStoped;
+        public override float ScaleFactor 
+        { 
+            get => scaleFactor; 
+            set
+            {                
+                UpdateScaleFactor(value);
+                scaleFactor = value;
+            }
+        }
+
 
         public bool IsEnabled
         {
@@ -73,7 +89,7 @@ namespace UIExtended
             }
         }
 
-        private void Start()
+        protected virtual void Awake()
         {
             pointerCollider = touchPointer.GetComponent<Collider>();
             if (pointerCollider == null)
@@ -81,19 +97,18 @@ namespace UIExtended
 
             touchScale = touchPointer.transform.localScale;
             lineScaleFactor = new Vector3(1 / (line.mesh.bounds.extents.x * 2), 1 / (line.mesh.bounds.extents.y * 2), 1 / (line.mesh.bounds.extents.z * 2));
-            InputBinding.ValueChanged += UpdateView;
             IsEnabled = false;
         }
 
         private void Update()
         {
-            if(!isManipulatorActive && IsEnabled && Input.touchCount == 1)
+            if (!isManipulatorActive && IsEnabled && Input.touchCount == 1)
             {
                 isManipulatorActive = IsTouchOverPointer(Input.GetTouch(0));
                 if (isManipulatorActive)
                     this.InputReadingStarted?.Invoke();
             }
-            if(isManipulatorActive && IsEnabled && Input.touchCount != 1)
+            if (isManipulatorActive && IsEnabled && Input.touchCount != 1)
             {
                 isManipulatorActive = false;
                 this.InputReadingStoped?.Invoke();
@@ -102,14 +117,19 @@ namespace UIExtended
 
         private void FixedUpdate()
         {
-            if(IsEnabled && isManipulatorActive && Input.touchCount == 1)
+            if (IsEnabled && isManipulatorActive && Input.touchCount == 1)
             {
-                Vector3 input = GetInputByTouch(Input.GetTouch(0));
-                InputBinding.ChangeValue(input,this);
+                Vector3 touch = GetTouchPosition(Input.GetTouch(0));
+                WriteInput(touch);
             }
         }
 
-        private void SetOriginPosition(Vector2 value,object sender)
+        protected virtual void WriteInput(Vector3 touchPosition)
+        {
+            UpdateView(touchPosition);
+        }
+
+        private void SetOriginPosition(Vector2 value, object sender)
         {
             this.originPosition = value.GetVector3();
         }
@@ -120,7 +140,7 @@ namespace UIExtended
                 this.Disable();
 
             UIVisibleStateManager.State = State.Changed;
-            OriginBinding = originBinding;       
+            OriginBinding = originBinding;
             this.IsEnabled = true;
         }
 
@@ -146,7 +166,7 @@ namespace UIExtended
             return false;
         }
 
-        public Vector3 GetInputByTouch(Touch touch)
+        private Vector3 GetTouchPosition(Touch touch)
         {
             Ray ray = Camera.main.ScreenPointToRay(touch.position);
             float distance;
@@ -156,12 +176,12 @@ namespace UIExtended
             {
                 //getting touch position on plane
                 Vector3 touchPosition = ray.GetPoint(distance);
-                return OriginPosition - touchPosition;
+                return touchPosition;
             }
             return Vector3.zero;
         }
 
-        public void UpdateView(Vector3 input,object sender)
+        protected virtual void UpdateView(Vector3 input)
         {
             Vector3 origin = originPosition;
             Vector3 touch = origin - input;
@@ -187,7 +207,14 @@ namespace UIExtended
                 touchPointer.transform.localScale = touchScale * scaleFactor;
                 line.transform.localScale = Vector3.zero;
             }
-           
+
+        }
+
+        protected void UpdateScaleFactor(float scaleFactor)
+        {
+
+            line.transform.localScale = new Vector3(line.transform.localScale.x / ScaleFactor * scaleFactor, line.transform.localScale.y / ScaleFactor * scaleFactor, line.transform.localScale.z);
+            touchPointer.transform.localScale = touchPointer.transform.localScale / ScaleFactor * scaleFactor;
         }
     }
 }

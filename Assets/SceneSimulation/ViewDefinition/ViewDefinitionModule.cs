@@ -101,6 +101,16 @@ namespace Assets.SceneSimulation
             return ModuleData;
         }
 
+        public void DisableView()
+        {
+            this.meshRenderer.enabled = false;
+        }
+
+        public void EnableView()
+        {
+            meshRenderer.enabled = true;
+        }
+
         private void setMesh(Mesh mesh,object sender)
         {
             if(this.meshFilter != null)

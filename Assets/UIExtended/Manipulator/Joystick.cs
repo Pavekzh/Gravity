@@ -26,7 +26,7 @@ namespace UIExtended
         public override event Action InputReadingStarted;
         public override event Action InputReadingStoped;
 
-        private void Start()
+        private void Awake()
         {
             rectTransform = GetComponent<RectTransform>();
             InputBinding.ValueChanged += InputBindingChanged;

@@ -24,6 +24,9 @@ namespace Assets.SceneEditor.Controllers
         public event Action InputReadingStarted;
         public event Action InputReadingStoped;
 
+        public static string DefaultKey => "VariableMagintudeVectorJoystickSystem";
+        public override string ManipulatorKey => DefaultKey;
+
         public override bool RestorePanel => true;
 
         protected override void DoDisable()
@@ -58,15 +61,9 @@ namespace Assets.SceneEditor.Controllers
         }
 
 
-        public static string DefaultKey => "VariableMagintudeVectorJoystickSystem";
-
-        protected void Start()
+        protected override void Start()
         {
-            if (ManipulatorKey != "")
-                EditorController.Instance.ManipulatorsController.Manipulators.Add(ManipulatorKey, this);
-            else
-                EditorController.Instance.ManipulatorsController.Manipulators.Add(DefaultKey, this);
-
+            base.Start();
             InputBinding.ValueChanged += BindingExternalChanged;
         }
 

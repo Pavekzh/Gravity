@@ -9,7 +9,7 @@ namespace Assets.SceneEditor.Models
     {
         protected float objectScale = 1;
 
-        private const float MinRadius = 0.5f;
+        public const float MinRadius = 0.2f;
         public static string Key = "ViewModule";
 
         public float ObjectScale
@@ -21,6 +21,8 @@ namespace Assets.SceneEditor.Models
                 this.ScaleBinding.ChangeValue(value, this);
             }
         }
+
+        public sealed override string Name => Key;
 
         [XmlIgnore]
         public virtual Binding<Mesh> MeshBinding { get; protected set; } = new Binding<Mesh>();
@@ -65,6 +67,10 @@ namespace Assets.SceneEditor.Models
                 UpdateView();
             }
         }
+
+        public abstract void DisableView();
+
+        public abstract void EnableView();
 
         public abstract void UpdateView();
     }

@@ -13,9 +13,17 @@ namespace Assets.SceneEditor.Controllers
         protected InputSystem inputSystem;
         protected bool isEnabled;
 
-        public string JoystickSystemName { get => manipulatorName; }
-        public virtual string ManipulatorKey { get => manipulatorName; }
+        public string ManipulatorName { get; }
+        public abstract string ManipulatorKey { get; }
         public Binding<T> InputBinding { get; } = new Binding<T>();
+
+        protected virtual void Start()
+        {
+            if (manipulatorName != "")
+                EditorController.Instance.ManipulatorsController.Manipulators.Add(manipulatorName, this);
+            else
+                EditorController.Instance.ManipulatorsController.Manipulators.Add(ManipulatorKey, this);
+        }
 
         protected abstract void DoDisable();
         protected abstract void DoEnable();

@@ -22,6 +22,7 @@ namespace Assets.SceneEditor.Controllers
                 {
                     inputTexts[i] = inputFields[i].text;
                 }
+                savedData = inputTexts;
                 return inputTexts;
             }
             set
@@ -138,7 +139,6 @@ namespace Assets.SceneEditor.Controllers
         {
             if (sender != this && !inputEntering)
                 inputTexts = presentation;
-
         }
 
         private void InputFieldSelected(string value)

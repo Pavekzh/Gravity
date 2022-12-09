@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UIExtended;
+using BasicTools;
 
 namespace Assets.SceneEditor.Controllers
 {
@@ -9,6 +10,8 @@ namespace Assets.SceneEditor.Controllers
         [SerializeField] ShowElement visibleManager;
         [SerializeField] LoadScenePanel loadScenePanel;
         [SerializeField] SaveScenePanel saveScenePanel;
+        [SerializeField] int menuSceneIndex;
+        [SerializeField] LevelLoader levelLoader;
 
         protected bool restorePanel = false;
 
@@ -52,7 +55,7 @@ namespace Assets.SceneEditor.Controllers
 
         public void Exit()
         {
-            throw new System.NotImplementedException("Close editor not implemented");
+            levelLoader.LoadLevel(menuSceneIndex);
         }
     }
 }

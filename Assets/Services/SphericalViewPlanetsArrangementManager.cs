@@ -23,6 +23,7 @@ namespace Assets.Services
         List<ColorInterval> intervals;
         IPlanetEstimator<float> estimator;
         List<GameObject> createdSpheres;
+        Material colorMaterial;
 
         public bool IsShowing;
 
@@ -30,12 +31,14 @@ namespace Assets.Services
         {
             this.estimator = estimator;
             this.intervals = intervals;
+            colorMaterial = Resources.Load<Material>("Materials/MassEstimate");
         }        
         
         public SphericalViewPlanetsArrangementManager(IPlanetEstimator<float> estimator, float startPosition,UInt32 intervalsCount, StepOperation op)
         {
             this.estimator = estimator;
             SetIntervals(startPosition, intervalsCount, op);
+            colorMaterial = Resources.Load<Material>("Materials/MassEstimate");
         }
 
         public delegate float StepOperation(float startPosition);
@@ -130,7 +133,7 @@ namespace Assets.Services
                     createdSpheres.Add(sphere);
                 }
 
-
+                sphere.GetComponent<Renderer>().material = colorMaterial;
                 sphere.GetComponent<Renderer>().material.color = estimatedColor;
                 sphere.transform.position = planet.GetModule<GravityModuleData>(GravityModuleData.Key).Position.GetVector3();
                 sphere.transform.localScale = new Vector3(scale, scale, scale);

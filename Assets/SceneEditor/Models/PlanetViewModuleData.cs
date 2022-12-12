@@ -12,73 +12,47 @@ namespace Assets.SceneEditor.Models
 {
     public class PlanetViewModuleData : ViewModuleData
     {
-        public NoiseSettings NoiseSettings
-        {
-            get => noiseSettings;
-            set
-            {
-
-                this.MeshProvider.NoiseSettings = value;
-                this.noiseSettings = value;
-                this.noiseSetsBinding.ChangeValue(value,this);
-            }
-        } 
-        public Gradient LandGradient
-        {
-            get { return landGradient; }
-            set
-            {
-                this.MaterialProvider.LandGradient = value;
-                this.landGradient = value;
-            } 
-        } 
-        public Gradient WaterGradient
-        {
-            get { return waterGradient; }
-            set
-            {
-                this.MaterialProvider.WaterGradient = value;
-                this.waterGradient = value;
-            }
-        }
-        public Mesh GeneratedMesh { get; set; } = new Mesh();
-
-        private Gradient landGradient;
-        private Gradient waterGradient;
-        private NoiseSettings noiseSettings = new NoiseSettings();
-        private PlanetMeshProvider meshProvider;
-        private PlanetMaterialProvider materialProvider;
-        private ViewDefinitionModule viewModule;
-
         public PlanetMeshProvider MeshProvider 
-        { 
+        {
             get
             {
-                if (meshProvider != null) return meshProvider;
-                else
+                if (meshProvider == null) 
                 {
-                    meshProvider = new PlanetMeshProvider(GeneratedMesh,NoiseSettings,1);
-                    return meshProvider;
+                    meshProvider = new PlanetMeshProvider(new Mesh(), new NoiseSettings());
                 }
-                                    
-            } 
-        }
+                return meshProvider;
+            }
+            set
+            {
+                value.NoiseSettsBinding = this.NoiseSettsBinding;                
+                meshProvider = value;
+                NoiseSettsBinding.ChangeValue(meshProvider.NoiseSettings, this);
+            }
+        }         
         public PlanetMaterialProvider MaterialProvider 
         {
             get
             {
-                if (materialProvider != null) return materialProvider;
-                else
+                if (materialProvider == null)
                 {
-                    materialProvider = new PlanetMaterialProvider(LandGradient, WaterGradient);
-                    return materialProvider;
+                    materialProvider = new PlanetMaterialProvider();
                 }
+                return materialProvider;
             }
-        
+            set
+            {
+                materialProvider = value;
+            }
         }
 
+        private PlanetMeshProvider meshProvider;
+        private PlanetMaterialProvider materialProvider;
+        private ViewDefinitionModule viewModule;
+
+
+
         [XmlIgnore]
-        public Binding<NoiseSettings> noiseSetsBinding { get; private set; }
+        public Binding<NoiseSettings> NoiseSettsBinding { get; private set; }
 
         [XmlIgnore]
         public override List<PropertyViewData> Properties { get; } = new List<PropertyViewData>();
@@ -86,23 +60,22 @@ namespace Assets.SceneEditor.Models
         public override PlanetData Planet { get; set; }
 
         public PlanetViewModuleData():base()
-        {            
-            ConvertibleBinding<NoiseSettings,string[]> noiseSetsBinding = new BasicTools.ConvertibleBinding<NoiseSettings, string[]>(new NoiseSetsStringConverter());
-            this.noiseSetsBinding = noiseSetsBinding;
-            noiseSetsBinding.ValueChanged += setNoiseSetsBinding; 
+        {    
+            ConvertibleBinding<NoiseSettings,string[]> noiseSettsBinding = new BasicTools.ConvertibleBinding<NoiseSettings, string[]>(new NoiseSetsStringConverter());
+            this.NoiseSettsBinding = noiseSettsBinding;
+            noiseSettsBinding.ValueChanged += setNoiseSettsBinding; 
             CommonPropertyViewData<NoiseSettings> noiseSettingsProperty = new CommonPropertyViewData<NoiseSettings>();
-            noiseSettingsProperty.Binding = noiseSetsBinding;
+            noiseSettingsProperty.Binding = noiseSettsBinding;
             noiseSettingsProperty.Name = "Relief settings";
             noiseSettingsProperty.Components = new string[] {"Scale","Lacunarity","Persistence","OffsetX","OffsetY","OffsetZ","Octaves","LowLevel","Strength" };
             Properties.Add(noiseSettingsProperty);
         }
 
-        private void setNoiseSetsBinding(NoiseSettings value, object source)
+        private void setNoiseSettsBinding(NoiseSettings value, object source)
         {
-            if(source != this && !value.Equals(this.noiseSettings))
+            if(source != this && !value.Equals(this.MeshProvider.NoiseSettings))
             {
                 meshProvider.NoiseSettings = value;
-                this.noiseSettings = value;
                 UpdateView();
             }
         }
@@ -110,11 +83,8 @@ namespace Assets.SceneEditor.Models
         public override object Clone()
         {
             PlanetViewModuleData moduleData = new PlanetViewModuleData();
-            moduleData.meshProvider = this.meshProvider.Clone() as PlanetMeshProvider;
-            moduleData.materialProvider = this.materialProvider.Clone() as PlanetMaterialProvider;
-            moduleData.LandGradient = this.LandGradient;
-            moduleData.WaterGradient = this.WaterGradient;
-            moduleData.NoiseSettings = this.NoiseSettings;
+            moduleData.MeshProvider = this.meshProvider.Clone() as PlanetMeshProvider;
+            moduleData.MaterialProvider = this.materialProvider.Clone() as PlanetMaterialProvider;
             moduleData.ObjectScale = this.ObjectScale;
             moduleData.UpdateView();
             return moduleData;

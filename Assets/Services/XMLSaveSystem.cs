@@ -51,8 +51,15 @@ namespace Assets.Services
 
             }
             catch (System.Exception ex)
-            {
+            {                
                 MessagingSystem.Instance.ShowErrorMessage(ex.Message, this);
+                System.Exception inner = ex.InnerException;
+                while(inner != null)
+                {
+                    MessagingSystem.Instance.ShowErrorMessage(inner.Message, this);
+                    inner = inner.InnerException;
+                }
+
             }
         }
 
@@ -65,6 +72,12 @@ namespace Assets.Services
             catch (System.Exception ex)
             {
                 MessagingSystem.Instance.ShowErrorMessage(ex.Message, this);
+                System.Exception inner = ex.InnerException;
+                while (inner != null)
+                {
+                    MessagingSystem.Instance.ShowErrorMessage(inner.Message, this);
+                    inner = inner.InnerException;
+                }
             }
         }
 
@@ -78,6 +91,12 @@ namespace Assets.Services
             catch(Exception ex)
             {
                 MessagingSystem.Instance.ShowErrorMessage(ex.Message, this);
+                System.Exception inner = ex.InnerException;
+                while (inner != null)
+                {
+                    MessagingSystem.Instance.ShowErrorMessage(inner.Message, this);
+                    inner = inner.InnerException;
+                }
             }
         }
 
@@ -93,6 +112,12 @@ namespace Assets.Services
             catch(System.Exception ex)
             {
                 MessagingSystem.Instance.ShowErrorMessage(ex.Message, this);
+                System.Exception inner = ex.InnerException;
+                while (inner != null)
+                {
+                    MessagingSystem.Instance.ShowErrorMessage(inner.Message, this);
+                    inner = inner.InnerException;
+                }
             }
             return null;
         }

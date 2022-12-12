@@ -26,9 +26,9 @@ public class PlanetViewScriptableObject : ViewModuleScriptableObject
     {
         PlanetViewModuleData modData = new PlanetViewModuleData();
         modData.ObjectScale = PlanetRadius;
-        modData.NoiseSettings = new NoiseSettings(NoiseSettings);
-        modData.WaterGradient = WaterGradient;
-        modData.LandGradient = LandGradient;
+        modData.MeshProvider.NoiseSettings = new NoiseSettings(NoiseSettings);
+        modData.MaterialProvider.WaterGradient = WaterGradient;
+        modData.MaterialProvider.LandGradient = LandGradient;
 
         return modData;
     }
@@ -41,9 +41,9 @@ public class PlanetViewScriptableObject : ViewModuleScriptableObject
 
         else
             if (this.planetRadius != data.ObjectScale) data.ObjectScale = this.planetRadius;
-            if (!this.noiseSettings.Equals(data.NoiseSettings)) data.NoiseSettings = new NoiseSettings(this.noiseSettings);
-            if (!this.landGradient.Equals(data.LandGradient)) data.LandGradient = this.landGradient;
-            if (!this.waterGradient.Equals(data.WaterGradient)) data.WaterGradient = this.waterGradient;
+            if (!this.noiseSettings.Equals(data.MeshProvider.NoiseSettings)) data.MeshProvider.NoiseSettings = new NoiseSettings(this.noiseSettings);
+            if (!this.landGradient.Equals(data.MaterialProvider.LandGradient)) data.MaterialProvider.LandGradient = this.landGradient;
+            if (!this.waterGradient.Equals(data.MaterialProvider.WaterGradient)) data.MaterialProvider.WaterGradient = this.waterGradient;
     }
 }
 

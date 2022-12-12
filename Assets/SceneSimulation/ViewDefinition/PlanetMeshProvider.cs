@@ -13,41 +13,42 @@ namespace Assets.SceneSimulation
             set
             {
                 noiseSettings = value;
-                isSavedMeshValid = false;
-            }
-        }
-        public float PlanetRadius 
-        {
-            get => planetRadius;
-            set
-            {
-                planetRadius = value;
+                if (NoiseSettsBinding != null)
+                    NoiseSettsBinding.ChangeValue(value,this);
                 isSavedMeshValid = false;
             }
         }
 
-        private NoiseSettings noiseSettings;
-        private float planetRadius;
-        private TerrainFace[] faces = new TerrainFace[6];
+        private const float planetRadius = 1;        
         private static int resolution = 100;
-        bool isSavedMeshValid = true;
-        Mesh planetMesh;
 
+        private Mesh savedMesh;
+        private NoiseSettings noiseSettings;
+        private TerrainFace[] faces = new TerrainFace[6];
+        private bool isSavedMeshValid = true;
 
-        public PlanetMeshProvider(Mesh savedMesh,NoiseSettings noiseSettings,float planetRadius)
+        [System.Xml.Serialization.XmlIgnore]
+        public Binding<NoiseSettings> NoiseSettsBinding { get; set; }
+
+        public PlanetMeshProvider()
         {
-            this.planetMesh = savedMesh;
+            noiseSettings = new NoiseSettings();
+            savedMesh = new Mesh();
+        }
+
+        public PlanetMeshProvider(Mesh savedMesh,NoiseSettings noiseSettings)
+        {
+            this.savedMesh = savedMesh;
             this.noiseSettings = noiseSettings;
-            this.planetRadius = planetRadius;
         }
 
         public Mesh GetMesh()
         {
-                if (planetMesh.vertexCount != 0 && isSavedMeshValid) return planetMesh; 
+                if (savedMesh.vertexCount != 0 && isSavedMeshValid) return savedMesh; 
                 else 
                 {
-                    this.planetMesh = GenerateMesh();
-                    return planetMesh;
+                    this.savedMesh = GenerateMesh();
+                    return savedMesh;
                 } 
         }
 
@@ -68,14 +69,14 @@ namespace Assets.SceneSimulation
                 }
                 resultMesh.CombineMeshes(combine, true, false);
             }
-            this.planetMesh = resultMesh;
+            this.savedMesh = resultMesh;
             this.isSavedMeshValid = true;
             return resultMesh;
         }
 
         public object Clone()
         {
-            PlanetMeshProvider meshProvider = new PlanetMeshProvider(this.planetMesh, this.noiseSettings, this.PlanetRadius);
+            PlanetMeshProvider meshProvider = new PlanetMeshProvider(this.savedMesh, this.noiseSettings);
             return meshProvider;
         }
     }

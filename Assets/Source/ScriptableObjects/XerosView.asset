@@ -20,7 +20,7 @@ MonoBehaviour:
     centre: {x: 6, y: 0, z: 0}
     octaves: 3
     minValue: 0.5
-    strength: 0.08
+    strength: 0.1
   landGradient:
     serializedVersion: 2
     key0: {r: 0.20754719, g: 0.20690006, b: 0.2065682, a: 1}

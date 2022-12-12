@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Assets.SceneSimulation
 {
+    [Serializable]
     public class PlanetMaterialProvider:ICloneable
     {
         private const int textureResolution = 50;

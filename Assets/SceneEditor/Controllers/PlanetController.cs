@@ -13,6 +13,12 @@ namespace Assets.SceneEditor.Controllers
         private RectTransform planetView;
         private List<ModuleController> controllers = new List<ModuleController>();
 
+        private void OnDestroy()
+        {
+            PlanetSelectSystem.Instance.PlanetControllers.Remove(this.PlanetData.Guid);
+            SceneStateManager.Instance.CurrentScene.Planets.Remove(this.PlanetData);
+        }
+
         public void AddModule(ModuleData moduleData)
         {
             controllers.Add(new ModuleController(moduleData));
@@ -34,8 +40,7 @@ namespace Assets.SceneEditor.Controllers
             float offset = ValuesPanelTemplate.Instance.StartMargin + nameField.GetComponent<RectTransform>().rect.height;
             foreach(ModuleController controller in controllers)
             {
-                controller.CreateView(planetView, offset);
-                offset += controller.ModuleOffset;
+                controller.CreateView(planetView,ref offset);
             }
         }
 
@@ -50,6 +55,11 @@ namespace Assets.SceneEditor.Controllers
             {
                 GameObject.Destroy(planetView.gameObject);
             }
+        }
+
+        public void DeletePlanet()
+        {
+            GameObject.Destroy(this.gameObject);
         }
     }
 }

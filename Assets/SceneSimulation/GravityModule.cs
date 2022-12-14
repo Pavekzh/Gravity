@@ -94,6 +94,7 @@ namespace Assets.SceneSimulation
         private void OnDestroy()
         {
             TimeManager.Instance.TimeStateChanged -= UpdateSimulationState;
+            GravityManager.Instance.GravityInteractors.Remove(guid);
 
             if(positionBinding != null)
                 positionBinding.ValueChanged -= SetPosition;

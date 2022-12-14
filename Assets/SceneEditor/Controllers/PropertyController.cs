@@ -47,8 +47,6 @@ namespace Assets.SceneEditor.Controllers
         private string[] savedData;
         private bool inputEntering = false;
 
-        public float propertyOffset { get; private set; }
-
         public PropertyController(PropertyViewData propertyData)
         {            
             this.propertyData = propertyData;
@@ -60,7 +58,7 @@ namespace Assets.SceneEditor.Controllers
                 this.inputFields = new TMP_InputField[1];            
         }
 
-        public void CreateView(RectTransform parentContainer, float viewOffset)
+        public void CreateView(RectTransform parentContainer, ref float viewOffset)
         {
 
             if (propertyData.Components != null)
@@ -68,7 +66,6 @@ namespace Assets.SceneEditor.Controllers
             else
                 this.inputFields = new TMP_InputField[1];
 
-            this.propertyOffset = viewOffset;
             this.parentContainer = parentContainer;
 
             RectTransform propertyElement = GameObject.Instantiate(ValuesPanelTemplate.Instance.EmptyPrefab, parentContainer.transform);
@@ -100,8 +97,8 @@ namespace Assets.SceneEditor.Controllers
                     i++;
                 }
                 propertyElement.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, offset);
-                propertyElement.anchoredPosition -= new Vector2(0, (propertyElement.rect.height / 2) + propertyOffset);
-                propertyOffset += offset + ValuesPanelTemplate.Instance.PropertiesMargin;
+                propertyElement.anchoredPosition -= new Vector2(0, (propertyElement.rect.height / 2) + viewOffset);
+                viewOffset += offset + ValuesPanelTemplate.Instance.PropertiesMargin;
             }
             else
             {
@@ -114,8 +111,8 @@ namespace Assets.SceneEditor.Controllers
                 inputFields[0] = valueInput;
 
                 propertyElement.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, propertyLabel.rectTransform.rect.height);
-                propertyElement.anchoredPosition -= new Vector2(0, (propertyElement.rect.height / 2) + propertyOffset);
-                propertyOffset += propertyLabel.rectTransform.rect.height + ValuesPanelTemplate.Instance.PropertiesMargin;
+                propertyElement.anchoredPosition -= new Vector2(0, (propertyElement.rect.height / 2) + viewOffset);
+                viewOffset += propertyLabel.rectTransform.rect.height + ValuesPanelTemplate.Instance.PropertiesMargin;
             }
         }
 

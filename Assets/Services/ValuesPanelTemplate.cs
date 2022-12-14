@@ -19,6 +19,7 @@ namespace Assets.Services
         [SerializeField] float startMargin = 10;
         [SerializeField] float propertiesMargin = 10;
         [SerializeField] float lineMargin = 5;
+        [SerializeField] float moduleMargin = 20;
 
         public TMP_InputField PlanetNameFieldPrefab { get => planetNameFieldPrefab; set => planetNameFieldPrefab = value; }
         public TMP_Text PropertyLabelPrefab { get => propertyLabelPrefab; set => propertyLabelPrefab = value; }
@@ -26,6 +27,7 @@ namespace Assets.Services
         public float StartMargin { get => startMargin; set => startMargin = value; }
         public float PropertiesMargin { get => propertiesMargin; set => propertiesMargin = value; }
         public float LineMargin { get => lineMargin; set => lineMargin = value; }
+        public float ModuleMargin { get => moduleMargin; set => moduleMargin = value; }
         public RectTransform EmptyPrefab { get => emptyPrefab; set => emptyPrefab = value; }
         public TMP_InputField InputFieldPrefab { get => inputFieldPrefab; set => inputFieldPrefab = value; }
         public TMP_Text ModuleLabelPrefab { get => moduleLabelPrefab; set => moduleLabelPrefab = value; }

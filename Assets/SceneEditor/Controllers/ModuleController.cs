@@ -17,7 +17,6 @@ namespace Assets.SceneEditor.Controllers
         private List<PropertyController> propertyControllers = new List<PropertyController>();
         private float propertiesOffset;
 
-        public float ModuleOffset { get; private set; }
         public ModuleData ModuleData { get; private set; }
 
         public ModuleController(ModuleData data)
@@ -30,25 +29,26 @@ namespace Assets.SceneEditor.Controllers
             }
         }
     
-        public void CreateView(RectTransform parent,float modulesOffset)
+        public void CreateView(RectTransform parent,ref float modulesOffset)
         {
-            Init(parent,modulesOffset);
-            foreach(PropertyController controller in propertyControllers)
+            if (ModuleData.DisplayOnValuesPanel)
             {
-                controller.CreateView(propertiesContainer, propertiesOffset);
-                propertiesOffset = controller.propertyOffset;
-
+                Init(parent, ref modulesOffset);
+                foreach (PropertyController controller in propertyControllers)
+                {
+                    controller.CreateView(propertiesContainer, ref propertiesOffset);
+                }
+                modulesOffset += propertiesOffset + ValuesPanelTemplate.Instance.ModuleMargin;
             }
-            ModuleOffset += propertiesOffset;
         } 
 
-        private void Init(RectTransform parent,float offset)
+        private void Init(RectTransform parent,ref float offset)
         {
             moduleRoot = GameObject.Instantiate(ValuesPanelTemplate.Instance.EmptyPrefab,parent);
             moduleRoot.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, parent.rect.width);
             moduleRoot.anchoredPosition = new Vector2(0, (-moduleRoot.rect.height / 2) - offset);
             moduleRoot.gameObject.name = "ModulePresenter";
-            ModuleOffset = offset + moduleRoot.rect.height;
+            offset = offset + moduleRoot.rect.height;
 
             label = GameObject.Instantiate(ValuesPanelTemplate.Instance.ShortViewPrefab, moduleRoot);
             label.gameObject.name = "ShortView";

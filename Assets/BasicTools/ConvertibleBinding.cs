@@ -17,15 +17,65 @@ namespace BasicTools
 
         public override void ChangeValue(T value, object source)
         {
-            base.ChangeValue(value, source);
-            PresenterChanged?.Invoke(Converter.ConvertDataToPresenter(value), source);
+            T validValue;
+            int returnedDefaultValueCount;
+
+            if (this.Validate(value, out returnedDefaultValueCount, out validValue))
+            {
+                OnValueChanged?.Invoke(value, source);
+                OnPresenterChanged?.Invoke(Converter.ConvertDataToPresenter(value), source);
+                lastValue = value;
+            }
+            else
+            {
+                if (returnedDefaultValueCount == 1)
+                {
+                    OnValueChanged?.Invoke(validValue, this);
+                    OnPresenterChanged?.Invoke(Converter.ConvertDataToPresenter(validValue), this);
+                    lastValue = validValue;
+                }
+                else if (returnedDefaultValueCount > 1)
+                {
+                    OnValueChanged?.Invoke(ExceptionalValidValue, this);
+                    OnPresenterChanged?.Invoke(Converter.ConvertDataToPresenter(ExceptionalValidValue), this);
+                    lastValue = ExceptionalValidValue;
+                }
+            }
         }
         public virtual void ChangePresenter(U presenter, object source)
         {
-            PresenterChanged?.Invoke(presenter, source);
-            ChangeValue(this.Converter.ConvertPresenterToData(presenter), source);
-        } 
+            T value = Converter.ConvertPresenterToData(presenter);
+            T validValue;
+            int returnedDefaultValueCount;
 
-        public event ValueChangedHandler<U> PresenterChanged;
+            if (this.Validate(value, out returnedDefaultValueCount, out validValue))
+            {
+                OnValueChanged?.Invoke(value, source);
+                OnPresenterChanged?.Invoke(presenter, source);
+                lastValue = value;
+            }
+            else
+            {
+                if (returnedDefaultValueCount == 1)
+                {
+                    OnValueChanged?.Invoke(validValue, this);
+                    OnPresenterChanged?.Invoke(Converter.ConvertDataToPresenter(validValue), this);
+                    lastValue = validValue;
+                }
+                else if(returnedDefaultValueCount > 1)
+                {
+                    OnValueChanged?.Invoke(ExceptionalValidValue, this);
+                    OnPresenterChanged?.Invoke(Converter.ConvertDataToPresenter(ExceptionalValidValue), this);
+                    lastValue = ExceptionalValidValue;
+                }
+            }
+        }
+
+        protected ValueChangedHandler<U> OnPresenterChanged;
+        public event ValueChangedHandler<U> PresenterChanged
+        {
+            add { OnPresenterChanged += value; }
+            remove { OnPresenterChanged -= value; }
+        }
     }
 }

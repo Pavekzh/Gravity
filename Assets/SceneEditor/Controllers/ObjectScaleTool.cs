@@ -1,6 +1,7 @@
 ﻿using Assets.SceneEditor.Models;
 using BasicTools;
 using UnityEngine;
+using BasicTools.Validation;
 
 namespace Assets.SceneEditor.Controllers
 {
@@ -12,6 +13,11 @@ namespace Assets.SceneEditor.Controllers
         protected ScalarJoystickSystem joystick;
         protected PlanetController selectedObject;
         protected bool dragging;
+        
+        protected virtual IValidationRule<float>[] ScaleValidationRule 
+        { 
+            get => ViewModuleData.ScaleValidationRule;
+        }
 
         protected virtual Binding<float> ScalePropertyBinding
         {
@@ -88,7 +94,8 @@ namespace Assets.SceneEditor.Controllers
             joystick.InputBinding.ValueChanged -= input;
             joystick.DragInputStarted -= dragStarted;
             joystick.DragInputEnded -= dragEnded;
-            joystick.InputBinding.ValidateValue -= validateScale;
+            if(this.ScaleValidationRule != null)
+                joystick.InputBinding.ValidationRules.RemoveRange(this.ScaleValidationRule);
             joystick.DisableManipulator();
             base.DoDisable();
         }
@@ -102,7 +109,8 @@ namespace Assets.SceneEditor.Controllers
             joystick.DragInputStarted += dragStarted;
             joystick.DragInputEnded += dragEnded;
             joystick.InputBinding.ValueChanged += input;
-            joystick.InputBinding.ValidateValue += validateScale;
+            if (this.ScaleValidationRule != null)
+                joystick.InputBinding.ValidationRules.AddRange(this.ScaleValidationRule);
             base.DoEnable(inputSystem);        
         }
 
@@ -112,15 +120,6 @@ namespace Assets.SceneEditor.Controllers
             {
                 joystick.InputBinding.ChangeValue(value, source);
             }
-        }
-
-        protected virtual bool validateScale(float value, object source)
-        {
-            if (value >= ViewModuleData.MinRadius)
-                return true;
-            else
-                joystick.InputBinding.ChangeValue(ViewModuleData.MinRadius,this);
-            return false;
         }
 
         protected virtual void GetJoystick()

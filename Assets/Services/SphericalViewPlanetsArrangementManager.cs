@@ -9,7 +9,7 @@ namespace Assets.Services
 {
     public class SphericalViewPlanetsArrangementManager
     {
-        public static float MaxRadius { get; set; } = 3;
+        public static float MaxRadius { get; set; } = 5;
         public static float MinRadius { get; set; } = 1;
 
         Color[] defaultColors = new Color[]

@@ -9,8 +9,11 @@ namespace Assets.SceneEditor.Models
 {
     [XmlInclude(typeof(GravityModuleData))]
     [XmlInclude(typeof(PlanetViewModuleData))]
+    [XmlInclude(typeof(BodyCollisionModuleData))]
     public abstract class ModuleData:System.ICloneable
     {
+        public virtual bool DisplayOnValuesPanel { get => true; }
+
         [XmlIgnore]
         public abstract List<PropertyViewData> Properties { get; }
         public abstract string Name { get; }

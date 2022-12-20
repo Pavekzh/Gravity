@@ -4,6 +4,7 @@ using Assets.SceneEditor.Models;
 using System.Collections.Generic;
 using UnityEngine;
 using Assets.Services;
+using BasicTools.Validation;
 
 namespace Assets.SceneEditor.Controllers
 {
@@ -18,6 +19,8 @@ namespace Assets.SceneEditor.Controllers
         {
             base.Awake();
         }
+
+        protected override IValidationRule<float>[] ScaleValidationRule => null;
 
         protected override Binding<float> ScalePropertyBinding
         {
@@ -64,11 +67,6 @@ namespace Assets.SceneEditor.Controllers
         protected override void GetJoystick()
         {
             joystick = EditorController.Instance.ManipulatorsController.EnableManipulator<RelativeScaleJoystickSystem>(RelativeScaleJoystickSystem.DefaultKey);
-        }
-
-        protected override bool validateScale(float value, object source)
-        {
-            return true;
         }
 
         private void InputChanged(float value, object source)

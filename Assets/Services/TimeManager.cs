@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using BasicTools;
+using BasicTools.Validation;
 
 namespace Assets.Services
 {
@@ -75,18 +76,9 @@ namespace Assets.Services
         }
 
 
-        private bool ValidateTimeChanges(float value, object source)
+        private bool ValidateTimeChanges(float value)
         {
-            if (value <= maxTimeScale)
-            {
-                return true;
-            }
-            else
-            {
-                ResetTimeScale(maxTimeScale, null);
-                TimeBinding.ChangeValue(maxTimeScale, this);
-                return false;
-            }
+            return value <= maxTimeScale;
         }
 
         protected  override void Awake()
@@ -95,7 +87,7 @@ namespace Assets.Services
             TimeBinding = new Binding<float>();
             defaultFixedDeltaTime = Time.fixedDeltaTime;
             TimeBinding.ValueChanged += ResetTimeScale;
-            TimeBinding.ValidateValue += ValidateTimeChanges;
+            TimeBinding.ValidationRules.Add(new ValidationRule<float>(maxTimeScale,ValidateTimeChanges));
 
             if (simulationState == false)
             {

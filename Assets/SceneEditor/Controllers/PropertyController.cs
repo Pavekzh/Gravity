@@ -47,6 +47,7 @@ namespace Assets.SceneEditor.Controllers
         private string[] savedData;
         private bool inputEntering = false;
 
+
         public PropertyController(PropertyViewData propertyData)
         {            
             this.propertyData = propertyData;
@@ -128,14 +129,24 @@ namespace Assets.SceneEditor.Controllers
 
         private void InputChanged(string changedText)
         {
-            if(inputEntering)
+            if (inputEntering)
+            {
                 propertyData.ChangePresenter(inputTexts, this);
+            }
+
         }
 
         private void ValueChanged(string[] presentation,object sender)
         {
             if (sender != this && !inputEntering)
+            {             
                 inputTexts = presentation;
+            }
+        }
+
+        private void EndEntering()
+        {
+            propertyData.ChangePresenter(inputTexts, this);
         }
 
         private void InputFieldSelected(string value)
@@ -146,6 +157,7 @@ namespace Assets.SceneEditor.Controllers
         private void InputFieldDeselected(string value)
         {
             inputEntering = false;
+            EndEntering();
         }
     }
 }

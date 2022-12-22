@@ -55,7 +55,7 @@ namespace Assets.SceneEditor.Models
                 valuePair.Value.CreateModule(planet);
             }
 
-            Services.PlanetSelectSystem.Instance.PlanetControllers.Add(this.Guid, controller);
+            Services.PlanetSelectSystem.Instance.AddPlanet(this.Guid, controller);
             Services.SceneStateManager.Instance.AddPlanet(this);
             return controller;
         }

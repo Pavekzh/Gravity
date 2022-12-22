@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Xml.Serialization;
 using System.Xml.Schema;
 using System.Xml;
+using System.Globalization;
 
 namespace BasicTools
 {
@@ -58,17 +59,17 @@ namespace BasicTools
         {
             reader.ReadToDescendant("Frequency");
             reader.Read();
-            this.frequency = float.Parse(reader.Value);
+            this.frequency = float.Parse(reader.Value,CultureInfo.InvariantCulture);
             reader.Read();
             reader.ReadEndElement();
 
             reader.Read();
-            this.lacunarity = float.Parse(reader.Value);
+            this.lacunarity = float.Parse(reader.Value, CultureInfo.InvariantCulture);
             reader.Read();
             reader.ReadEndElement();
 
             reader.Read();
-            this.persistence = float.Parse(reader.Value);
+            this.persistence = float.Parse(reader.Value, CultureInfo.InvariantCulture);
             reader.Read();
             reader.ReadEndElement();
 
@@ -76,17 +77,17 @@ namespace BasicTools
             this.centre = (Vector3)vectorSerializer.Deserialize(reader);
 
             reader.Read();
-            this.octaves = int.Parse(reader.Value);
+            this.octaves = int.Parse(reader.Value, CultureInfo.InvariantCulture);
             reader.Read();
             reader.ReadEndElement();
 
             reader.Read();
-            this.minValue = float.Parse(reader.Value);
+            this.minValue = float.Parse(reader.Value, CultureInfo.InvariantCulture);
             reader.Read();
             reader.ReadEndElement();
 
             reader.Read();
-            this.strength = float.Parse(reader.Value);
+            this.strength = float.Parse(reader.Value, CultureInfo.InvariantCulture);
             reader.Read();
             reader.ReadEndElement();
 
@@ -95,15 +96,15 @@ namespace BasicTools
 
         void IXmlSerializable.WriteXml(XmlWriter writer)
         {
-            writer.WriteElementString("Frequency", this.Frequency.ToString());
-            writer.WriteElementString("Lacunarity", this.Lacunarity.ToString());
-            writer.WriteElementString("Persistence", this.Persistence.ToString());
+            writer.WriteElementString("Frequency", this.Frequency.ToString(CultureInfo.InvariantCulture));
+            writer.WriteElementString("Lacunarity", this.Lacunarity.ToString(CultureInfo.InvariantCulture));
+            writer.WriteElementString("Persistence", this.Persistence.ToString(CultureInfo.InvariantCulture));
             XmlSerializer vectorSerializer = new XmlSerializer(typeof(Vector3));
             vectorSerializer.Serialize(writer, this.Center);
 
-            writer.WriteElementString("Octaves", this.Octaves.ToString());
-            writer.WriteElementString("MinValue", this.MinValue.ToString());
-            writer.WriteElementString("Strength", this.Strength.ToString());
+            writer.WriteElementString("Octaves", this.Octaves.ToString(CultureInfo.InvariantCulture));
+            writer.WriteElementString("MinValue", this.MinValue.ToString(CultureInfo.InvariantCulture));
+            writer.WriteElementString("Strength", this.Strength.ToString(CultureInfo.InvariantCulture));
         }
 
         public override bool Equals(object obj)

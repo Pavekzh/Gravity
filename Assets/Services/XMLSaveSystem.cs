@@ -31,6 +31,13 @@ namespace Assets.Services
             catch (System.Exception ex)
             {
                 MessagingSystem.Instance.ShowErrorMessage(ex.Message, this);
+                Exception inner = ex.InnerException;
+                while(inner != null)
+                {
+                    MessagingSystem.Instance.ShowErrorMessage(ex.Message, this);
+                    inner = inner.InnerException;
+                }
+
             }
             return null;
         }

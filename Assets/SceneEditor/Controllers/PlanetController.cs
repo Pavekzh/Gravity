@@ -15,8 +15,9 @@ namespace Assets.SceneEditor.Controllers
 
         private void OnDestroy()
         {
-            PlanetSelectSystem.Instance.PlanetControllers.Remove(this.PlanetData.Guid);
+            PlanetSelectSystem.Instance.RemovePlanet(this.PlanetData.Guid);
             SceneStateManager.Instance.CurrentScene.Planets.Remove(this.PlanetData);
+            CloseView();
         }
 
         public void AddModule(ModuleData moduleData)
@@ -58,7 +59,7 @@ namespace Assets.SceneEditor.Controllers
         }
 
         public void DeletePlanet()
-        {
+        {           
             GameObject.Destroy(this.gameObject);
         }
     }

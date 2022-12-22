@@ -25,7 +25,7 @@ public class PlanetViewScriptableObject : ViewModuleScriptableObject
     public override ViewModuleData CreateModuleData()
     {
         PlanetViewModuleData modData = new PlanetViewModuleData();
-        modData.ObjectScale = PlanetRadius;
+        modData.Scale = PlanetRadius;
         modData.MeshProvider.NoiseSettings = new NoiseSettings(NoiseSettings);
         modData.MaterialProvider.WaterGradient = WaterGradient;
         modData.MaterialProvider.LandGradient = LandGradient;
@@ -40,7 +40,7 @@ public class PlanetViewScriptableObject : ViewModuleScriptableObject
             data = this.CreateModuleData() as PlanetViewModuleData;
 
         else
-            if (this.planetRadius != data.ObjectScale) data.ObjectScale = this.planetRadius;
+            if (this.planetRadius != data.Scale) data.Scale = this.planetRadius;
             if (!this.noiseSettings.Equals(data.MeshProvider.NoiseSettings)) data.MeshProvider.NoiseSettings = new NoiseSettings(this.noiseSettings);
             if (!this.landGradient.Equals(data.MaterialProvider.LandGradient)) data.MaterialProvider.LandGradient = this.landGradient;
             if (!this.waterGradient.Equals(data.MaterialProvider.WaterGradient)) data.MaterialProvider.WaterGradient = this.waterGradient;

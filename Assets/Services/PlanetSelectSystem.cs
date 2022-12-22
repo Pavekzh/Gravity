@@ -22,7 +22,19 @@ namespace Assets.Services
         [SerializeField] private string planetsLayerName;
         [SerializeField] private float selectSphereRadius;
 
-        public Dictionary<Guid, PlanetController> PlanetControllers { get; private set; } = new Dictionary<Guid, PlanetController>();
+        private Dictionary<Guid, PlanetController> PlanetControllers { get; set; } = new Dictionary<Guid, PlanetController>();
+
+        public void AddPlanet(Guid id, PlanetController planet)
+        {
+            PlanetControllers.Add(id, planet);
+        }
+
+        public void RemovePlanet(Guid id)
+        {
+            PlanetControllers.Remove(id);
+            if(SelectedPlanet != null && id == SelectedPlanet.PlanetData.Guid)
+                FindPlanet();
+        }
 
         public PlanetController SelectedPlanet
         {
@@ -81,7 +93,12 @@ namespace Assets.Services
                 FindPlanet();
         }
 
-        private PlanetController FindPlanet() => SelectedPlanet = PlanetControllers.First().Value;
+        private PlanetController FindPlanet() 
+        {
+            if(PlanetControllers != null && PlanetControllers.Count != 0)
+                SelectedPlanet = PlanetControllers.First().Value;
+            return SelectedPlanet;
+        }
 
         private void TouchDown(Touch touch)
         {

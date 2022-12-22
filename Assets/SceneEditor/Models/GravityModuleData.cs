@@ -143,7 +143,5 @@ namespace Assets.SceneEditor.Models
             if (sender != this)
                 this.data.Velocity = value;
         }
-
-        public override void OnDeserialized() { }
     }
 }

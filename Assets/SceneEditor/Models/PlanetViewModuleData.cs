@@ -85,7 +85,7 @@ namespace Assets.SceneEditor.Models
             PlanetViewModuleData moduleData = new PlanetViewModuleData();
             moduleData.MeshProvider = this.meshProvider.Clone() as PlanetMeshProvider;
             moduleData.MaterialProvider = this.materialProvider.Clone() as PlanetMaterialProvider;
-            moduleData.ObjectScale = this.ObjectScale;
+            moduleData.Scale = this.Scale;
             moduleData.UpdateView();
             return moduleData;
         }
@@ -98,6 +98,7 @@ namespace Assets.SceneEditor.Models
 
         public override void OnDeserialized()
         {
+            base.OnDeserialized();
             UpdateView();
         }        
         
@@ -121,6 +122,16 @@ namespace Assets.SceneEditor.Models
         public override void EnableView()
         {
             viewModule.EnableView();
+        }
+
+        protected override float CalculateScale(float volume)
+        {
+            return Mathf.Pow((3 * volume) / (4 * Mathf.PI), 1f / 3f);
+        }
+
+        protected override float CalculateVolume(float scale)
+        {
+            return (4f / 3f) * Mathf.PI * Mathf.Pow(scale, 3);
         }
     }
 }

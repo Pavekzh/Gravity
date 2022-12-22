@@ -17,20 +17,20 @@
           </Velocity>
         </ModuleData>
         <ModuleData xsi:type="PlanetViewModuleData">
-          <ObjectScale>1.7</ObjectScale>
+          <Scale>1.7</Scale>
           <MeshProvider>
             <NoiseSettings>
               <Frequency>3</Frequency>
-              <Lacunarity>7,45</Lacunarity>
-              <Persistence>0,2</Persistence>
+              <Lacunarity>7.45</Lacunarity>
+              <Persistence>0.2</Persistence>
               <Vector3>
                 <x>0</x>
                 <y>0</y>
                 <z>0</z>
               </Vector3>
               <Octaves>3</Octaves>
-              <MinValue>0,5</MinValue>
-              <Strength>0,1</Strength>
+              <MinValue>0.5</MinValue>
+              <Strength>0.1</Strength>
             </NoiseSettings>
           </MeshProvider>
           <MaterialProvider>
@@ -142,20 +142,20 @@
           </Velocity>
         </ModuleData>
         <ModuleData xsi:type="PlanetViewModuleData">
-          <ObjectScale>1.3</ObjectScale>
+          <Scale>1.3</Scale>
           <MeshProvider>
             <NoiseSettings>
               <Frequency>4</Frequency>
-              <Lacunarity>7,45</Lacunarity>
-              <Persistence>0,2</Persistence>
+              <Lacunarity>7.45</Lacunarity>
+              <Persistence>0.2</Persistence>
               <Vector3>
                 <x>0</x>
                 <y>0.76</y>
                 <z>0</z>
               </Vector3>
               <Octaves>3</Octaves>
-              <MinValue>0,5</MinValue>
-              <Strength>0,15</Strength>
+              <MinValue>0.5</MinValue>
+              <Strength>0.15</Strength>
             </NoiseSettings>
           </MeshProvider>
           <MaterialProvider>
@@ -289,26 +289,38 @@
             </WaterGradient>
           </MaterialProvider>
         </ModuleData>
+        <ModuleData xsi:type="BodyCollisionModuleData" />
       </Modules>
     </PlanetData>
     <PlanetData Name="Xeros">
       <SceneObjectBuilder xsi:type="DefaultSceneObjectBuilder" />
       <Modules>
+        <ModuleData xsi:type="GravityModuleData">
+          <Mass>1</Mass>
+          <Position>
+            <x>11.44</x>
+            <y>-3.96</y>
+          </Position>
+          <Velocity>
+            <x>0</x>
+            <y>10</y>
+          </Velocity>
+        </ModuleData>
         <ModuleData xsi:type="PlanetViewModuleData">
-          <ObjectScale>1.1</ObjectScale>
+          <Scale>1.1</Scale>
           <MeshProvider>
             <NoiseSettings>
               <Frequency>5</Frequency>
-              <Lacunarity>7,45</Lacunarity>
-              <Persistence>0,2</Persistence>
+              <Lacunarity>7.45</Lacunarity>
+              <Persistence>0.2</Persistence>
               <Vector3>
                 <x>6</x>
                 <y>0</y>
                 <z>0</z>
               </Vector3>
               <Octaves>3</Octaves>
-              <MinValue>0,5</MinValue>
-              <Strength>0,1</Strength>
+              <MinValue>0.5</MinValue>
+              <Strength>0.1</Strength>
             </NoiseSettings>
           </MeshProvider>
           <MaterialProvider>
@@ -411,37 +423,38 @@
             </WaterGradient>
           </MaterialProvider>
         </ModuleData>
-        <ModuleData xsi:type="GravityModuleData">
-          <Mass>1</Mass>
-          <Position>
-            <x>11.44</x>
-            <y>-3.96</y>
-          </Position>
-          <Velocity>
-            <x>0</x>
-            <y>10</y>
-          </Velocity>
-        </ModuleData>
+        <ModuleData xsi:type="BodyCollisionModuleData" />
       </Modules>
     </PlanetData>
     <PlanetData Name="Earth">
       <SceneObjectBuilder xsi:type="DefaultSceneObjectBuilder" />
       <Modules>
+        <ModuleData xsi:type="GravityModuleData">
+          <Mass>1</Mass>
+          <Position>
+            <x>8.16</x>
+            <y>0</y>
+          </Position>
+          <Velocity>
+            <x>0</x>
+            <y>11</y>
+          </Velocity>
+        </ModuleData>
         <ModuleData xsi:type="PlanetViewModuleData">
-          <ObjectScale>1.6</ObjectScale>
+          <Scale>1.6</Scale>
           <MeshProvider>
             <NoiseSettings>
               <Frequency>3</Frequency>
-              <Lacunarity>7,45</Lacunarity>
-              <Persistence>0,2</Persistence>
+              <Lacunarity>7.45</Lacunarity>
+              <Persistence>0.2</Persistence>
               <Vector3>
                 <x>0</x>
                 <y>0</y>
                 <z>0</z>
               </Vector3>
               <Octaves>3</Octaves>
-              <MinValue>0,5</MinValue>
-              <Strength>0,2</Strength>
+              <MinValue>0.5</MinValue>
+              <Strength>0.2</Strength>
             </NoiseSettings>
           </MeshProvider>
           <MaterialProvider>
@@ -593,17 +606,7 @@
             </WaterGradient>
           </MaterialProvider>
         </ModuleData>
-        <ModuleData xsi:type="GravityModuleData">
-          <Mass>1</Mass>
-          <Position>
-            <x>8.16</x>
-            <y>0</y>
-          </Position>
-          <Velocity>
-            <x>0</x>
-            <y>11</y>
-          </Velocity>
-        </ModuleData>
+        <ModuleData xsi:type="BodyCollisionModuleData" />
       </Modules>
     </PlanetData>
     <PlanetData Name="IO">
@@ -621,20 +624,20 @@
           </Velocity>
         </ModuleData>
         <ModuleData xsi:type="PlanetViewModuleData">
-          <ObjectScale>0.9</ObjectScale>
+          <Scale>0.9</Scale>
           <MeshProvider>
             <NoiseSettings>
               <Frequency>4</Frequency>
-              <Lacunarity>7,45</Lacunarity>
-              <Persistence>0,2</Persistence>
+              <Lacunarity>7.45</Lacunarity>
+              <Persistence>0.2</Persistence>
               <Vector3>
                 <x>0</x>
                 <y>0</y>
                 <z>0</z>
               </Vector3>
               <Octaves>3</Octaves>
-              <MinValue>0,5</MinValue>
-              <Strength>0,15</Strength>
+              <MinValue>0.5</MinValue>
+              <Strength>0.15</Strength>
             </NoiseSettings>
           </MeshProvider>
           <MaterialProvider>
@@ -724,6 +727,7 @@
             </WaterGradient>
           </MaterialProvider>
         </ModuleData>
+        <ModuleData xsi:type="BodyCollisionModuleData" />
       </Modules>
     </PlanetData>
     <PlanetData Name="Gea">
@@ -741,20 +745,20 @@
           </Velocity>
         </ModuleData>
         <ModuleData xsi:type="PlanetViewModuleData">
-          <ObjectScale>1.4</ObjectScale>
+          <Scale>1.4</Scale>
           <MeshProvider>
             <NoiseSettings>
               <Frequency>3</Frequency>
-              <Lacunarity>7,45</Lacunarity>
-              <Persistence>0,2</Persistence>
+              <Lacunarity>7.45</Lacunarity>
+              <Persistence>0.2</Persistence>
               <Vector3>
                 <x>8</x>
                 <y>0</y>
                 <z>0</z>
               </Vector3>
               <Octaves>3</Octaves>
-              <MinValue>0,5</MinValue>
-              <Strength>0,15</Strength>
+              <MinValue>0.5</MinValue>
+              <Strength>0.15</Strength>
             </NoiseSettings>
           </MeshProvider>
           <MaterialProvider>
@@ -897,6 +901,7 @@
             </WaterGradient>
           </MaterialProvider>
         </ModuleData>
+        <ModuleData xsi:type="BodyCollisionModuleData" />
       </Modules>
     </PlanetData>
   </Planets>

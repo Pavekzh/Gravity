@@ -14,6 +14,8 @@ namespace Assets.SceneEditor.Models
     {
         public virtual bool DisplayOnValuesPanel { get => true; }
 
+        protected bool isDeserialized = false;
+
         [XmlIgnore]
         public abstract List<PropertyViewData> Properties { get; }
         public abstract string Name { get; }
@@ -23,6 +25,9 @@ namespace Assets.SceneEditor.Models
         public abstract object Clone();
 
         public abstract void CreateModule(GameObject sceneObject);
-        public abstract void OnDeserialized();
+        public virtual void OnDeserialized()
+        {
+            isDeserialized = true;
+        }
     }
 }

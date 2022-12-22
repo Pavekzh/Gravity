@@ -16,7 +16,7 @@ namespace Assets.SceneEditor.Controllers
         
         protected virtual IValidationRule<float>[] ScaleValidationRule 
         { 
-            get => ViewModuleData.ScaleValidationRule;
+            get => ViewModuleData.ScaleValidationRules;
         }
 
         protected virtual Binding<float> ScalePropertyBinding
@@ -33,7 +33,7 @@ namespace Assets.SceneEditor.Controllers
         {
             get
             {
-                return SelectedObject.PlanetData.GetModule<ViewModuleData>(ViewModuleData.Key).ObjectScale;
+                return SelectedObject.PlanetData.GetModule<ViewModuleData>(ViewModuleData.Key).Scale;
             }
             
         }

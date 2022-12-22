@@ -10,17 +10,43 @@ namespace Assets.SceneEditor.Models
     {
         protected float objectScale = 1;
 
+        public float MinVolume { get => CalculateVolume(MinScale); }
+        public float MaxVolume { get => CalculateVolume(MaxScale); }
         public const float MinScale = 0.2f;
         public const float MaxScale = 10;
+
         public static string Key = "ViewModule";
 
-        public float ObjectScale
+        public float Scale
         {
             get { return objectScale; }
             set
             {
                 this.objectScale = value;
                 this.ScaleBinding.ChangeValue(value, this);
+                this.VolumeBinding.ChangeValue(CalculateVolume(value), this);
+
+                if(isDeserialized)
+                    UpdateView();
+            }
+        }
+        [XmlIgnore]
+        public float Volume
+        {
+            get
+            {
+                return CalculateVolume(this.objectScale);
+            }
+
+            set
+            {
+                float scale = CalculateScale(value);
+                this.objectScale = scale;
+                this.ScaleBinding.ChangeValue(scale, this);
+                this.VolumeBinding.ChangeValue(value, this);
+
+                if (isDeserialized)
+                    UpdateView();
             }
         }
 
@@ -35,7 +61,7 @@ namespace Assets.SceneEditor.Models
         [XmlIgnore]
         public virtual Binding<float> VolumeBinding { get; protected set; }
 
-        public static IValidationRule<float>[] ScaleValidationRule { get; protected set; } = new IValidationRule<float>[] 
+        public static IValidationRule<float>[] ScaleValidationRules { get; protected set; } = new IValidationRule<float>[] 
         {
             new FloatMinimumValidationRule(MinScale,true),
             new FloatMaximumValidationRule(MaxScale,true)
@@ -43,15 +69,31 @@ namespace Assets.SceneEditor.Models
 
         public ViewModuleData()
         {
-            ConvertibleBinding<float, string[]> radiusBinding = new BasicTools.ConvertibleBinding<float, string[]>(new FloatStringConverter());
-            this.ScaleBinding = radiusBinding;
-            radiusBinding.ValueChanged += setScale;
-            radiusBinding.ValidationRules.AddRange(ScaleValidationRule);
-            CommonPropertyViewData<float> radiusProperty = new CommonPropertyViewData<float>();
-            radiusProperty.Binding = radiusBinding;
-            radiusProperty.Name = "Radius";
-            Properties.Add(radiusProperty);
+            ConvertibleBinding<float, string[]> scaleBinding = new ConvertibleBinding<float, string[]>(new FloatStringConverter());
+            this.ScaleBinding = scaleBinding;
+            scaleBinding.ValueChanged += setScale;
+            scaleBinding.ValidationRules.AddRange(ScaleValidationRules);
+
+            ConvertibleBinding<float, string[]> volumeBinding = new ConvertibleBinding<float, string[]>(new FloatStringConverter());
+            this.VolumeBinding = volumeBinding;
+            volumeBinding.ValueChanged += setVolume;
+            IValidationRule<float> minVolumeRule = new FloatMinimumValidationRule(MinVolume, true);
+            IValidationRule<float> maxVolumeRule = new FloatMaximumValidationRule(MaxVolume, true);
+            volumeBinding.ValidationRules.Add(minVolumeRule);
+            volumeBinding.ValidationRules.Add(maxVolumeRule);
+
+            CommonPropertyViewData<float> scaleProperty = new CommonPropertyViewData<float>();
+            scaleProperty.Binding = scaleBinding;
+            scaleProperty.Name = "Radius";
+            Properties.Add(scaleProperty);
+
+            CommonPropertyViewData<float> volumeProperty = new CommonPropertyViewData<float>();
+            volumeProperty.Binding = volumeBinding;
+            volumeProperty.Name = "Volume";
+            Properties.Add(volumeProperty);
         }
+
+
 
         protected virtual float CalculateVolume(float scale)
         {
@@ -63,10 +105,23 @@ namespace Assets.SceneEditor.Models
             return MathF.Cbrt(volume);
         }
 
+        protected virtual void setVolume(float value, object source)
+        {
+            float scale = CalculateScale(value);
+            if (source != this && scale != this.objectScale)
+            {
+                ScaleBinding.ChangeValue(scale, this);
+                this.objectScale = scale;
+                UpdateView();
+            }
+        }
+
         protected virtual void setScale(float value, object source)
         {       
             if (source != this && value != this.objectScale)
             {
+                float volume = CalculateVolume(value);
+                VolumeBinding.ChangeValue(volume, this);
                 this.objectScale = value;
                 UpdateView();
             }

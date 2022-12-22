@@ -133,6 +133,7 @@ namespace Assets.Services
                     createdSpheres.Add(sphere);
                 }
 
+                sphere.layer = LayerMask.NameToLayer("PlanetNonInteract");
                 sphere.GetComponent<Renderer>().material = colorMaterial;
                 sphere.GetComponent<Renderer>().material.color = estimatedColor;
                 sphere.transform.position = planet.GetModule<GravityModuleData>(GravityModuleData.Key).Position.GetVector3();

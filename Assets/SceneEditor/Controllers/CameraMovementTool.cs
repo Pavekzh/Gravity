@@ -1,10 +1,12 @@
 ﻿using BasicTools;
 using UnityEngine;
+using Assets.SceneEditor.Models;
 
 namespace Assets.SceneEditor.Controllers
 {
     public class CameraMovementTool : SceneTool
     {
+        [SerializeField] private new CameraModel camera;
         [SerializeField] private CameraZoomTool zoomTool;
         [SerializeField] private Vector2 movingSpeed = Vector2.one;
 
@@ -42,7 +44,7 @@ namespace Assets.SceneEditor.Controllers
 
         private void ReadMovingInput(Touch touch)
         {
-            EditorController.Instance.Camera.Moving((new Vector2(touch.deltaPosition.x,-touch.deltaPosition.y) * movingSpeed ).GetVector3());
+            camera.Moving((new Vector2(touch.deltaPosition.x,-touch.deltaPosition.y) * movingSpeed ).GetVector3());
         }
     }
 }

@@ -6,6 +6,7 @@ namespace Assets.SceneEditor.Controllers
 {
     public class CameraRotationTool : SceneTool
     {
+        [SerializeField] private new CameraModel camera;
         [SerializeField] private CameraZoomTool zoomTool;
         [SerializeField] private float rotationSpeed = 1;
 
@@ -46,7 +47,7 @@ namespace Assets.SceneEditor.Controllers
             Vector2 OrbitAngle = new Vector2();
             OrbitAngle.y = touch.deltaPosition.x * rotationSpeed;
             OrbitAngle.x = -(touch.deltaPosition.y * rotationSpeed);
-            EditorController.Instance.Camera.Rotation(OrbitAngle);
+            camera.Rotation(OrbitAngle);
         }
     }
 }

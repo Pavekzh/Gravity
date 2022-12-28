@@ -24,11 +24,14 @@ namespace Assets.SceneEditor.Models
 
 
         [Header("Start data")]
-        [SerializeField] private float rotationRadius = 10;
-        [SerializeField] private Vector3 origin;
-        [SerializeField] private Vector2 orbitAngle = new Vector2(60, 0);
+        [SerializeField] private float defaultRotationRadius = 10;
+        [SerializeField] private Vector3 defaultOrigin;
+        [SerializeField] private Vector2 defaultOrbitAngle = new Vector2(60, 0);
         [SerializeField] private Camera Camera;
 
+        [SerializeField]private Vector3 origin;
+        private Vector2 orbitAngle;
+        private float rotationRadius;
 
         public float RotationRadius
         {
@@ -104,9 +107,23 @@ namespace Assets.SceneEditor.Models
 
         private void Start()
         {
+
+#if UNITY_EDITOR
+            if (defaultOrbitAngle.x < minXAngle)
+                Debug.LogError("Default orbit angle can`t be less then min angle");
+            else if (defaultOrbitAngle.x > maxXAngle)
+                Debug.LogError("Default orbit angle can`t be greater then max angle");
+            if(defaultRotationRadius > maxRadius)
+                Debug.LogError("Default rotation radius can`t be greater then max radius");
+#endif
+
+            this.origin = defaultOrigin;
+            this.OrbitAngle = defaultOrbitAngle;
+            this.RotationRadius = defaultRotationRadius;
+
             Debug.LogWarning("Adding to dataStorage: CameraModel.83");
             DataStorage.Instance.SaveData(Key, this);
-            ResetRotation();
+            UpdateRotation();
         }
 
         public void Zoom(float DeltaDistance)
@@ -114,7 +131,7 @@ namespace Assets.SceneEditor.Models
             if (DeltaDistance != 0 && ControlLocked == false)
             {
                 RotationRadius -= DeltaDistance * (rotationRadius / DefaultRadius);
-                ResetRotation();
+                UpdateRotation();
             }
         }
         public void Moving(Vector3 Vector)
@@ -123,7 +140,7 @@ namespace Assets.SceneEditor.Models
             {
                 Vector = Vector * (rotationRadius / DefaultRadius);
                 Origin = Vector;
-                ResetRotation();
+                UpdateRotation();
             }
         }
         public void Rotation(Vector2 OrbitDeltaAngle)
@@ -147,6 +164,19 @@ namespace Assets.SceneEditor.Models
             }
         }
 
+        public void ResetRotation()
+        {
+            this.OrbitAngle = defaultOrbitAngle;
+            UpdateRotation();
+        }
+        public void ResetTransform()
+        {
+            this.origin = defaultOrigin;
+            this.OrbitAngle = defaultOrbitAngle;
+            this.RotationRadius = defaultRotationRadius;
+            UpdateRotation();
+        }
+
         private void TranslateY(float y)
         {
 
@@ -158,7 +188,7 @@ namespace Assets.SceneEditor.Models
             this.RotationRadius = R;
             this.OrbitAngle = new Vector2(Angle, OrbitAngle.y);
         }
-        private void ResetRotation()
+        private void UpdateRotation()
         {
             float r = RotationRadius * Mathf.Cos(Mathf.Deg2Rad * OrbitAngle.x);
             float y = origin.y + (RotationRadius * Mathf.Sin(Mathf.Deg2Rad * OrbitAngle.x));

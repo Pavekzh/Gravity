@@ -8,6 +8,7 @@ namespace Assets.SceneEditor.Models
     public class SceneState:ICloneable
     {
         public string Name { get; set; }
+        public CameraModel Camera { get; set; }
         public List<PlanetData> Planets { get; set; } = new List<PlanetData>();
 
 
@@ -20,6 +21,10 @@ namespace Assets.SceneEditor.Models
         public object Clone()
         {
             SceneState clonedState = this.MemberwiseClone() as SceneState;
+
+            if(Camera != null)
+                clonedState.Camera = Camera.Clone() as CameraModel;
+
             clonedState.Planets = new List<PlanetData>();
             foreach(PlanetData pData in this.Planets)
             {

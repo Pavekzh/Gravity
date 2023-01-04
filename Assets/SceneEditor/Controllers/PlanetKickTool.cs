@@ -54,7 +54,7 @@ namespace Assets.SceneEditor.Controllers
                     SelectedPlanet = planet;
 
                     outputManipulator.IsVisible = true;
-                    outputManipulator.UpdateManipulatorView(selectedGravityInteractor.Data.Position, selectedGravityInteractor.Data.Velocity, EditorController.Instance.Camera.ScaleFactor);
+                    outputManipulator.UpdateManipulatorView(selectedGravityInteractor.Data.Position, selectedGravityInteractor.Data.Velocity, EditorController.Instance.CameraModel.ScaleFactor);
                 }
                 else
                     SelectedPlanet = planet;
@@ -95,7 +95,7 @@ namespace Assets.SceneEditor.Controllers
             if (SelectedPlanet != null)
             {            
                 outputManipulator.IsVisible = true;
-                outputManipulator.UpdateManipulatorView(selectedGravityInteractor.Data.Position, selectedGravityInteractor.Data.Velocity, EditorController.Instance.Camera.ScaleFactor);
+                outputManipulator.UpdateManipulatorView(selectedGravityInteractor.Data.Position, selectedGravityInteractor.Data.Velocity, EditorController.Instance.CameraModel.ScaleFactor);
             }
             this.inputSystem = inputSystem;
             base.DoEnable(inputSystem);
@@ -107,7 +107,7 @@ namespace Assets.SceneEditor.Controllers
             if(selectedGravityInteractor != null)
             {
                 selectedGravityInteractor.VelocityProperty.Binding.ChangeValue(outputVector.GetVectorXZ(), this);
-                outputManipulator.UpdateManipulatorView(selectedGravityInteractor.Position.GetVector3(), outputVector, EditorController.Instance.Camera.ScaleFactor);
+                outputManipulator.UpdateManipulatorView(selectedGravityInteractor.Position.GetVector3(), outputVector, EditorController.Instance.CameraModel.ScaleFactor);
             }
         }
 

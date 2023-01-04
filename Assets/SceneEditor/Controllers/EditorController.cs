@@ -7,7 +7,7 @@ namespace Assets.SceneEditor.Controllers
 {
     public class EditorController : Singleton<EditorController>
     {
-        [SerializeField] private new Assets.SceneEditor.Models.CameraModel camera;
+        [SerializeField] private new CameraController camera;
         [SerializeField] private InputSystem inputSystem;
 
         [SerializeField] private ToolsController toolsController;
@@ -16,7 +16,7 @@ namespace Assets.SceneEditor.Controllers
         private PanelController panelToRestore;
         private PanelController panel;
 
-        public Models.CameraModel Camera { get => camera; }
+        public Models.CameraModel CameraModel { get => camera.Model; }
        
         public ToolsController ToolsController { get => toolsController; }
         public ManipulatorsController ManipulatorsController { get => manipulatorsController; }

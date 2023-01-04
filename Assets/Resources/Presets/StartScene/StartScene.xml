@@ -295,17 +295,6 @@
     <PlanetData Name="Xeros">
       <SceneObjectBuilder xsi:type="DefaultSceneObjectBuilder" />
       <Modules>
-        <ModuleData xsi:type="GravityModuleData">
-          <Mass>1</Mass>
-          <Position>
-            <x>11.44</x>
-            <y>-3.96</y>
-          </Position>
-          <Velocity>
-            <x>0</x>
-            <y>10</y>
-          </Velocity>
-        </ModuleData>
         <ModuleData xsi:type="PlanetViewModuleData">
           <Scale>1.1</Scale>
           <MeshProvider>
@@ -423,23 +412,23 @@
             </WaterGradient>
           </MaterialProvider>
         </ModuleData>
+        <ModuleData xsi:type="GravityModuleData">
+          <Mass>1</Mass>
+          <Position>
+            <x>11.44</x>
+            <y>-3.96</y>
+          </Position>
+          <Velocity>
+            <x>0</x>
+            <y>10</y>
+          </Velocity>
+        </ModuleData>
         <ModuleData xsi:type="BodyCollisionModuleData" />
       </Modules>
     </PlanetData>
     <PlanetData Name="Earth">
       <SceneObjectBuilder xsi:type="DefaultSceneObjectBuilder" />
       <Modules>
-        <ModuleData xsi:type="GravityModuleData">
-          <Mass>1</Mass>
-          <Position>
-            <x>8.16</x>
-            <y>0</y>
-          </Position>
-          <Velocity>
-            <x>0</x>
-            <y>11</y>
-          </Velocity>
-        </ModuleData>
         <ModuleData xsi:type="PlanetViewModuleData">
           <Scale>1.6</Scale>
           <MeshProvider>
@@ -605,6 +594,17 @@
               <mode>Blend</mode>
             </WaterGradient>
           </MaterialProvider>
+        </ModuleData>
+        <ModuleData xsi:type="GravityModuleData">
+          <Mass>1</Mass>
+          <Position>
+            <x>8.16</x>
+            <y>0</y>
+          </Position>
+          <Velocity>
+            <x>0</x>
+            <y>11</y>
+          </Velocity>
         </ModuleData>
         <ModuleData xsi:type="BodyCollisionModuleData" />
       </Modules>

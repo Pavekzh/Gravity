@@ -6,7 +6,7 @@ namespace Assets.SceneEditor.Controllers
 {
     public class CameraZoomTool : EditorTool
     {
-        [SerializeField] private new CameraModel camera;
+        [SerializeField] private new CameraController camera;
         [SerializeField] private float zoomSpeed = 1f;
 
         private float touchesDistance;
@@ -52,7 +52,7 @@ namespace Assets.SceneEditor.Controllers
                 float deltaDistance = (distance - touchesDistance) * zoomSpeed;
 
                 touchesDistance = distance;
-                camera.Zoom(deltaDistance);
+                camera.Model.Zoom(deltaDistance);
             }
         }
 

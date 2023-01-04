@@ -1,7 +1,144 @@
 <?xml version="1.0"?>
 <SceneState xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Name>SavedByInspector</Name>
+  <Camera>
+    <RotationRadius>40</RotationRadius>
+    <OrbitAngle>
+      <x>23.3984051</x>
+      <y>-32.1656036</y>
+    </OrbitAngle>
+    <Origin>
+      <x>43.18999</x>
+      <y>0</y>
+      <z>-9.443855</z>
+    </Origin>
+  </Camera>
   <Planets>
+    <PlanetData Name="Saturn">
+      <SceneObjectBuilder xsi:type="DefaultSceneObjectBuilder" />
+      <Modules>
+        <ModuleData xsi:type="GravityModuleData">
+          <Mass>10</Mass>
+          <Position>
+            <x>0</x>
+            <y>0</y>
+          </Position>
+          <Velocity>
+            <x>0</x>
+            <y>0</y>
+          </Velocity>
+        </ModuleData>
+        <ModuleData xsi:type="PlanetViewModuleData">
+          <Scale>1.7</Scale>
+          <MeshProvider>
+            <NoiseSettings>
+              <Frequency>3</Frequency>
+              <Lacunarity>7.45</Lacunarity>
+              <Persistence>0.2</Persistence>
+              <Vector3>
+                <x>0</x>
+                <y>0</y>
+                <z>0</z>
+              </Vector3>
+              <Octaves>3</Octaves>
+              <MinValue>0.5</MinValue>
+              <Strength>0.1</Strength>
+            </NoiseSettings>
+          </MeshProvider>
+          <MaterialProvider>
+            <LandGradient>
+              <colorKeys>
+                <GradientColorKey>
+                  <color>
+                    <r>0.2811499</r>
+                    <g>0.3318797</g>
+                    <b>0.509434</b>
+                    <a>1</a>
+                  </color>
+                  <time>0.164705887</time>
+                </GradientColorKey>
+                <GradientColorKey>
+                  <color>
+                    <r>0.257431477</r>
+                    <g>0.483839124</g>
+                    <b>0.8396226</b>
+                    <a>1</a>
+                  </color>
+                  <time>0.4500038</time>
+                </GradientColorKey>
+                <GradientColorKey>
+                  <color>
+                    <r>0.7885814</r>
+                    <g>0.8901173</g>
+                    <b>0.9339623</b>
+                    <a>1</a>
+                  </color>
+                  <time>0.65882355</time>
+                </GradientColorKey>
+              </colorKeys>
+              <alphaKeys>
+                <GradientAlphaKey>
+                  <alpha>1</alpha>
+                  <time>0.305882365</time>
+                </GradientAlphaKey>
+                <GradientAlphaKey>
+                  <alpha>1</alpha>
+                  <time>0.544121444</time>
+                </GradientAlphaKey>
+                <GradientAlphaKey>
+                  <alpha>1</alpha>
+                  <time>0.6852979</time>
+                </GradientAlphaKey>
+              </alphaKeys>
+              <mode>Blend</mode>
+            </LandGradient>
+            <WaterGradient>
+              <colorKeys>
+                <GradientColorKey>
+                  <color>
+                    <r>0.7168476</r>
+                    <g>0.7408963</g>
+                    <b>0.8396226</b>
+                    <a>1</a>
+                  </color>
+                  <time>0.0205844212</time>
+                </GradientColorKey>
+                <GradientColorKey>
+                  <color>
+                    <r>0.4339623</r>
+                    <g>0.4339623</g>
+                    <b>0.4339623</b>
+                    <a>1</a>
+                  </color>
+                  <time>0.8205844</time>
+                </GradientColorKey>
+                <GradientColorKey>
+                  <color>
+                    <r>0.644802451</r>
+                    <g>0.6508009</g>
+                    <b>0.6603774</b>
+                    <a>1</a>
+                  </color>
+                  <time>0.8764782</time>
+                </GradientColorKey>
+              </colorKeys>
+              <alphaKeys>
+                <GradientAlphaKey>
+                  <alpha>1</alpha>
+                  <time>0</time>
+                </GradientAlphaKey>
+                <GradientAlphaKey>
+                  <alpha>1</alpha>
+                  <time>1</time>
+                </GradientAlphaKey>
+              </alphaKeys>
+              <mode>Blend</mode>
+            </WaterGradient>
+          </MaterialProvider>
+        </ModuleData>
+        <ModuleData xsi:type="BodyCollisionModuleData" />
+      </Modules>
+    </PlanetData>
     <PlanetData Name="Mimas">
       <SceneObjectBuilder xsi:type="DefaultSceneObjectBuilder" />
       <Modules>
@@ -170,17 +307,6 @@
     <PlanetData Name="Xeros">
       <SceneObjectBuilder xsi:type="DefaultSceneObjectBuilder" />
       <Modules>
-        <ModuleData xsi:type="GravityModuleData">
-          <Mass>1</Mass>
-          <Position>
-            <x>11.44</x>
-            <y>-3.96</y>
-          </Position>
-          <Velocity>
-            <x>0</x>
-            <y>10</y>
-          </Velocity>
-        </ModuleData>
         <ModuleData xsi:type="PlanetViewModuleData">
           <Scale>1.1</Scale>
           <MeshProvider>
@@ -298,23 +424,23 @@
             </WaterGradient>
           </MaterialProvider>
         </ModuleData>
+        <ModuleData xsi:type="GravityModuleData">
+          <Mass>1</Mass>
+          <Position>
+            <x>11.44</x>
+            <y>-3.96</y>
+          </Position>
+          <Velocity>
+            <x>0</x>
+            <y>10</y>
+          </Velocity>
+        </ModuleData>
         <ModuleData xsi:type="BodyCollisionModuleData" />
       </Modules>
     </PlanetData>
     <PlanetData Name="Earth">
       <SceneObjectBuilder xsi:type="DefaultSceneObjectBuilder" />
       <Modules>
-        <ModuleData xsi:type="GravityModuleData">
-          <Mass>1</Mass>
-          <Position>
-            <x>8.16</x>
-            <y>0</y>
-          </Position>
-          <Velocity>
-            <x>0</x>
-            <y>11</y>
-          </Velocity>
-        </ModuleData>
         <ModuleData xsi:type="PlanetViewModuleData">
           <Scale>1.6</Scale>
           <MeshProvider>
@@ -480,6 +606,17 @@
               <mode>Blend</mode>
             </WaterGradient>
           </MaterialProvider>
+        </ModuleData>
+        <ModuleData xsi:type="GravityModuleData">
+          <Mass>1</Mass>
+          <Position>
+            <x>8.16</x>
+            <y>0</y>
+          </Position>
+          <Velocity>
+            <x>0</x>
+            <y>11</y>
+          </Velocity>
         </ModuleData>
         <ModuleData xsi:type="BodyCollisionModuleData" />
       </Modules>

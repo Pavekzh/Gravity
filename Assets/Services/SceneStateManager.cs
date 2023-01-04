@@ -159,8 +159,7 @@ namespace Assets.Services
             ClearScene();
             SceneState clonedState = sceneState.Clone() as SceneState;
             if(clonedState != null)
-            {
-
+            {                    
                 foreach (PlanetData planet in clonedState.Planets)
                 {
                     planet.CreateSceneObject();

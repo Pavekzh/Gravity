@@ -91,7 +91,7 @@ namespace Assets.SceneEditor.Controllers
         protected override void Start()
         {
             base.Start();
-            EditorController.Instance.Camera.ZoomChanged += zoomChanged;
+            EditorController.Instance.CameraModel.ZoomChanged += zoomChanged;
             this.InputBinding.ValueChanged += externalValueChanged;
         }
 
@@ -118,7 +118,7 @@ namespace Assets.SceneEditor.Controllers
         {
             if (isEnabled && InputBinding != null)
             {
-                DragManipulator.ScaleFactor = EditorController.Instance.Camera.ScaleFactor;
+                DragManipulator.ScaleFactor = EditorController.Instance.CameraModel.ScaleFactor;
             }
         }
 
@@ -154,7 +154,7 @@ namespace Assets.SceneEditor.Controllers
         {
             if (OriginBinding != null && isEnabled)
             {
-                DragManipulator.ScaleFactor = EditorController.Instance.Camera.ScaleFactor;
+                DragManipulator.ScaleFactor = EditorController.Instance.CameraModel.ScaleFactor;
                 DragManipulator.Enable(OriginBinding);
                 DragInputStarted += dragInputStarted;
                 DragInputEnded += dragInputEnded;

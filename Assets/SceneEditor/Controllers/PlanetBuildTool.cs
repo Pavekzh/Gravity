@@ -10,6 +10,8 @@ namespace Assets.SceneEditor.Controllers
         private InputSystem inputSystem;
         [SerializeField] private MoveObjectTool MoveTool;
 
+        protected override bool HighlightSelectedObjectOnEnable => false;
+
         public override string DefaultKey => StaticKey;
 
         public static string StaticKey => "BuildTool";

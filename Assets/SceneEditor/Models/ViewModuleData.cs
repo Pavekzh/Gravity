@@ -9,6 +9,7 @@ namespace Assets.SceneEditor.Models
     public abstract class ViewModuleData:ModuleData
     {
         protected float objectScale = 1;
+        protected bool isHighlighted = false;
 
         public float MinVolume { get => CalculateVolume(MinScale); }
         public float MaxVolume { get => CalculateVolume(MaxScale); }
@@ -93,7 +94,29 @@ namespace Assets.SceneEditor.Models
             Properties.Add(volumeProperty);
         }
 
+        public void Highlight()
+        {
+            if (!isHighlighted)
+            {                
+                DoHighlight();
+                isHighlighted = true;
+            }
 
+        }
+
+        public void Lessen()
+        {
+            if (isHighlighted)
+            {                
+                DoLessen();
+                isHighlighted = false;
+            }
+
+        }
+
+        protected abstract void DoHighlight();
+
+        protected abstract void DoLessen();
 
         protected virtual float CalculateVolume(float scale)
         {

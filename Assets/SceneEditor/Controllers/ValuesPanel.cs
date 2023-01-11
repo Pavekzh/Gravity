@@ -42,11 +42,13 @@ namespace Assets.SceneEditor.Controllers
                 GameObject.Destroy(child.gameObject);
             }
             visibleManager.State = BasicTools.State.Default;
+            Assets.Services.PlanetSelectSystem.Instance.LessenSelected();
         }
 
         protected override void DoOpen()
         {
             visibleManager.State = BasicTools.State.Changed;
+            Assets.Services.PlanetSelectSystem.Instance.HighlightSelected();
             Services.PlanetSelectSystem.Instance.SelectedPlanet.OpenView(this.containerTransform);
         }
     }

@@ -10,6 +10,7 @@ namespace Assets.SceneEditor.Controllers
         [SerializeField] private string individualKey;
         [SerializeField] protected ToolsController toolsController;
 
+        protected virtual bool HighlightSelectedObjectOnEnable => true;
         protected bool IsToolEnabled;
 
         public abstract string DefaultKey { get; }
@@ -20,6 +21,9 @@ namespace Assets.SceneEditor.Controllers
             {
                 DoDisable();
                 IsToolEnabled = false;
+
+                if (HighlightSelectedObjectOnEnable)
+                    PlanetSelectSystem.Instance.LessenSelected();
             }
 
         }
@@ -30,6 +34,9 @@ namespace Assets.SceneEditor.Controllers
             {
                 IsToolEnabled = true;
                 DoEnable(inputSystem);
+
+                if (HighlightSelectedObjectOnEnable)
+                    PlanetSelectSystem.Instance.HighlightSelected();
             }
         }
 

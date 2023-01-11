@@ -67,6 +67,16 @@ namespace Assets.SceneSimulation
             return loadedMaterial;
         }
 
+        public void Highlight()
+        {
+            loadedMaterial.SetFloat("_Enable",1);
+        }
+
+        public void Lessen()
+        {
+            loadedMaterial.SetFloat("_Enable",0);
+        }
+
         public object Clone()
         {
             PlanetMaterialProvider materialProvider = new PlanetMaterialProvider(this.landGradient, this.waterGradient);

@@ -17,12 +17,35 @@ namespace Assets.Services
         private int layerMask;
         private InputSystem inputSystem;
         private bool isSelectionLocked;
+        private bool SelectedHighlighted;
        
         [SerializeField] private PlanetController planet;
         [SerializeField] private string planetsLayerName;
         [SerializeField] private float selectSphereRadius;
 
         private Dictionary<Guid, PlanetController> PlanetControllers { get; set; } = new Dictionary<Guid, PlanetController>();
+
+        public PlanetController SelectedPlanet
+        {
+            get => planet;
+            private set
+            {
+                if (!isSelectionLocked)
+                {
+                    bool mustBeSelected = SelectedHighlighted;
+                    if (SelectedHighlighted)
+                    {
+                        LessenSelected();
+                    }
+                    planet = value;
+                    SelectedPlanetChanged?.Invoke(this, value);
+                    if (mustBeSelected)
+                    {
+                        HighlightSelected();
+                    }
+                }
+            }
+        }
 
         public void AddPlanet(Guid id, PlanetController planet)
         {
@@ -34,19 +57,6 @@ namespace Assets.Services
             PlanetControllers.Remove(id);
             if(SelectedPlanet != null && id == SelectedPlanet.PlanetData.Guid)
                 FindPlanet();
-        }
-
-        public PlanetController SelectedPlanet
-        {
-            get => planet;
-            private set
-            {
-                if (!isSelectionLocked)
-                {
-                    planet = value;
-                    SelectedPlanetChanged?.Invoke(this, value);
-                }
-            }
         }
 
         public void ForceSelect(PlanetController planet)
@@ -65,6 +75,23 @@ namespace Assets.Services
             isSelectionLocked = false;
         }
 
+        public void HighlightSelected()
+        {
+            if ((SelectedPlanet != null || FindPlanet() != null) && !SelectedHighlighted)
+            {
+                SelectedPlanet.PlanetData.GetModule<ViewModuleData>(ViewModuleData.Key).Highlight();
+                SelectedHighlighted = true;
+            }
+        }
+
+        public void LessenSelected()
+        {
+            if ((SelectedPlanet != null || FindPlanet() != null) && SelectedHighlighted)
+            {
+                SelectedPlanet.PlanetData.GetModule<ViewModuleData>(ViewModuleData.Key).Lessen();
+                SelectedHighlighted = false;
+            }
+        }
 
         private void Start()
         {

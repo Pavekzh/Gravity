@@ -49,8 +49,6 @@ namespace Assets.SceneEditor.Models
         private PlanetMaterialProvider materialProvider;
         private ViewDefinitionModule viewModule;
 
-
-
         [XmlIgnore]
         public Binding<NoiseSettings> NoiseSettsBinding { get; private set; }
 
@@ -132,6 +130,18 @@ namespace Assets.SceneEditor.Models
         protected override float CalculateVolume(float scale)
         {
             return (4f / 3f) * Mathf.PI * Mathf.Pow(scale, 3);
+        }
+
+        protected override void DoHighlight()
+        {
+            materialProvider.Highlight();
+            MaterialBinding.ChangeValue(materialProvider.GetMaterial(), this);
+        }
+
+        protected override void DoLessen()
+        {
+            materialProvider.Lessen();
+            MaterialBinding.ChangeValue(materialProvider.GetMaterial(), this);
         }
     }
 }

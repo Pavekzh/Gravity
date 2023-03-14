@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 844ec03b529190f47bb530d12c80c320, type: 3}
   m_Name: MimasVIew
   m_EditorClassIdentifier: 
-  planetRadius: 1.3
+  planetRadius: 0.7
   noiseSettings:
     frequency: 4
     lacunarity: 7.45

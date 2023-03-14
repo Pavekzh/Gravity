@@ -130,7 +130,7 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
-    - _Thickness: 0.0017
+    - _Thickness: 0.0019
     - _WorkflowMode: 1
     - _ZWrite: 1
     - _smoothness: 0
@@ -139,7 +139,7 @@ Material:
         a: 0}
     - Color_f6e373f04a4c47f58db7af7a9d83ac1f: {r: 0, g: 0, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 0.481862, g: 0, b: 4.0015497, a: 1}
+    - _Color: {r: 4.00155, g: 0.34065112, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}

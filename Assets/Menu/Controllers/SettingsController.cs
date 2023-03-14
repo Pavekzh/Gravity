@@ -1,5 +1,7 @@
 ﻿using BasicTools;
 using UnityEngine;
+using UnityEngine.UI;
+using Assets.Services;
 
 namespace Assets.Menu.Controllers
 {
@@ -7,6 +9,7 @@ namespace Assets.Menu.Controllers
     class SettingsController:MonoBehaviour
     {
         [SerializeField] StateChanger opener;
+        [SerializeField] new Services.AudioSettings audio;
 
         RectTransform rectTransform;
         RectTransform RectTransform

@@ -6,18 +6,18 @@
       <SceneObjectBuilder xsi:type="DefaultSceneObjectBuilder" />
       <Modules>
         <ModuleData xsi:type="GravityModuleData">
-          <Mass>10</Mass>
+          <Mass>100</Mass>
           <Position>
             <x>0</x>
             <y>0</y>
           </Position>
           <Velocity>
             <x>0</x>
-            <y>0</y>
+            <y>-0.54</y>
           </Velocity>
         </ModuleData>
         <ModuleData xsi:type="PlanetViewModuleData">
-          <Scale>1.7</Scale>
+          <Scale>1.9</Scale>
           <MeshProvider>
             <NoiseSettings>
               <Frequency>3</Frequency>
@@ -131,18 +131,18 @@
       <SceneObjectBuilder xsi:type="DefaultSceneObjectBuilder" />
       <Modules>
         <ModuleData xsi:type="GravityModuleData">
-          <Mass>1</Mass>
+          <Mass>0.01</Mass>
           <Position>
-            <x>12.27</x>
+            <x>23.45</x>
             <y>0</y>
           </Position>
           <Velocity>
             <x>0</x>
-            <y>7</y>
+            <y>6</y>
           </Velocity>
         </ModuleData>
         <ModuleData xsi:type="PlanetViewModuleData">
-          <Scale>1.3</Scale>
+          <Scale>0.7</Scale>
           <MeshProvider>
             <NoiseSettings>
               <Frequency>4</Frequency>
@@ -415,12 +415,12 @@
         <ModuleData xsi:type="GravityModuleData">
           <Mass>1</Mass>
           <Position>
-            <x>11.44</x>
+            <x>13.25</x>
             <y>-3.96</y>
           </Position>
           <Velocity>
             <x>0</x>
-            <y>10</y>
+            <y>7</y>
           </Velocity>
         </ModuleData>
         <ModuleData xsi:type="BodyCollisionModuleData" />
@@ -430,7 +430,7 @@
       <SceneObjectBuilder xsi:type="DefaultSceneObjectBuilder" />
       <Modules>
         <ModuleData xsi:type="PlanetViewModuleData">
-          <Scale>1.6</Scale>
+          <Scale>1.3</Scale>
           <MeshProvider>
             <NoiseSettings>
               <Frequency>3</Frequency>
@@ -598,12 +598,12 @@
         <ModuleData xsi:type="GravityModuleData">
           <Mass>1</Mass>
           <Position>
-            <x>8.16</x>
+            <x>20.3</x>
             <y>0</y>
           </Position>
           <Velocity>
             <x>0</x>
-            <y>11</y>
+            <y>7</y>
           </Velocity>
         </ModuleData>
         <ModuleData xsi:type="BodyCollisionModuleData" />
@@ -615,12 +615,12 @@
         <ModuleData xsi:type="GravityModuleData">
           <Mass>1</Mass>
           <Position>
-            <x>8.18</x>
+            <x>7.83</x>
             <y>-5.28</y>
           </Position>
           <Velocity>
             <x>0</x>
-            <y>11</y>
+            <y>7</y>
           </Velocity>
         </ModuleData>
         <ModuleData xsi:type="PlanetViewModuleData">
@@ -736,16 +736,16 @@
         <ModuleData xsi:type="GravityModuleData">
           <Mass>1</Mass>
           <Position>
-            <x>4.31</x>
-            <y>-4.08</y>
+            <x>10.63</x>
+            <y>-2.64</y>
           </Position>
           <Velocity>
             <x>0</x>
-            <y>15</y>
+            <y>7</y>
           </Velocity>
         </ModuleData>
         <ModuleData xsi:type="PlanetViewModuleData">
-          <Scale>1.4</Scale>
+          <Scale>0.8</Scale>
           <MeshProvider>
             <NoiseSettings>
               <Frequency>3</Frequency>

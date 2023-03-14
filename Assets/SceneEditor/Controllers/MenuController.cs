@@ -10,6 +10,7 @@ namespace Assets.SceneEditor.Controllers
         [SerializeField] ShowElement visibleManager;
         [SerializeField] LoadScenePanel loadScenePanel;
         [SerializeField] SaveScenePanel saveScenePanel;
+        [SerializeField] AudioSettingsPanel audioSettingPanel;
         [SerializeField] int menuSceneIndex;
         [SerializeField] LevelLoader levelLoader;
 
@@ -51,6 +52,12 @@ namespace Assets.SceneEditor.Controllers
         {
             this.restorePanel = true;
             loadScenePanel.Open();
+        }
+
+        public void Settings()
+        {
+            this.restorePanel = true;
+            audioSettingPanel.Open();
         }
 
         public void Exit()

@@ -10,10 +10,6 @@ namespace UIExtended
         [SerializeField] private Slider slider;
         private bool bindingChanges = false;
 
-        private void Start()
-        {
-            slider.onValueChanged.AddListener(ValueChanged);
-        }
 
         private Binding<float> binding;
         public Binding<float> Binding 
@@ -30,6 +26,11 @@ namespace UIExtended
                 this.binding = value;
                 this.binding.ValueChanged += BindingChanged;
             }
+        }
+
+        private void Start()
+        {
+            slider.onValueChanged.AddListener(ValueChanged);
         }
 
         private void BindingChanged(float value,object sender)

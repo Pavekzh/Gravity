@@ -11,18 +11,32 @@ using Assets.SceneSimulation;
 
 namespace Assets.Services
 {
-    public class SceneStateManager:Singleton<SceneStateManager>
+    public class SceneStateManager : Singleton<SceneStateManager>
     {
         [SerializeField] SaveSystemFactory saveSystemFactory;
         [SerializeField] string savesDirectory = "Saves/";
         [SerializeField] string defaultName = "NewScene";
+        [Header("Start scene")]
         [SerializeField] string startScenePath = "";
         [SerializeField] TextAsset startScene;
+        [Header("Presets")]
+        [SerializeField] string presetsDirectory = "Presets/Scenes/";
+        [SerializeField] string presetName = "New preset";
+        [SerializeField] FileNamesCollectionScriptableObject presetsFileNames;
 
+        public FileNamesCollectionScriptableObject PresetsFileNames {get => presetsFileNames; }
+        public string PresetsDirectory { get => BaseDirectory +"Resources/"+ presetsDirectory; }
+        public string PresetName { get => presetName; }
         public string Directory { get => BaseDirectory + savesDirectory; }
-        public string Extension { get => saveSystem.Extension; }
+        public string Extension { get => SaveSystem.Extension; }
+        public ISaveSystem SaveSystem { get => saveSystemFactory.GetChachedSaveSystem(); }
+        public SceneState CurrentScene { get; private set; }
+        public SceneState LocalSave { get; set; }
+
+
         public delegate void SceneRefreshHandler();
         public event SceneRefreshHandler SceneChanged;
+
         public static string BaseDirectory
         {
             get
@@ -34,10 +48,7 @@ namespace Assets.Services
 #endif
             }
         }
-        public SceneState CurrentScene { get; private set; }
-        public SceneState LocalSave { get; set; }
 
-        private ISaveSystem saveSystem;
         private string currentFilePath;
 
         protected override void Awake()
@@ -47,8 +58,7 @@ namespace Assets.Services
                 System.IO.Directory.CreateDirectory(Directory);
 
             CurrentScene = new SceneState();
-            saveSystem = saveSystemFactory.GetSaveSystem();
-            currentFilePath = Directory + defaultName + saveSystem.Extension;
+            currentFilePath = Directory + defaultName + SaveSystem.Extension;
         }
 
         private void Start()
@@ -64,14 +74,14 @@ namespace Assets.Services
 
         public void SaveState(string fileName)
         {
-            string fullPath = GetPath(fileName);
-            saveSystem.Save(CurrentScene, fullPath);
+            string fullPath = GetSavePath(fileName);
+            SaveSystem.Save(CurrentScene, fullPath);
             currentFilePath = fullPath;
         }
 
         public void SaveState()
         {
-            saveSystem.Save(CurrentScene, currentFilePath);
+            SaveSystem.Save(CurrentScene, currentFilePath);
         }
 
         public void SaveLocal()
@@ -89,10 +99,10 @@ namespace Assets.Services
 
         public void Load(string fileName)
         {
-            string fullPath = GetPath(fileName);
+            string fullPath = GetSavePath(fileName);
             currentFilePath = fullPath;
 
-            SceneState state = saveSystem.Load(fullPath, typeof(SceneState)) as SceneState;
+            SceneState state = SaveSystem.Load(fullPath, typeof(SceneState)) as SceneState;
             if (state != null)
             {
                 SetScene(state);
@@ -103,7 +113,7 @@ namespace Assets.Services
 
         public void Load()
         {
-            SceneState state = saveSystem.Load(currentFilePath, typeof(SceneState)) as SceneState;
+            SceneState state = SaveSystem.Load(currentFilePath, typeof(SceneState)) as SceneState;
             if (state != null)
             {
                 SetScene(state);
@@ -115,7 +125,7 @@ namespace Assets.Services
 
         public void Delete(string fileName)
         {
-            saveSystem.Delete(GetPath(fileName));
+            SaveSystem.Delete(GetSavePath(fileName));
         }
 
         public void ClearScene()
@@ -137,9 +147,7 @@ namespace Assets.Services
         {
             if (startScenePath != "")
             {
-                if (saveSystem == null)
-                    saveSystem = saveSystemFactory.GetSaveSystem();
-                saveSystem.Save(startScene, startScenePath);
+                SaveSystem.Save(startScene, startScenePath);
             }
         }
 
@@ -148,10 +156,51 @@ namespace Assets.Services
             SceneState state;
             using (Stream stream = new MemoryStream(startScene.bytes))
             {
-                state = saveSystem.Load(stream, typeof(SceneState)) as SceneState;
+                state = SaveSystem.Load(stream, typeof(SceneState)) as SceneState;
             }
 
             return state;
+        }
+
+        public void SavePreset(SceneState preset)
+        {
+           if(presetsDirectory != "")
+            {
+                SaveSystem.Save(preset, PresetsDirectory + presetName + SaveSystem.Extension);
+                if (!PresetsFileNames.Collection.Contains(preset.Name))
+                {
+                    PresetsFileNames.Collection.Add(preset.Name);
+                }
+            }
+        }
+
+        public void LoadPreset(string fileName)
+        {
+            string resourcePath = presetsDirectory + fileName;
+            currentFilePath = GetSavePath(fileName);
+
+            try
+            {
+                TextAsset textFile = Resources.Load<TextAsset>(resourcePath);
+                using(MemoryStream stream = new MemoryStream(textFile.bytes))
+                {
+                    SceneState state = (SceneState)SaveSystem.Load(stream, typeof(SceneState));
+                    if(state != null)
+                    {
+                        SetScene(state);
+                    }
+                    else
+                    {
+                        MessagingSystem.Instance.ShowErrorMessage("Saved state didn't load properly ", this);
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                BasicTools.MessagingSystem.Instance.ShowErrorMessage(ex.Message, this);
+            }
+
+
         }
 
         private void SetScene(SceneState sceneState)
@@ -169,9 +218,9 @@ namespace Assets.Services
             }
         }        
 
-        private string GetPath(string fileName)
+        private string GetSavePath(string fileName)
         {
-            return Directory + fileName + saveSystem.Extension;
+            return Directory + fileName + SaveSystem.Extension;
         }
 
     }

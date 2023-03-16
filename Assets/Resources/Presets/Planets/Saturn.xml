@@ -3,18 +3,18 @@
   <SceneObjectBuilder xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="DefaultSceneObjectBuilder" />
   <Modules>
     <ModuleData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="GravityModuleData">
-      <Mass>10</Mass>
+      <Mass>100</Mass>
       <Position>
         <x>0</x>
         <y>0</y>
       </Position>
       <Velocity>
         <x>0</x>
-        <y>0</y>
+        <y>-0.54</y>
       </Velocity>
     </ModuleData>
     <ModuleData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="PlanetViewModuleData">
-      <Scale>1.7</Scale>
+      <Scale>1.9</Scale>
       <MeshProvider>
         <NoiseSettings>
           <Frequency>3</Frequency>

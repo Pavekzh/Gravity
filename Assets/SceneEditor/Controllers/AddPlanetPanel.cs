@@ -10,21 +10,21 @@ namespace Assets.SceneEditor.Controllers
 {
     public class AddPlanetPanel : PanelController
     {
-        [SerializeField] string directory = "Planets/";
-        [SerializeField] string presetsDirectory = "Presets/Planets";
         [SerializeField] SaveSystemFactory saveSystemFactory;
         [SerializeField] BasicTools.StateChanger visibleManager;
-        [Header("Presets panel")]
+        [Header("Presets panel")]        
+        [SerializeField] string presetsDirectory = "Presets/Planets/";
         [SerializeField] CollectionPresenter presetsPresenter;
         [SerializeField] SelectableFilePresenter presetFilePresenter;
-        [Header("User panel")]
+        [SerializeField] FileNamesCollectionScriptableObject presetsFileNames;
+        [Header("User panel")]        
+        [SerializeField] string userDirectory = "Planets/";
         [SerializeField] DirectoryPresenter userPlanetsPresenter;
         [SerializeField] SelectableFilePresenter usersFilePresenter;
 
         private ISaveSystem saveSystem;
         private string selectedFile;
         private PlanetPanelTab panelTab = PlanetPanelTab.PresetsTab;
-        private List<PlanetData> presets = new List<PlanetData>();
         
         public enum PlanetPanelTab
         {            
@@ -33,7 +33,7 @@ namespace Assets.SceneEditor.Controllers
         }
         public BasicTools.Binding<string> userFileBinding { get; private set; } = new BasicTools.Binding<string>();
         public BasicTools.Binding<string> presetBinding { get; private set; } = new BasicTools.Binding<string>();
-        public string Directory { get => Services.SceneStateManager.BaseDirectory + directory; }
+        public string Directory { get => Services.SceneStateManager.BaseDirectory + userDirectory; }
 
         private void Awake()
         {
@@ -52,26 +52,14 @@ namespace Assets.SceneEditor.Controllers
             userPlanetsPresenter.FileExtension = saveSystem.Extension;
 
             //loading presets
-            presetBinding.ValueChanged += BuildPlanet;
-            try
+            presetBinding.ValueChanged += LoadPlanetFromResources;
+
+            List<SelectableFilePresenter> presetPresenterCollection = new List<SelectableFilePresenter>();
+            foreach (string name in presetsFileNames.Collection)
             {
-                TextAsset[] textPresets = Resources.LoadAll<TextAsset>(presetsDirectory);
-                List<SelectableFilePresenter> presetPresenterCollection = new List<SelectableFilePresenter>();
-                foreach (TextAsset asset in textPresets)
-                {
-                    using (Stream stream = new MemoryStream(asset.bytes))
-                    {
-                        PlanetData pData = saveSystem.Load(stream, typeof(PlanetData)) as PlanetData;
-                        presets.Add(pData);
-                        presetPresenterCollection.Add(new SelectableFilePresenter(presetFilePresenter) { Path = pData.Name,PathBinding = presetBinding});
-                    }
-                }
-                presetsPresenter.Collection = presetPresenterCollection;
+                presetPresenterCollection.Add(new SelectableFilePresenter(presetFilePresenter) { Path = name, PathBinding = presetBinding });
             }
-            catch (Exception ex)
-            {
-                BasicTools.MessagingSystem.Instance.ShowErrorMessage(ex.Message, this);
-            }
+            presetsPresenter.Collection = presetPresenterCollection;
         }
 
         protected override void DoClose()
@@ -129,9 +117,23 @@ namespace Assets.SceneEditor.Controllers
             }
         }
 
-        private void BuildPlanet(string name,object sender)
+        private void LoadPlanetFromResources(string name,object sender)
         {
-            BuildPlanet(presets.Find(x => x.Name == name));
+            string path = presetsDirectory + name;
+            try
+            {
+                TextAsset textAsset = Resources.Load<TextAsset>(path);
+                using (Stream stream = new MemoryStream(textAsset.bytes))
+                {
+                    PlanetData pData = (PlanetData)saveSystem.Load(stream, typeof(PlanetData));
+                    BuildPlanet(pData);
+                }
+            }
+            catch(Exception ex)
+            {
+                BasicTools.MessagingSystem.Instance.ShowErrorMessage(ex.Message, this);
+            }
+
         }
 
         private void LoadPlanet(string path, object sender)

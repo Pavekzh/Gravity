@@ -66,6 +66,7 @@ namespace UIExtended
             }
 
             List<FileItemPresenter> itemsList = new List<FileItemPresenter>();
+           
             foreach(string path in files)
             {
                 FileItemPresenter fPresenter = FilePresenter.Clone() as FileItemPresenter;

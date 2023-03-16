@@ -20,6 +20,7 @@ namespace Assets.Editor
         private SaveSystemEnum saveSystemEnum;
         private string savesDirectory = "Resources/Presets/Planets/";
         private ISaveSystem saveSystem;
+        private FileNamesCollectionScriptableObject fileNames;
 
         private Module[] selectedPlanetModules;
 
@@ -54,8 +55,13 @@ namespace Assets.Editor
 
         private void OnGUI()
         {
+            
             savesDirectory = EditorGUILayout.TextField("Saves directory", savesDirectory);
             saveSystemEnum = (SaveSystemEnum)EditorGUILayout.EnumPopup("Save system",saveSystemEnum);
+            saveSystem = null;
+            fileNames = (FileNamesCollectionScriptableObject)EditorGUILayout.ObjectField(new GUIContent("File names"),fileNames, typeof(FileNamesCollectionScriptableObject),false);            
+            if (GUILayout.Button("Check file names"))
+                this.CheckFileNames();
             if(Selection.activeGameObject != null)
             {
                 selectedPlanetModules = Selection.activeGameObject.GetComponents<Module>();
@@ -73,6 +79,7 @@ namespace Assets.Editor
             
             if (GUILayout.Button("Save planet"))
                 this.SavePlanet();
+
         }
 
         private void SavePlanet()
@@ -92,6 +99,23 @@ namespace Assets.Editor
                 PlanetData planetData = new PlanetData(modulesData, Selection.activeGameObject.name, new DefaultSceneObjectBuilder());
                 SaveSystem.Save(planetData, Directory + Selection.activeGameObject.name + saveSystem.Extension);
             }
+
+            if (!fileNames.Collection.Contains(Selection.activeGameObject.name))
+            {
+                fileNames.Collection.Add(Selection.activeGameObject.name);
+            }
+        }
+
+        private void CheckFileNames()
+        {
+            string[] names = System.IO.Directory.GetFiles(Directory, "*"+SaveSystem.Extension);
+            fileNames.Collection.Clear();
+            foreach(string n in names)
+            {
+                string name = System.IO.Path.GetFileNameWithoutExtension(n);
+                fileNames.Collection.Add(name);
+            }
+
         }
     }
 }

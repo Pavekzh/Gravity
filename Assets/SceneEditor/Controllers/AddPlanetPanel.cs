@@ -22,7 +22,7 @@ namespace Assets.SceneEditor.Controllers
         [SerializeField] DirectoryPresenter userPlanetsPresenter;
         [SerializeField] SelectableFilePresenter usersFilePresenter;
 
-        private ISaveSystem saveSystem;
+        private ISaveSystem SaveSystem { get => saveSystemFactory.GetChachedSaveSystem(); }
         private string selectedFile;
         private PlanetPanelTab panelTab = PlanetPanelTab.PresetsTab;
         
@@ -33,23 +33,22 @@ namespace Assets.SceneEditor.Controllers
         }
         public BasicTools.Binding<string> userFileBinding { get; private set; } = new BasicTools.Binding<string>();
         public BasicTools.Binding<string> presetBinding { get; private set; } = new BasicTools.Binding<string>();
-        public string Directory { get => Services.SceneStateManager.BaseDirectory + userDirectory; }
+        public string UserDirectory { get => Services.SceneStateManager.BaseDirectory + userDirectory; }
 
         private void Awake()
         {
 
-            if(!System.IO.Directory.Exists(Directory))
+            if(!System.IO.Directory.Exists(UserDirectory))
             {
-                System.IO.Directory.CreateDirectory(Directory);
+                System.IO.Directory.CreateDirectory(UserDirectory);
             }
-            saveSystem = saveSystemFactory.GetSaveSystem(); 
             
             //user files settings
             userFileBinding.ValueChanged += LoadPlanet;
             usersFilePresenter.PathBinding = userFileBinding;
             userPlanetsPresenter.FilePresenter = usersFilePresenter;
-            userPlanetsPresenter.Directory = Directory;
-            userPlanetsPresenter.FileExtension = saveSystem.Extension;
+            userPlanetsPresenter.Directory = UserDirectory;
+            userPlanetsPresenter.FileExtension = SaveSystem.Extension;
 
             //loading presets
             presetBinding.ValueChanged += LoadPlanetFromResources;
@@ -125,7 +124,7 @@ namespace Assets.SceneEditor.Controllers
                 TextAsset textAsset = Resources.Load<TextAsset>(path);
                 using (Stream stream = new MemoryStream(textAsset.bytes))
                 {
-                    PlanetData pData = (PlanetData)saveSystem.Load(stream, typeof(PlanetData));
+                    PlanetData pData = (PlanetData)SaveSystem.Load(stream, typeof(PlanetData));
                     BuildPlanet(pData);
                 }
             }
@@ -139,7 +138,7 @@ namespace Assets.SceneEditor.Controllers
         private void LoadPlanet(string path, object sender)
         {
             selectedFile = path;
-            PlanetData planetData = saveSystem.Load(Directory + selectedFile + saveSystem.Extension, typeof(PlanetData)) as PlanetData;
+            PlanetData planetData = SaveSystem.Load(UserDirectory + selectedFile + SaveSystem.Extension, typeof(PlanetData)) as PlanetData;
             if (planetData != null)
             {
                 BuildPlanet(planetData);
@@ -150,7 +149,7 @@ namespace Assets.SceneEditor.Controllers
 
         public void SavePlanet()
         {
-            saveSystem.Save(Services.PlanetSelectSystem.Instance.SelectedPlanet.PlanetData,Directory + Services.PlanetSelectSystem.Instance.SelectedPlanet.PlanetData.Name + saveSystem.Extension);
+            SaveSystem.Save(Services.PlanetSelectSystem.Instance.SelectedPlanet.PlanetData,UserDirectory + Services.PlanetSelectSystem.Instance.SelectedPlanet.PlanetData.Name + SaveSystem.Extension);
             this.Close();
             this.Open();
         }

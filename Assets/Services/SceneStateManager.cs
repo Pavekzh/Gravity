@@ -17,6 +17,7 @@ namespace Assets.Services
         [SerializeField] string savesDirectory = "Saves/";
         [SerializeField] string defaultName = "NewScene";
         [Header("Start scene")]
+        [SerializeField] bool loadStartScene = true;
         [SerializeField] string startScenePath = "";
         [SerializeField] TextAsset startScene;
         [Header("Presets")]
@@ -63,8 +64,11 @@ namespace Assets.Services
 
         private void Start()
         {
-            SetScene(LoadStartScene());
-            SaveLocal();
+            if (loadStartScene)
+            {
+                SetScene(LoadStartScene());
+                SaveLocal();
+            }
         }
 
         public void AddPlanet(PlanetData planet)

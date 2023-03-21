@@ -8,6 +8,7 @@ namespace Assets.SceneEditor.Models
     public class SceneState:ICloneable
     {
         public string Name { get; set; }
+        public float Gravity { get; set; }
         public CameraModel Camera { get; set; }
         public List<PlanetData> Planets { get; set; } = new List<PlanetData>();
 

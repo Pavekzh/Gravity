@@ -139,6 +139,10 @@ namespace Assets.Services
             }
             else
             {
+                if (this.simulationState == true)
+                    TimeBinding.ChangeValue(Time.timeScale, this);
+                else
+                    TimeBinding.ChangeValue(0, this);
                 MessagingSystem.Instance.ShowMessage("Time flow locked by " + timeLockerName,this);
             }
 

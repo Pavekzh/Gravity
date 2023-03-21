@@ -5,7 +5,7 @@ using UIExtended;
 
 namespace Assets.SceneEditor.Controllers
 {
-    public class AudioSettingsPanel : PanelController
+    public class SettingsPanel : PanelController
     {
         [SerializeField] ShowElement visibleManager;
         [SerializeField] Services.AudioSettings settings;

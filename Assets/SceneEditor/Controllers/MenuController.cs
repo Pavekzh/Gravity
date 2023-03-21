@@ -10,7 +10,7 @@ namespace Assets.SceneEditor.Controllers
         [SerializeField] ShowElement visibleManager;
         [SerializeField] LoadScenePanel loadScenePanel;
         [SerializeField] SaveScenePanel saveScenePanel;
-        [SerializeField] AudioSettingsPanel audioSettingPanel;
+        [SerializeField] SettingsPanel audioSettingPanel;
         [SerializeField] int menuSceneIndex;
         [SerializeField] LevelLoader levelLoader;
 

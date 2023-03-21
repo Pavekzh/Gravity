@@ -18,8 +18,11 @@ namespace Assets.SceneEditor.Controllers
         public event Action InputReadingStarted;
         public event Action InputReadingEnded;
 
+        private Camera mainCamera;
+
         protected void Start()
         {
+            mainCamera = Camera.main;
             EditorController.Instance.ManipulatorsController.Manipulators.Add(ManipulatorKey, this);
         }
 
@@ -51,7 +54,7 @@ namespace Assets.SceneEditor.Controllers
 
         private void Touch(Touch touch)
         {
-            Ray ray = Camera.main.ScreenPointToRay(touch.position);
+            Ray ray = mainCamera.ScreenPointToRay(touch.position);
             Plane plane = new Plane(Vector3.up, Vector3.zero);
             float distance;
             if (plane.Raycast(ray, out distance))

@@ -33,6 +33,7 @@ namespace Assets.Services
         public ISaveSystem SaveSystem { get => saveSystemFactory.GetChachedSaveSystem(); }
         public SceneState CurrentScene { get; private set; }
         public SceneState LocalSave { get; set; }
+        public bool IsLoadedSceneLocalSaved { get; private set; }
 
 
         public delegate void SceneRefreshHandler();
@@ -67,7 +68,6 @@ namespace Assets.Services
             if (loadStartScene)
             {
                 SetScene(LoadStartScene());
-                SaveLocal();
             }
         }
 
@@ -97,7 +97,7 @@ namespace Assets.Services
         {
             if(LocalSave != null)
             {
-                SetScene(LocalSave);
+                SetScene(LocalSave,true);
             }
         }
 
@@ -143,7 +143,8 @@ namespace Assets.Services
                 }
             }
 
-            CurrentScene = new SceneState();            
+            CurrentScene = new SceneState();
+            IsLoadedSceneLocalSaved = true;
             SceneChanged?.Invoke();
         }
 
@@ -207,7 +208,7 @@ namespace Assets.Services
 
         }
 
-        private void SetScene(SceneState sceneState)
+        private void SetScene(SceneState sceneState,bool isSceneLocalSaved)
         {
             ClearScene();
             SceneState clonedState = sceneState.Clone() as SceneState;
@@ -217,10 +218,18 @@ namespace Assets.Services
                 {
                     planet.CreateSceneObject();
                 }
-                CurrentScene = clonedState;                
+                CurrentScene = clonedState;                 
+                IsLoadedSceneLocalSaved = isSceneLocalSaved;           
                 SceneChanged?.Invoke();
             }
-        }        
+
+            SaveLocal();
+        }
+
+        private void SetScene(SceneState sceneState)
+        {
+            SetScene(sceneState, false);
+        }
 
         private string GetSavePath(string fileName)
         {

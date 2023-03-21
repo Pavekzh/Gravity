@@ -18,6 +18,7 @@ namespace Assets.Services
         private InputSystem inputSystem;
         private bool isSelectionLocked;
         private bool SelectedHighlighted;
+        private Camera mainCamera;
        
         [SerializeField] private PlanetController planet;
         [SerializeField] private string planetsLayerName;
@@ -95,6 +96,7 @@ namespace Assets.Services
 
         private void Start()
         {
+            mainCamera = Camera.main;
             layerMask = 1 << LayerMask.NameToLayer(planetsLayerName);
             Services.SceneStateManager.Instance.SceneChanged += SceneChanged;
             if (planet == null)
@@ -129,7 +131,7 @@ namespace Assets.Services
 
         private void TouchDown(Touch touch)
         {
-            Ray ray = Camera.main.ScreenPointToRay(touch.position);
+            Ray ray = mainCamera.ScreenPointToRay(touch.position);
             RaycastHit hitinfo;
 
             if (Physics.SphereCast(ray, selectSphereRadius, out hitinfo, Mathf.Infinity, layerMask))

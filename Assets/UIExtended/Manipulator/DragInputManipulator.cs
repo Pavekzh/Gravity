@@ -24,6 +24,7 @@ namespace UIExtended
         private bool isVisible;
         private Binding<Vector2> originBinding;
         private float scaleFactor = 1;
+        private Camera mainCamera;
 
 
         public Binding<Vector2> OriginBinding
@@ -91,6 +92,7 @@ namespace UIExtended
 
         protected virtual void Awake()
         {
+            mainCamera = Camera.main;
             pointerCollider = touchPointer.GetComponent<Collider>();
             if (pointerCollider == null)
                 BasicTools.MessagingSystem.Instance.ShowErrorMessage("Touch pointer have no collider", this);
@@ -157,7 +159,7 @@ namespace UIExtended
 
         public bool IsTouchOverPointer(Touch touch)
         {
-            Ray ray = Camera.main.ScreenPointToRay(touch.position);
+            Ray ray = mainCamera.ScreenPointToRay(touch.position);
             RaycastHit hitInfo;
             if (pointerCollider.Raycast(ray, out hitInfo, Mathf.Infinity))
             {
@@ -168,7 +170,7 @@ namespace UIExtended
 
         private Vector3 GetTouchPosition(Touch touch)
         {
-            Ray ray = Camera.main.ScreenPointToRay(touch.position);
+            Ray ray = mainCamera.ScreenPointToRay(touch.position);
             float distance;
             Plane plane = new Plane(Vector3.up, Vector3.zero);
 

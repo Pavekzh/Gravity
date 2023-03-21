@@ -9,7 +9,7 @@ namespace UIExtended
     public class BindedInputField:MonoBehaviour
     {
         [SerializeField] private TMP_InputField inputField;
-        private bool bindingChanges = false;
+        [SerializeField] private int maxBindedTextLength = 3;
 
         private Binding<float> binding;
         public Binding<float> Binding
@@ -39,32 +39,28 @@ namespace UIExtended
 
         public void ValueChanged(string text)
         {
-            if (!bindingChanges)
+            try
             {
-                try
-                {
-                    if (text.Length != 0)
-                        binding.ChangeValue(float.Parse(text), this);
-                }
-                catch (Exception ex)
-                {
-                    MessagingSystem.Instance.ShowErrorMessage(ex.Message, this);
-                }
+                if (text.Length != 0 && text != "-")
+                    binding.ChangeValue(float.Parse(text), this);
             }
-            else bindingChanges = false;
+            catch (Exception ex)
+            {
+                MessagingSystem.Instance.ShowErrorMessage(ex.Message, this);
+            }
+
         }
 
         public void BindingChanged(float value, object source)
         {
             if (source != (System.Object)this)
             {
-                bindingChanges = true;
                 string text = value.ToString();
 
-                if (text.Length > 3)
-                    inputField.text = text.Substring(0, 3);
+                if (text.Length > maxBindedTextLength)
+                    inputField.SetTextWithoutNotify(text.Substring(0, maxBindedTextLength));
                 else
-                    inputField.text = text;
+                    inputField.SetTextWithoutNotify(text);
             }
         }
     }

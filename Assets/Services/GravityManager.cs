@@ -6,6 +6,7 @@ using Assets.SceneSimulation;
 using Assets.SceneEditor.Models;
 using System.Linq;
 
+
 namespace Assets.Services
 {
     public class GravityManager:Singleton<GravityManager>
@@ -13,18 +14,53 @@ namespace Assets.Services
         [SerializeField] private float gravityRatio;
         [SerializeField] private Dictionary<Guid,GravityModule> interactors;
         public Dictionary<Guid,GravityModule> GravityInteractors { get => interactors; }
-        public float GravityRatio { get => gravityRatio; }
+        public float GravityRatio 
+        { 
+            get => gravityRatio; 
+            private set
+            {               
+                gravityRatio = value;
+                GravityBinding.ChangeValue(value, this);
 
-        void Start()
+            }
+        }
+
+        public Binding<float> GravityBinding { get; private set; } = new Binding<float>();
+
+        private void Start()
         {
             SceneChanged();
             SceneStateManager.Instance.SceneChanged += SceneChanged;
+
+            GravityBinding.ValueChanged += GravityRatioChanged;           
+            GravityBinding.ChangeValue(gravityRatio,this);
         }
 
-        void SceneChanged()
+        private void GravityRatioChanged(float value, object source)
+        {
+            if(source != (System.Object)this)
+            {
+                gravityRatio = value;
+                SceneStateManager.Instance.CurrentScene.Gravity = value;
+                if(value <= 0)
+                {
+                    if(PlayerPrefs.GetInt("EasterEgg1",0) == 0)
+                    {
+                        MessagingSystem.Instance.ShowMessage("With negative or zero gravity also works :)", this);
+                        PlayerPrefs.SetInt("EasterEgg1", 1);
+                    }          
+                }
+                    
+            }
+        }
+
+        private void SceneChanged()
         {
             if(SceneStateManager.Instance.CurrentScene.Planets.Count == 0)
                 interactors = new Dictionary<Guid, GravityModule>();
+
+            if(!SceneStateManager.Instance.IsLoadedSceneLocalSaved)
+                this.GravityRatio = SceneStateManager.Instance.CurrentScene.Gravity;
         }
         
         public StateCurve<StateCurvePoint3D> PredictPositions(float curveLength, Guid element,float deltaTime)

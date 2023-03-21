@@ -56,6 +56,7 @@ namespace Assets.Editor
         private SceneState FormSceneState(string name)
         {
             SceneState sceneState = new SceneState();
+            sceneState.Gravity = GravityManager.Instance.GravityRatio;
             sceneState.Name = name;
             foreach (Transform planet in PlanetBuildSettings.Instance.PlanetsParent.transform)
             {

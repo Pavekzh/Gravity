@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Assets.UIExtended
 {
-    public class MoveElement:BasicTools.StateChanger
+    public class MoveElement: BasicTools.StateChanger
     {
         [SerializeField] protected RectTransform element;
         [SerializeField] protected Vector2 standardPosition;

@@ -9,6 +9,7 @@ namespace UIExtended
     public class BindedInputField:MonoBehaviour
     {
         [SerializeField] private TMP_InputField inputField;
+        [SerializeField] private int maxBindedTextLength = 3;
 
         private Binding<float> binding;
         public Binding<float> Binding
@@ -31,7 +32,7 @@ namespace UIExtended
         {
             if (inputField == null)
             {
-                BasicTools.ErrorManager.Instance.ShowErrorMessage("InputField value not set", this);
+                BasicTools.MessagingSystem.Instance.ShowErrorMessage("InputField value not set", this);
             }
             inputField.onValueChanged.AddListener(ValueChanged);
         }
@@ -40,13 +41,14 @@ namespace UIExtended
         {
             try
             {
-                if(text.Length != 0)
+                if (text.Length != 0 && text != "-")
                     binding.ChangeValue(float.Parse(text), this);
             }
             catch (Exception ex)
             {
-                ErrorManager.Instance.ShowErrorMessage(ex.Message, this);
+                MessagingSystem.Instance.ShowErrorMessage(ex.Message, this);
             }
+
         }
 
         public void BindingChanged(float value, object source)
@@ -55,10 +57,10 @@ namespace UIExtended
             {
                 string text = value.ToString();
 
-                if (text.Length > 3)
-                    inputField.text = text.Substring(0, 3);
+                if (text.Length > maxBindedTextLength)
+                    inputField.SetTextWithoutNotify(text.Substring(0, maxBindedTextLength));
                 else
-                    inputField.text = text;
+                    inputField.SetTextWithoutNotify(text);
             }
         }
     }

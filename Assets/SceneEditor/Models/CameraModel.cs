@@ -1,27 +1,32 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
+using System.Xml.Serialization;
 using UnityEngine;
 using BasicTools;
 
 namespace Assets.SceneEditor.Models
 {
-    public class CameraModel : MonoBehaviour
+    [Serializable]
+    public class CameraModel:ICloneable
     {
+        public delegate void ZoomChangedEventHandler(float value, object sender);
+        public delegate void OriginMovedEventHandler(Vector3 value, object sender);
+        public delegate void RotationChangedEventHandler(Vector2 value, object sender);
+        public event ZoomChangedEventHandler ZoomChanged;
+        public event OriginMovedEventHandler OriginMoved;
+        public event RotationChangedEventHandler RotationChanged;
+
         public static string Key = "KEY_CameraModel";
 
-        [Header("Limiters")]
-        [SerializeField] private float maxRadius = 100;
-        [SerializeField] private float minXAngle = 0;
-        [SerializeField] private float maxXAngle = 89.99f;
-        [SerializeField] private float minRotationRadius = 1;
+        [XmlIgnore]
+        public CameraStartupData StartupData { get; set; } = new CameraStartupData(false);
+        [XmlIgnore]
+        public Camera Camera { get; set; }
 
-
-        [Header("Start data")]
-        [SerializeField] private float rotationRadius = 10;
-        [SerializeField] private Vector3 origin;
-        [SerializeField] private Vector2 orbitAngle = new Vector2(60, 0);
-        [SerializeField] private Camera Camera;
-
+        private Vector3 origin;
+        private Vector2 orbitAngle;
+        private float rotationRadius;
 
         public float RotationRadius
         {
@@ -31,36 +36,70 @@ namespace Assets.SceneEditor.Models
             }
             set
             {
-                if (value >= minRotationRadius)
+                if (StartupData.UseConstraints)
                 {
-                    if (value <= maxRadius || maxRadius == 0)
+                    if (value >= StartupData.MinRotationRadius)
                     {
-                        rotationRadius = value;
+                        if (value <= StartupData.MaxRotationRadius || StartupData.MaxRotationRadius == 0)
+                        {
+                            rotationRadius = value;
+                            ZoomChanged?.Invoke(value, this);
+                        }
+                        else
+                        {
+                            rotationRadius = StartupData.MaxRotationRadius;
+                            ZoomChanged?.Invoke(value, this);
+                        }
                     }
                     else
                     {
-                        rotationRadius = maxRadius;
+                        rotationRadius = StartupData.MinRotationRadius;
+                        ZoomChanged?.Invoke(value, this);
                     }
                 }
                 else
                 {
-                    rotationRadius = minRotationRadius;
+                    rotationRadius = value;
+                    ZoomChanged?.Invoke(value, this);
                 }
+
+                UpdateCamera();
             }
         }
         public Vector2 OrbitAngle
         {
             get { return orbitAngle; }
-            private set
+            set
             {
-                if (value.x <= maxXAngle && value.x >= minXAngle)
+                if (StartupData.UseConstraints)
+                {
+                    if (value.x <= StartupData.MaxXAngle && value.x >= StartupData.MinXAngle)
+                    {
+                        orbitAngle = value;
+                        RotationChanged?.Invoke(value, this);
+                    }
+                }
+                else
                 {
                     orbitAngle = value;
+                    RotationChanged?.Invoke(value, this);
                 }
-
+                UpdateCamera();
             }
         }
-        public bool ControlLocked { get; set; } = false;
+        public Vector3 Origin
+        {
+            get => origin;
+            set
+            {
+                origin = value;
+                OriginMoved?.Invoke(origin, value);
+                UpdateCamera();
+            }
+        }
+
+        [XmlIgnore]
+        public bool ControlLocked { get; set; }
 
         public Vector2 SpaceRectOfView
         {
@@ -76,11 +115,32 @@ namespace Assets.SceneEditor.Models
         public float DefaultRadius { get => rotationRadius / (SpaceRectOfView.x / Screen.width); }
         public float ScaleFactor { get => rotationRadius / DefaultRadius; }
 
-        private void Start()
+        public CameraModel(Camera camera,CameraStartupData StartupData)
         {
-            Debug.LogWarning("Adding to dataStorage: CameraModel.83");
+            this.Camera = camera;
+            this.StartupData = StartupData;
+
+#if UNITY_EDITOR
+            if (StartupData.OrbitAngle.x < StartupData.MinXAngle)
+                Debug.LogError("Default orbit angle can`t be less then min angle");
+            else if (StartupData.OrbitAngle.x > StartupData.MaxXAngle)
+                Debug.LogError("Default orbit angle can`t be greater then max angle");
+            if (StartupData.RotationRadius > StartupData.MaxRotationRadius)
+                Debug.LogError("Default rotation radius can`t be greater then max radius");
+#endif
+
+
+            this.Origin = StartupData.Origin;
+            this.OrbitAngle = StartupData.OrbitAngle;
+            this.RotationRadius = StartupData.RotationRadius;
+
+            Debug.LogWarning("Adding to dataStorage: CameraModel.122");
             DataStorage.Instance.SaveData(Key, this);
-            ResetRotation();
+        }
+
+        public CameraModel()
+        {
+
         }
 
         public void Zoom(float DeltaDistance)
@@ -88,7 +148,7 @@ namespace Assets.SceneEditor.Models
             if (DeltaDistance != 0 && ControlLocked == false)
             {
                 RotationRadius -= DeltaDistance * (rotationRadius / DefaultRadius);
-                ResetRotation();
+                UpdateCamera();
             }
         }
         public void Moving(Vector3 Vector)
@@ -96,8 +156,9 @@ namespace Assets.SceneEditor.Models
             if (Vector != Vector3.zero && ControlLocked == false)
             {
                 Vector = Vector * (rotationRadius / DefaultRadius);
-                LocalOriginTranslate(Vector);
-                ResetRotation();
+                Quaternion rotationY = Quaternion.Euler(0, Camera.transform.rotation.eulerAngles.y, 0);
+                this.origin += rotationY * Vector;
+                UpdateCamera();
             }
         }
         public void Rotation(Vector2 OrbitDeltaAngle)
@@ -105,15 +166,21 @@ namespace Assets.SceneEditor.Models
             if (OrbitDeltaAngle != Vector2.zero && ControlLocked == false)
             {
                 OrbitAngle += OrbitDeltaAngle;
-
+                UpdateCamera();
+            }
+        }
+        public void UpdateCamera()
+        {
+            if(Camera != null)
+            {
                 float r = RotationRadius * Mathf.Cos(Mathf.Deg2Rad * OrbitAngle.x);
                 float y = origin.y + (RotationRadius * Mathf.Sin(Mathf.Deg2Rad * OrbitAngle.x));
 
                 //rotation origin arround Y axis
                 Vector3 OriginY = new Vector3(origin.x, y, origin.z);
 
-                float x = r * Mathf.Sin(Mathf.Deg2Rad * orbitAngle.y);
-                float z = r * Mathf.Cos(Mathf.Deg2Rad * orbitAngle.y);
+                float x = r * Mathf.Sin(Mathf.Deg2Rad * OrbitAngle.y);
+                float z = r * Mathf.Cos(Mathf.Deg2Rad * OrbitAngle.y);
 
                 Vector3 newPosition = new Vector3(OriginY.x - x, OriginY.y, OriginY.z - z);
                 Camera.transform.position = newPosition;
@@ -121,19 +188,19 @@ namespace Assets.SceneEditor.Models
             }
         }
 
-        private void LocalOriginTranslate(Vector3 vector)
+        public void ResetRotation()
         {
-            this.origin.x -= vector.x * Mathf.Cos(Mathf.Deg2Rad * Camera.transform.rotation.eulerAngles.y);
-            this.origin.z += vector.x * Mathf.Sin(Mathf.Deg2Rad * Camera.transform.rotation.eulerAngles.y);
-
-            this.origin.z += vector.z * Mathf.Cos(Mathf.Deg2Rad * Camera.transform.rotation.eulerAngles.y);
-            this.origin.x += vector.z * Mathf.Sin(Mathf.Deg2Rad * Camera.transform.rotation.eulerAngles.y);
-
-            this.origin.y += vector.y;
+            this.OrbitAngle = StartupData.OrbitAngle;
         }
+        public void ResetTransform()
+        {
+            this.Origin = StartupData.Origin;
+            this.OrbitAngle = StartupData.OrbitAngle;
+            this.RotationRadius = StartupData.RotationRadius;
+        }
+
         private void TranslateY(float y)
         {
-
             float X = RotationRadius * Mathf.Cos(Mathf.Deg2Rad * OrbitAngle.x);
             float Y = (RotationRadius * Mathf.Sin(Mathf.Deg2Rad * OrbitAngle.x)) + y;
             float R = Mathf.Sqrt((Y * Y) + (X * X));
@@ -142,22 +209,16 @@ namespace Assets.SceneEditor.Models
             this.RotationRadius = R;
             this.OrbitAngle = new Vector2(Angle, OrbitAngle.y);
         }
-        private void ResetRotation()
+
+        public object Clone()
         {
-            float r = RotationRadius * Mathf.Cos(Mathf.Deg2Rad * OrbitAngle.x);
-            float y = origin.y + (RotationRadius * Mathf.Sin(Mathf.Deg2Rad * OrbitAngle.x));
+            CameraModel cloned = new CameraModel();
+            cloned.origin = origin;
+            cloned.orbitAngle = orbitAngle;
+            cloned.rotationRadius = rotationRadius;
 
-            //rotation origin arround Y axis
-            Vector3 OriginY = new Vector3(origin.x, y, origin.z);
-
-            float x = r * Mathf.Sin(Mathf.Deg2Rad * OrbitAngle.y);
-            float z = r * Mathf.Cos(Mathf.Deg2Rad * OrbitAngle.y);
-
-            Vector3 newPosition = new Vector3(OriginY.x - x, OriginY.y, OriginY.z - z);
-            Camera.transform.position = newPosition;
-            Camera.transform.LookAt(origin);
+            return cloned;
         }
-
     }
 
 }

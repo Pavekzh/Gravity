@@ -16,6 +16,7 @@ namespace Assets.SceneEditor.Controllers
         {
             timeSet.Binding = TimeManager.Instance.TimeBinding;
             timeSlider.Binding = TimeManager.Instance.TimeBinding;
+            TimeManager.Instance.TimeBinding.ForceUpdate();
             button.onClick.AddListener(ChangeSimulationFlow);
 
             TimeManager.Instance.TimeStateChanged += SimulationFlowChanged;

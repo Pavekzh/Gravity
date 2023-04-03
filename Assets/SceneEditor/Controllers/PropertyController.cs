@@ -22,6 +22,7 @@ namespace Assets.SceneEditor.Controllers
                 {
                     inputTexts[i] = inputFields[i].text;
                 }
+                savedData = inputTexts;
                 return inputTexts;
             }
             set
@@ -46,7 +47,6 @@ namespace Assets.SceneEditor.Controllers
         private string[] savedData;
         private bool inputEntering = false;
 
-        public float propertyOffset { get; private set; }
 
         public PropertyController(PropertyViewData propertyData)
         {            
@@ -59,7 +59,7 @@ namespace Assets.SceneEditor.Controllers
                 this.inputFields = new TMP_InputField[1];            
         }
 
-        public void CreateView(RectTransform parentContainer, float viewOffset)
+        public void CreateView(RectTransform parentContainer, ref float viewOffset)
         {
 
             if (propertyData.Components != null)
@@ -67,44 +67,43 @@ namespace Assets.SceneEditor.Controllers
             else
                 this.inputFields = new TMP_InputField[1];
 
-            this.propertyOffset = viewOffset;
             this.parentContainer = parentContainer;
 
-            RectTransform propertyElement = GameObject.Instantiate(ModuleViewTemplate.Instance.EmptyPrefab, parentContainer.transform);
+            RectTransform propertyElement = GameObject.Instantiate(ValuesPanelTemplate.Instance.EmptyPrefab, parentContainer.transform);
             propertyElement.name = "Property";
 
-            TMP_Text propertyLabel = GameObject.Instantiate(ModuleViewTemplate.Instance.PropertyLabelPrefab, propertyElement);
+            TMP_Text propertyLabel = GameObject.Instantiate(ValuesPanelTemplate.Instance.PropertyLabelPrefab, propertyElement);
             propertyLabel.text = propertyData.Name;
             propertyLabel.name = "PropertyLabel";
 
             if (propertyData.Components != null && ((propertyData.Components.Length == 1 && propertyData.Components[0] != "") || (propertyData.Components.Length > 1)))
             {
                 uint i = 0;
-                float offset = propertyLabel.rectTransform.rect.height + ModuleViewTemplate.Instance.LineMargin;
+                float offset = propertyLabel.rectTransform.rect.height + ValuesPanelTemplate.Instance.LineMargin;
                 foreach (string valueLine in propertyData.Components)
                 {
-                    TMP_Text lineText = GameObject.Instantiate(ModuleViewTemplate.Instance.LineLabelPrefab, propertyElement.transform);
+                    TMP_Text lineText = GameObject.Instantiate(ValuesPanelTemplate.Instance.LineLabelPrefab, propertyElement.transform);
                     lineText.text = valueLine;
                     lineText.rectTransform.anchoredPosition = new Vector2(lineText.rectTransform.anchoredPosition.x, -(offset + (lineText.rectTransform.rect.height / 2)));
 
-                    TMP_InputField lineInput = GameObject.Instantiate(ModuleViewTemplate.Instance.InputFieldPrefab, propertyElement.transform);
+                    TMP_InputField lineInput = GameObject.Instantiate(ValuesPanelTemplate.Instance.InputFieldPrefab, propertyElement.transform);
                     lineInput.text = savedData[i];
                     RectTransform inputRect = lineInput.GetComponent<RectTransform>();
                     inputRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, lineText.rectTransform.rect.height);
-                    inputRect.anchoredPosition = new Vector2(inputRect.rect.x, -(offset + (lineText.rectTransform.rect.height / 2)));
+                    inputRect.anchoredPosition = new Vector2(inputRect.anchoredPosition.x, -(offset + (lineText.rectTransform.rect.height / 2)));
 
-                    offset += inputRect.rect.height + ModuleViewTemplate.Instance.LineMargin;
+                    offset += inputRect.rect.height + ValuesPanelTemplate.Instance.LineMargin;
                     inputFields[i] = lineInput;
                     AddListeners(lineInput);
                     i++;
                 }
                 propertyElement.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, offset);
-                propertyElement.anchoredPosition -= new Vector2(0, (propertyElement.rect.height / 2) + propertyOffset);
-                propertyOffset += offset + ModuleViewTemplate.Instance.PropertiesMargin;
+                propertyElement.anchoredPosition -= new Vector2(0, (propertyElement.rect.height / 2) + viewOffset);
+                viewOffset += offset + ValuesPanelTemplate.Instance.PropertiesMargin;
             }
             else
             {
-                TMP_InputField valueInput = GameObject.Instantiate(ModuleViewTemplate.Instance.InputFieldPrefab, propertyElement);
+                TMP_InputField valueInput = GameObject.Instantiate(ValuesPanelTemplate.Instance.InputFieldPrefab, propertyElement);
                 valueInput.text = savedData[0];
                 RectTransform valueInputRect = valueInput.gameObject.GetComponent<RectTransform>();
                 valueInputRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, propertyLabel.rectTransform.rect.height);
@@ -113,8 +112,8 @@ namespace Assets.SceneEditor.Controllers
                 inputFields[0] = valueInput;
 
                 propertyElement.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, propertyLabel.rectTransform.rect.height);
-                propertyElement.anchoredPosition -= new Vector2(0, (propertyElement.rect.height / 2) + propertyOffset);
-                propertyOffset += propertyLabel.rectTransform.rect.height + ModuleViewTemplate.Instance.PropertiesMargin;
+                propertyElement.anchoredPosition -= new Vector2(0, (propertyElement.rect.height / 2) + viewOffset);
+                viewOffset += propertyLabel.rectTransform.rect.height + ValuesPanelTemplate.Instance.PropertiesMargin;
             }
         }
 
@@ -130,15 +129,24 @@ namespace Assets.SceneEditor.Controllers
 
         private void InputChanged(string changedText)
         {
-            if(inputEntering)
+            if (inputEntering)
+            {
                 propertyData.ChangePresenter(inputTexts, this);
+            }
+
         }
 
         private void ValueChanged(string[] presentation,object sender)
         {
             if (sender != this && !inputEntering)
+            {             
                 inputTexts = presentation;
+            }
+        }
 
+        private void EndEntering()
+        {
+            propertyData.ChangePresenter(inputTexts, this);
         }
 
         private void InputFieldSelected(string value)
@@ -149,6 +157,7 @@ namespace Assets.SceneEditor.Controllers
         private void InputFieldDeselected(string value)
         {
             inputEntering = false;
+            EndEntering();
         }
     }
 }

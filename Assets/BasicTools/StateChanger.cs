@@ -3,6 +3,7 @@ using System.Collections;
 
 namespace BasicTools
 {
+    [System.Serializable]
     public enum State
     {
         Default,
@@ -13,6 +14,12 @@ namespace BasicTools
         [SerializeField] protected State state;
 
         public abstract State State { get; set; }
+
+        public void ChangeState(int newState)
+        {
+            State = (State)newState;
+        }
+
         public void ChangeState()
         {
             if (State == State.Default)

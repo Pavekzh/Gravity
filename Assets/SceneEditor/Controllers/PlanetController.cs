@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Assets.SceneEditor.Models;
 using Assets.Services;
+using TMPro;
 
 namespace Assets.SceneEditor.Controllers
 {
@@ -10,28 +11,48 @@ namespace Assets.SceneEditor.Controllers
     {
         public PlanetData PlanetData { get; set; }
         private RectTransform planetView;
-        private List<ModuleController> controllers = new List<ModuleController>();
+        private ModuleController[] modules;
 
-        public void AddModule(ModuleData moduleData)
+        private void OnDestroy()
         {
-            controllers.Add(new ModuleController(moduleData));
+            PlanetSelectSystem.Instance.RemovePlanet(this.PlanetData.Guid);
+            SceneStateManager.Instance.CurrentScene.Planets.Remove(this.PlanetData);
+            CloseView();
+        }
+
+        public void InitModules(int modulesCount)
+        {
+            modules = new ModuleController[modulesCount];
+        }
+
+        public void AddModule(ModuleData moduleData,int index)
+        {
+            modules[index] = new ModuleController(moduleData);
         }
 
         public void OpenView(RectTransform setValuesPanel)
         {
             CloseView();
-            planetView = GameObject.Instantiate(ModuleViewTemplate.Instance.EmptyPrefab,setValuesPanel);
+            planetView = GameObject.Instantiate(ValuesPanelTemplate.Instance.EmptyPrefab,setValuesPanel);
             planetView.name = PlanetData.Name + "View";
             planetView.anchorMin = new Vector2(0, 0);
             planetView.anchorMax = new Vector2(1, 1);
             planetView.pivot = new Vector2(0.5f, 0.5f);
+            TMP_InputField nameField = GameObject.Instantiate(ValuesPanelTemplate.Instance.PlanetNameFieldPrefab, planetView);
+            nameField.text = PlanetData.Name;
+            UnityEngine.Events.UnityAction<string> nameChangedAction = new UnityEngine.Events.UnityAction<string>(NameChanged);
+            nameField.onValueChanged.AddListener(nameChangedAction);
 
-            float offset = ModuleViewTemplate.Instance.StartMargin;
-            foreach(ModuleController controller in controllers)
+            float offset = ValuesPanelTemplate.Instance.StartMargin + nameField.GetComponent<RectTransform>().rect.height;
+            foreach(ModuleController controller in modules)
             {
-                controller.CreateView(planetView, offset);
-                offset -= controller.ModuleOffset + ModuleViewTemplate.Instance.PropertiesMargin;
+                controller.CreateView(planetView,ref offset);
             }
+        }
+
+        private void NameChanged(string name)
+        {
+            this.PlanetData.Name = name;
         }
 
         public void CloseView()
@@ -40,6 +61,11 @@ namespace Assets.SceneEditor.Controllers
             {
                 GameObject.Destroy(planetView.gameObject);
             }
+        }
+
+        public void DeletePlanet()
+        {           
+            GameObject.Destroy(this.gameObject);
         }
     }
 }

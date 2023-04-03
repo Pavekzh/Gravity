@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System;
 using UnityEngine;
-using UIExtended;
 
 namespace Assets.SceneEditor.Controllers
 {
@@ -16,7 +15,7 @@ namespace Assets.SceneEditor.Controllers
             if(containerTransform == null)
                 containerTransform = this.GetComponent<RectTransform>();
 
-            EditorController.Instance.ToolsController.ObjectSelectionTool.SelectedPlanetChanged += SelectedPlanetChanged;
+            Services.PlanetSelectSystem.Instance.SelectedPlanetChanged += SelectedPlanetChanged;
         }
 
         private void SelectedPlanetChanged(object sender,PlanetController planet)
@@ -36,16 +35,21 @@ namespace Assets.SceneEditor.Controllers
                 Close();
         }
 
-        public override void Close()
+        protected override void DoClose()
         {
+            foreach(Transform child in containerTransform)
+            {
+                GameObject.Destroy(child.gameObject);
+            }
             visibleManager.State = BasicTools.State.Default;
+            Assets.Services.PlanetSelectSystem.Instance.LessenSelected();
         }
 
-        public override void Open()
+        protected override void DoOpen()
         {
-            EditorController.Instance.Panel = this;
             visibleManager.State = BasicTools.State.Changed;
-            EditorController.Instance.ToolsController.ObjectSelectionTool.SelectedPlanet.OpenView(this.containerTransform);
+            Assets.Services.PlanetSelectSystem.Instance.HighlightSelected();
+            Services.PlanetSelectSystem.Instance.SelectedPlanet.OpenView(this.containerTransform);
         }
     }
 }

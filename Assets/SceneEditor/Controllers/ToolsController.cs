@@ -9,21 +9,15 @@ namespace Assets.SceneEditor.Controllers
         public InputSystem InputSystem {get; set;}        
         public Dictionary<string, EditorTool> Tools { get; set; } = new Dictionary<string, EditorTool>();
 
-        [SerializeField] private SelectPlanetTool objectSelectTool;
         [SerializeField] private int selectedSceneTool = 0;
 
         private EditorTool sceneTool;
         private List<EditorTool> sceneManageTools = new List<EditorTool>();
+        private EditorTool objectTool;
 
         void Start()
         {
             SwitchSceneTool(selectedSceneTool);
-            ObjectSelectionTool.EnableTool(InputSystem);
-        }
-
-        public SelectPlanetTool ObjectSelectionTool
-        {
-            get => objectSelectTool;
         }
 
         public void DisableSceneControl()
@@ -81,11 +75,11 @@ namespace Assets.SceneEditor.Controllers
                 return tool;
             }
             else
-                BasicTools.ErrorManager.Instance.ShowErrorMessage("Tool was not found", this);
+                BasicTools.MessagingSystem.Instance.ShowErrorMessage("Tool " + key + " was not found", this);
             return null;
 
         }
 
-        private EditorTool objectTool;
+
     }
 }

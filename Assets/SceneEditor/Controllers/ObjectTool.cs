@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Assets.Services;
 
 namespace Assets.SceneEditor.Controllers
 {
@@ -9,10 +10,36 @@ namespace Assets.SceneEditor.Controllers
         [SerializeField] private string individualKey;
         [SerializeField] protected ToolsController toolsController;
 
-        protected bool isSelectedAndWorking = false;
+        protected virtual bool HighlightSelectedObjectOnEnable => true;
+        protected bool IsToolEnabled;
 
         public abstract string DefaultKey { get; }
-        
+
+        public sealed override void DisableTool()
+        {
+            if (IsToolEnabled)
+            {
+                DoDisable();
+                IsToolEnabled = false;
+
+                if (HighlightSelectedObjectOnEnable)
+                    PlanetSelectSystem.Instance.LessenSelected();
+            }
+
+        }
+
+        public sealed override void EnableTool(InputSystem inputSystem)
+        {
+            if (!IsToolEnabled)
+            {
+                IsToolEnabled = true;
+                DoEnable(inputSystem);
+
+                if (HighlightSelectedObjectOnEnable)
+                    PlanetSelectSystem.Instance.HighlightSelected();
+            }
+        }
+
         public string Key
         {
             get
@@ -24,6 +51,7 @@ namespace Assets.SceneEditor.Controllers
             }
         }
 
+
         protected virtual void Awake()
         {
             if (toolsController == null)
@@ -33,17 +61,25 @@ namespace Assets.SceneEditor.Controllers
             this.DisableTool();
         }
 
+        protected virtual void DoEnable(InputSystem inputSystem)
+        {
+            TimeManager.Instance.LockTimeFlow(ToolName);
+        }
+
+        protected virtual void DoDisable()
+        {
+            TimeManager.Instance.UnlockTimeFlow();
+        }
+
         public virtual void SwitchActiveState()
         {
-            if(isSelectedAndWorking)
+            if(IsToolEnabled)
             {
                 this.DisableTool();
-                isSelectedAndWorking = false;
             }
             else
             {
                 this.toolsController.EnableTool(this.Key);
-                isSelectedAndWorking = true;
             }
         }
     }

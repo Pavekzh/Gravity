@@ -12,12 +12,9 @@ namespace Assets.SceneEditor.Models
     [Serializable]
     public class PlanetData:IXmlSerializable,ICloneable
     {
-        public PlanetData() 
-        {
-            XmlModules = new List<ModuleData>();        
-        }
+        public PlanetData() { }
 
-        public PlanetData(Dictionary<string, ModuleData> modules, string name,PlanetBuilder planetBuilder)
+        public PlanetData(Dictionary<string, ModuleData> modules, string name,SceneObjectBuilder planetBuilder)
         {
             Modules = modules;
             Name = name;
@@ -27,26 +24,9 @@ namespace Assets.SceneEditor.Models
         [XmlIgnore]
         public Dictionary<string, ModuleData> Modules { get; private set; } = new Dictionary<string, ModuleData>();
 
-        public List<ModuleData> XmlModules
-        {
-            get
-            {
-                return Modules.Select(x => x.Value).ToList();
-            }
-            set
-            {
-                if (value != null)
-                {
-                    Modules = new Dictionary<string, ModuleData>();
-                    foreach (ModuleData moduleData in value)
-                    {
-                        Modules.Add(moduleData.Name, moduleData);
-                    }
-                }
-            }
-        } 
+        public Guid Guid { get; } = Guid.NewGuid();
         public string Name { get; set; }
-        public PlanetBuilder PlanetBuilder { get; set; }
+        public SceneObjectBuilder PlanetBuilder { get; set; }
 
         public T GetModule<T>(string key) where T : ModuleData
         {
@@ -69,12 +49,15 @@ namespace Assets.SceneEditor.Models
 
             PlanetController controller = planet.AddComponent<PlanetController>();
             controller.PlanetData = this;
+            controller.InitModules(this.Modules.Count(x => x.Value.DisplayOnValuesPanel == true));
             foreach (KeyValuePair<string, ModuleData> valuePair in this.Modules)
             {
-                controller.AddModule(valuePair.Value);
+                if(valuePair.Value.DisplayOnValuesPanel)
+                    controller.AddModule(valuePair.Value,valuePair.Value.DisplayIndex);
                 valuePair.Value.CreateModule(planet);
             }
 
+            Services.PlanetSelectSystem.Instance.AddPlanet(this.Guid, controller);
             Services.SceneStateManager.Instance.AddPlanet(this);
             return controller;
         }
@@ -89,32 +72,52 @@ namespace Assets.SceneEditor.Models
             reader.MoveToAttribute("Name");
             this.Name = reader.Value;
             reader.MoveToElement();
-            reader.ReadToDescendant("PlanetBuilder");
-            XmlSerializer serializer = new XmlSerializer(typeof(PlanetBuilder));
-            this.PlanetBuilder = serializer.Deserialize(reader) as PlanetBuilder;
-            XmlSerializer modulesSerializer = new XmlSerializer(typeof(List<ModuleData>));
-            this.XmlModules = modulesSerializer.Deserialize(reader) as List<ModuleData>;
+            reader.ReadToDescendant("SceneObjectBuilder");
+            XmlSerializer serializer = new XmlSerializer(typeof(SceneObjectBuilder));
+            this.PlanetBuilder = serializer.Deserialize(reader) as SceneObjectBuilder;
+            if (reader.ReadToDescendant("ModuleData"))
+            {
+                while (reader.LocalName == "ModuleData")
+                {
+                    XmlSerializer moduleSerializer = new XmlSerializer(typeof(ModuleData));
+                    ModuleData data = (ModuleData)moduleSerializer.Deserialize(reader);
+                    data.Planet = this;
+                    data.OnDeserialized();
+                    Modules.Add(data.Name, data);
+                }
+            }
+            reader.Read();
             reader.Read();
         }
 
         public void WriteXml(XmlWriter writer)
         {
-            writer.WriteAttributeString("Name",this.Name);
-            XmlSerializer serializer = new XmlSerializer(typeof(PlanetBuilder));
+            writer.WriteAttributeString("Name", this.Name);
+            XmlSerializer serializer = new XmlSerializer(typeof(SceneObjectBuilder));
             serializer.Serialize(writer, this.PlanetBuilder);
-            XmlSerializer modulesSerializer = new XmlSerializer(typeof(List<ModuleData>));
-            modulesSerializer.Serialize(writer, this.XmlModules);
+            writer.WriteStartElement("Modules");
+            foreach(KeyValuePair<string,ModuleData> mData in Modules)
+            {
+                XmlSerializer moduleSerializer = new XmlSerializer(typeof(ModuleData));
+                moduleSerializer.Serialize(writer, mData.Value);
+            }
+            writer.WriteEndElement();
         }
 
         public object Clone()
         {
-            PlanetData clonedData = this.MemberwiseClone() as PlanetData;
-            clonedData.PlanetBuilder = this.PlanetBuilder.Clone() as PlanetBuilder;                
+            PlanetData clonedData = new PlanetData();
+            clonedData.Name = this.Name;
+            clonedData.PlanetBuilder = this.PlanetBuilder.Clone() as SceneObjectBuilder;                
             clonedData.Modules = new Dictionary<string, ModuleData>();
             foreach(KeyValuePair<string,ModuleData> mData in Modules)
             {
-                clonedData.Modules.Add(mData.Key, mData.Value.Clone() as ModuleData);
+                ModuleData clonedModule = mData.Value.Clone() as ModuleData;
+                clonedModule.Planet = clonedData;
+                clonedData.Modules.Add(mData.Key, clonedModule);
+
             }
+
             return clonedData;
         }
     }

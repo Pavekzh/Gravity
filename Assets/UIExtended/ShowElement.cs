@@ -6,10 +6,10 @@ using BasicTools;
 
 namespace UIExtended
 {
-
     public class ShowElement : StateChanger
     {
         [SerializeField] GameObject displayObject;
+        [SerializeField] bool defaultInactive = true;
 
         public override State State
         {
@@ -19,11 +19,11 @@ namespace UIExtended
                 state = value;
                 if (value == State.Default)
                 {
-                    displayObject.SetActive(false);
+                    displayObject.SetActive(false == defaultInactive);
                 }
                 else if (value == State.Changed)
                 {
-                    displayObject.SetActive(true);
+                    displayObject.SetActive(true == defaultInactive);
                 }
             }
         }
@@ -37,12 +37,12 @@ namespace UIExtended
                 button.onClick.AddListener(ChangeState);
         }
 
-        public void Show()
+        public virtual void Show()
         {
             State = State.Changed;
         }
 
-        public void Hide()
+        public virtual void Hide()
         {
             State = State.Default;
         }

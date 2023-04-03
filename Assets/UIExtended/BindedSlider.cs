@@ -8,11 +8,8 @@ namespace UIExtended
     public class BindedSlider:MonoBehaviour
     {
         [SerializeField] private Slider slider;
+        private bool bindingChanges = false;
 
-        private void Start()
-        {
-            slider.onValueChanged.AddListener(ValueChanged);
-        }
 
         private Binding<float> binding;
         public Binding<float> Binding 
@@ -31,15 +28,27 @@ namespace UIExtended
             }
         }
 
+        private void Start()
+        {
+            slider.onValueChanged.AddListener(ValueChanged);
+        }
+
         private void BindingChanged(float value,object sender)
         {
             if(sender != (System.Object)this)
+            {                
+                bindingChanges = true;
                 slider.value = value;
+            }
+
         }
 
         private void ValueChanged(float value)
         {
-            binding.ChangeValue(value, this);
+            if (!bindingChanges)
+                binding.ChangeValue(value, this);
+            else
+                bindingChanges = false;
         }
     }
 }

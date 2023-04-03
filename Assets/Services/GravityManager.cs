@@ -6,6 +6,7 @@ using Assets.SceneSimulation;
 using Assets.SceneEditor.Models;
 using System.Linq;
 
+
 namespace Assets.Services
 {
     public class GravityManager:Singleton<GravityManager>
@@ -13,20 +14,56 @@ namespace Assets.Services
         [SerializeField] private float gravityRatio;
         [SerializeField] private Dictionary<Guid,GravityModule> interactors;
         public Dictionary<Guid,GravityModule> GravityInteractors { get => interactors; }
-        public float GravityRatio { get => gravityRatio; }
+        public float GravityRatio 
+        { 
+            get => gravityRatio; 
+            private set
+            {               
+                gravityRatio = value;
+                GravityBinding.ChangeValue(value, this);
 
-        void Start()
-        {
-            SceneRefreshed();
-            SceneStateManager.Instance.SceneChanged += SceneRefreshed;
+            }
         }
 
-        void SceneRefreshed()
+        public Binding<float> GravityBinding { get; private set; } = new Binding<float>();
+
+        private void Start()
         {
-            interactors = new Dictionary<Guid, GravityModule>();
+            SceneChanged();
+            SceneStateManager.Instance.SceneChanged += SceneChanged;
+
+            GravityBinding.ValueChanged += GravityRatioChanged;           
+            GravityBinding.ChangeValue(gravityRatio,this);
+        }
+
+        private void GravityRatioChanged(float value, object source)
+        {
+            if(source != (System.Object)this)
+            {
+                gravityRatio = value;
+                SceneStateManager.Instance.CurrentScene.Gravity = value;
+                if(value <= 0)
+                {
+                    if(PlayerPrefs.GetInt("EasterEgg1",0) == 0)
+                    {
+                        MessagingSystem.Instance.ShowMessage("With negative or zero gravity also works :)", this);
+                        PlayerPrefs.SetInt("EasterEgg1", 1);
+                    }          
+                }
+                    
+            }
+        }
+
+        private void SceneChanged()
+        {
+            if(SceneStateManager.Instance.CurrentScene.Planets.Count == 0)
+                interactors = new Dictionary<Guid, GravityModule>();
+
+            if(!SceneStateManager.Instance.IsLoadedSceneLocalSaved)
+                this.GravityRatio = SceneStateManager.Instance.CurrentScene.Gravity;
         }
         
-        public StateCurve<StateCurvePoint3D> PredictPositions(float curveLength, Guid element)
+        public StateCurve<StateCurvePoint3D> PredictPositions(float curveLength, Guid element,float deltaTime)
         {
             StateCurve<StateCurvePoint3D> Curve = new StateCurve<StateCurvePoint3D>();
             List<GravityInteractor> lastAllInteractorsState = new List<GravityInteractor>();
@@ -38,7 +75,7 @@ namespace Assets.Services
                 if (element == interactor.Key)
                     predictableElement = allInteractors;
 
-                lastAllInteractorsState.Add(interactor.Value.data);
+                lastAllInteractorsState.Add(interactor.Value.Data);
                 allInteractors++;
             }
             if (predictableElement == -1)
@@ -55,14 +92,14 @@ namespace Assets.Services
                     for (int j = 0; j < allInteractors; j++)
                     {
                         GravityInteractor newState = new GravityInteractor(lastAllInteractorsState[j]);
-                        Vector3 velocityChange = ComputeForce(newState, lastAllInteractorsState, gravityRatio) * Time.deltaTime / newState.Mass;
+                        Vector3 velocityChange = ComputeForce(newState, lastAllInteractorsState, gravityRatio) * deltaTime / newState.Mass;
                         newState.Velocity += velocityChange.GetVectorXZ();
-                        newState.Position += newState.Velocity * Time.fixedDeltaTime;
+                        newState.Position += newState.Velocity * deltaTime;
 
                         allInteractorsState.Add(newState);
                         if (j == predictableElement)
                         {
-                            float newDistanceFromStart = Curve.Length + newState.Velocity.magnitude * Time.fixedDeltaTime;
+                            float newDistanceFromStart = Curve.Length + newState.Velocity.magnitude * deltaTime;
                             if (newDistanceFromStart < curveLength)
                             {
                                 Curve.AddPoint(new GravityStateCurvePoint(newState, newDistanceFromStart));
@@ -81,7 +118,7 @@ namespace Assets.Services
             return Curve;
         }
 
-        public StateCurve<StateCurvePoint3D> PredictPositions(int iterations, Guid element)
+        public StateCurve<StateCurvePoint3D> PredictPositions(int iterations, Guid element, float deltaTime)
         {
             StateCurve<StateCurvePoint3D> Curve = new StateCurve<StateCurvePoint3D>();
             List<GravityInteractor> lastAllInteractorsState = new List<GravityInteractor>();
@@ -93,7 +130,7 @@ namespace Assets.Services
                 if (element == interactor.Key)
                     predictableElement = allInteractors;
 
-                lastAllInteractorsState.Add(interactor.Value.data);
+                lastAllInteractorsState.Add(interactor.Value.Data);
                 allInteractors++;
             }
             if (predictableElement == -1)
@@ -110,13 +147,13 @@ namespace Assets.Services
                     for (int j = 0; j < allInteractors; j++)
                     {
                         GravityInteractor newState = new GravityInteractor(lastAllInteractorsState[j]);
-                        Vector3 velocityChange = ComputeForce(newState, lastAllInteractorsState, gravityRatio) * Time.deltaTime / newState.Mass;
+                        Vector3 velocityChange = ComputeForce(newState, lastAllInteractorsState, gravityRatio) * deltaTime / newState.Mass;
                         newState.Velocity += velocityChange.GetVectorXZ();
-                        newState.Position += newState.Velocity * Time.fixedDeltaTime;
+                        newState.Position += newState.Velocity * deltaTime;
 
                         allInteractorsState.Add(newState);
                         if (j == predictableElement)
-                            Curve.AddPoint(new GravityStateCurvePoint(newState, Curve.Length + newState.Velocity.magnitude * Time.fixedDeltaTime));
+                            Curve.AddPoint(new GravityStateCurvePoint(newState, Curve.Length + newState.Velocity.magnitude * deltaTime));
                     }
                     lastAllInteractorsState = allInteractorsState;
                 }
@@ -128,7 +165,7 @@ namespace Assets.Services
         {
             int predictableElement = -1;
             StateCurve<GravityStateCurvePoint> Curve = new StateCurve<GravityStateCurvePoint>();
-            List<GravityInteractor> lastAllInteractorsState = GravityInteractors.Select(x => x.Value.data).ToList();
+            List<GravityInteractor> lastAllInteractorsState = GravityInteractors.Select(x => x.Value.Data).ToList();
             int allInteractors = 0;
 
             foreach (KeyValuePair<Guid, GravityModule> interactor in GravityInteractors)
@@ -136,7 +173,7 @@ namespace Assets.Services
                 if (element == interactor.Key)
                     predictableElement = allInteractors;
 
-                lastAllInteractorsState.Add(interactor.Value.data);
+                lastAllInteractorsState.Add(interactor.Value.Data);
                 allInteractors++;
             }
             if (predictableElement == -1)
@@ -169,7 +206,7 @@ namespace Assets.Services
 
         public List<List<GravityInteractor>> Predict(int iterations)
         {
-            List<GravityInteractor> startInteractorsData = interactors.Select(x => x.Value.data).ToList();                
+            List<GravityInteractor> startInteractorsData = interactors.Select(x => x.Value.Data).ToList();                
             List<List<GravityInteractor>> interactorsPrediction = new List<List<GravityInteractor>>();
 
             if(startInteractorsData.Count() != 0)
@@ -202,7 +239,7 @@ namespace Assets.Services
             {
                 if (obj.Value.IsSimulationEnabled)
                 {
-                    force += GravityRatio * ComputeForce(data, obj.Value.data);
+                    force += GravityRatio * ComputeForce(data, obj.Value.Data);
                 }
 
             }

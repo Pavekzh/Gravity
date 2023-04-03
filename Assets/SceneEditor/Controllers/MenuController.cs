@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UIExtended;
+using BasicTools;
 
 namespace Assets.SceneEditor.Controllers
 {
@@ -9,12 +10,23 @@ namespace Assets.SceneEditor.Controllers
         [SerializeField] ShowElement visibleManager;
         [SerializeField] LoadScenePanel loadScenePanel;
         [SerializeField] SaveScenePanel saveScenePanel;
+        [SerializeField] SettingsPanel audioSettingPanel;
+        [SerializeField] int menuSceneIndex;
+        [SerializeField] LevelLoader levelLoader;
 
+        protected bool restorePanel = false;
 
-        public override void Open()
+        public override bool RestorePanel => restorePanel;
+
+        protected override void DoOpen()
         {
-            EditorController.Instance.Panel = this;
+            restorePanel = false;
             visibleManager.Show();
+        }
+
+        protected override void DoClose()
+        {
+            visibleManager.Hide();
         }
 
         public void ChangeVisibleState()
@@ -25,11 +37,6 @@ namespace Assets.SceneEditor.Controllers
                 Close();
         }
 
-        public override void Close()
-        {
-            visibleManager.Hide();
-        }
-
         public void Save()
         {
             Assets.Services.SceneStateManager.Instance.SaveState();
@@ -37,19 +44,25 @@ namespace Assets.SceneEditor.Controllers
 
         public void SaveAs()
         {
-            EditorController.Instance.Panel = saveScenePanel;
+            this.restorePanel = true;
             saveScenePanel.Open();
         }
 
         public void Load()
         {
-            EditorController.Instance.Panel = loadScenePanel;
+            this.restorePanel = true;
             loadScenePanel.Open();
+        }
+
+        public void Settings()
+        {
+            this.restorePanel = true;
+            audioSettingPanel.Open();
         }
 
         public void Exit()
         {
-            throw new System.NotImplementedException("Close editor not implemented");
+            levelLoader.LoadLevel(menuSceneIndex);
         }
     }
 }

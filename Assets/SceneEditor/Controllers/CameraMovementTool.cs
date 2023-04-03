@@ -1,14 +1,18 @@
 ﻿using BasicTools;
 using UnityEngine;
+using Assets.SceneEditor.Models;
 
 namespace Assets.SceneEditor.Controllers
 {
     public class CameraMovementTool : SceneTool
     {
+        [SerializeField] private new CameraController camera;
         [SerializeField] private CameraZoomTool zoomTool;
         [SerializeField] private Vector2 movingSpeed = Vector2.one;
 
         private InputSystem inputSystem;
+
+        public override string ToolName => "Camera movement tool";
 
         public override void DisableTool()
         {
@@ -40,7 +44,7 @@ namespace Assets.SceneEditor.Controllers
 
         private void ReadMovingInput(Touch touch)
         {
-            EditorController.Instance.Camera.Moving((new Vector2(touch.deltaPosition.x,-touch.deltaPosition.y) * movingSpeed ).GetVector3());
+            camera.Model.Moving((-(touch.deltaPosition)* movingSpeed ).GetVector3());
         }
     }
 }

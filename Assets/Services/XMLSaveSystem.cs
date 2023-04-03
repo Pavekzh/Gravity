@@ -11,7 +11,7 @@ namespace Assets.Services
     {
         public string Extension => ".xml";
 
-        object ISaveSystem.Load(string fullPath, Type type)
+        public object Load(string fullPath, Type type)
         {
             try
             {
@@ -30,12 +30,19 @@ namespace Assets.Services
             }
             catch (System.Exception ex)
             {
-                ErrorManager.Instance.ShowErrorMessage(ex.Message, this);
+                MessagingSystem.Instance.ShowErrorMessage(ex.Message, this);
+                Exception inner = ex.InnerException;
+                while(inner != null)
+                {
+                    MessagingSystem.Instance.ShowErrorMessage(ex.Message, this);
+                    inner = inner.InnerException;
+                }
+
             }
             return null;
         }
 
-        void ISaveSystem.Save(object state, string fullPath)
+        public void Save(object state, string fullPath)
         {
             try
             {
@@ -51,12 +58,17 @@ namespace Assets.Services
 
             }
             catch (System.Exception ex)
-            {
-                ErrorManager.Instance.ShowErrorMessage(ex.InnerException.Message, this);
+            {                
+                MessagingSystem.Instance.ShowErrorMessage(ex.Message, this);
+                System.Exception inner = ex.InnerException;
+                while(inner != null)
+                {
+                    MessagingSystem.Instance.ShowErrorMessage(inner.Message, this);
+                    inner = inner.InnerException;
+                }
+
             }
         }
-
-
 
         public void Delete(string fullPath)
         {
@@ -66,8 +78,55 @@ namespace Assets.Services
             }
             catch (System.Exception ex)
             {
-                ErrorManager.Instance.ShowErrorMessage(ex.Message, this);
+                MessagingSystem.Instance.ShowErrorMessage(ex.Message, this);
+                System.Exception inner = ex.InnerException;
+                while (inner != null)
+                {
+                    MessagingSystem.Instance.ShowErrorMessage(inner.Message, this);
+                    inner = inner.InnerException;
+                }
             }
+        }
+
+        public void Save(object state, Stream source)
+        {
+            try
+            {
+                XmlSerializer serializer = new XmlSerializer(state.GetType());
+                serializer.Serialize(source, state);
+            }
+            catch(Exception ex)
+            {
+                MessagingSystem.Instance.ShowErrorMessage(ex.Message, this);
+                System.Exception inner = ex.InnerException;
+                while (inner != null)
+                {
+                    MessagingSystem.Instance.ShowErrorMessage(inner.Message, this);
+                    inner = inner.InnerException;
+                }
+            }
+        }
+
+        public object Load(Stream source, Type type)
+        {
+            try
+            {
+                object state;
+                XmlSerializer serializer = new XmlSerializer(type);
+                state = serializer.Deserialize(source);
+                return state;
+            }
+            catch(System.Exception ex)
+            {
+                MessagingSystem.Instance.ShowErrorMessage(ex.Message, this);
+                System.Exception inner = ex.InnerException;
+                while (inner != null)
+                {
+                    MessagingSystem.Instance.ShowErrorMessage(inner.Message, this);
+                    inner = inner.InnerException;
+                }
+            }
+            return null;
         }
     }
 }

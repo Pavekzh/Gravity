@@ -8,13 +8,17 @@ namespace Assets.SceneEditor.Controllers
     class PlanetBuildTool : ObjectTool
     {
         private InputSystem inputSystem;
-        [SerializeField] private MovePlanetTool MovePlanetTool;
+        [SerializeField] private MoveObjectTool MoveTool;
+
+        protected override bool HighlightSelectedObjectOnEnable => false;
 
         public override string DefaultKey => StaticKey;
 
         public static string StaticKey => "BuildTool";
 
-        public override void DisableTool()
+        public override string ToolName => "Object build tool";
+
+        protected override void DoDisable()
         {
             if(inputSystem != null)
             {
@@ -22,7 +26,7 @@ namespace Assets.SceneEditor.Controllers
             }
         }
 
-        public override void EnableTool(InputSystem inputSystem)
+        protected override void DoEnable(InputSystem inputSystem)
         {
             inputSystem.OnTouchRelease += StopCreating;
             this.inputSystem = inputSystem;
@@ -30,15 +34,19 @@ namespace Assets.SceneEditor.Controllers
 
         public void Build(PlanetData planetData)
         {
-            this.inputSystem.IsInputEnabled = true;
-            PlanetController controller = planetData.CreateSceneObject();
-            EditorController.Instance.ToolsController.ObjectSelectionTool.ForceSelect(controller);
-            MovePlanetTool.EnableTool(inputSystem);
+            this.inputSystem.LockInputReading(true);
+            PlanetController controller = (planetData.Clone() as PlanetData).CreateSceneObject();
+            Services.PlanetSelectSystem.Instance.ForceSelect(controller);
+            MoveTool.EnableTool(inputSystem);
+            MoveTool.EnableImmediatelyInputReading();            
+            MoveTool.DisableToolUI();
         }
 
         public void StopCreating(Touch touch)
         {
-            MovePlanetTool.DisableTool();
+            MoveTool.DisableTool();
+
+            this.inputSystem.UnlockInputReading();
             this.DisableTool();
         }
     }

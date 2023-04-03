@@ -1,24 +1,21 @@
-﻿using System.Collections;
+﻿using System;
 using UnityEngine;
 using BasicTools;
 
 namespace UIExtended
 {
-    public abstract class InputManipulator : MonoBehaviour
+    public abstract class InputManipulator<T> : MonoBehaviour
     {
-        public bool IsManipulatorActive { get; protected set; }
+        public abstract event Action InputReadingStarted;
+        public abstract event Action InputReadingStoped;
 
-        public abstract Transform Origin { get; set; }
+        public virtual float ScaleFactor { get; set; }
 
-        public abstract event System.EventHandler OnManipulatorActivates;
+        public virtual Binding<T> InputBinding { get; protected set; } = new Binding<T>();
 
-        public abstract Vector3 GetInputByTouch(Touch touch, float scale);
+        public abstract void Enable(Binding<Vector2> manipulatorTargetPosition);
 
-        public abstract void UpdateView(Vector3 origin, Vector3 touch, float scaleFactor);
-
-        public abstract void Deactivate(Touch touch);
-
-        public abstract bool IsVisible { get; set; }
+        public abstract void Disable();        
 
     }
 }

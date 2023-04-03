@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 using TMPro;
 using UnityEngine.UI;
 using BasicTools;
 
 namespace UIExtended
 {
-    public class SelectableFilePresenter : FilePresenter
+    [Serializable]
+    public class SelectableFilePresenter : FileItemPresenter
     {
         [SerializeField] FileSelector selector;
         [SerializeField] RectTransform selectorRect;
@@ -14,43 +16,58 @@ namespace UIExtended
         [SerializeField] RectTransform labelRect;
         [SerializeField] TMP_Text label;
         [SerializeField] [Range(0, 1)] float selectorFill;
+        [SerializeField] Vector2 cellSize;
 
         public Binding<string> PathBinding { get; set; }
 
-        private void Start()
+        public SelectableFilePresenter() { }
+
+        public SelectableFilePresenter(SelectableFilePresenter source)
+        {
+            this.selector = source.selector;
+            this.selectorRect = source.selectorRect;
+            this.fileViewPrefab = source.fileViewPrefab;
+            this.labelRect = source.labelRect;
+            this.label = source.label;
+            this.selectorFill = source.selectorFill;
+            this.cellSize = source.cellSize;
+            this.PathBinding = source.PathBinding;
+        }
+
+        public void Check()
         {
             if (labelRect == null)
             {
-                ErrorManager.Instance.ShowErrorMessage("LabelRect has not set", this);
+                MessagingSystem.Instance.ShowErrorMessage("LabelRect has not set", this);
             }
             if (selectorRect == null)
             {
-                ErrorManager.Instance.ShowErrorMessage("SelectorRect has not set", this);
+                MessagingSystem.Instance.ShowErrorMessage("SelectorRect has not set", this);
             }
             if (selector == null)
             {
-                ErrorManager.Instance.ShowErrorMessage("Selector has not set", this);
+                MessagingSystem.Instance.ShowErrorMessage("Selector has not set", this);
             }
 
             if (fileViewPrefab == null)
             {
-                ErrorManager.Instance.ShowErrorMessage("FileViewPrefab has not set", this);
+                MessagingSystem.Instance.ShowErrorMessage("FileViewPrefab has not set", this);
             }
 
             if (label == null)
             {
-                ErrorManager.Instance.ShowErrorMessage("LabelPrefab has not set", this);
+                MessagingSystem.Instance.ShowErrorMessage("LabelPrefab has not set", this);
             }
             if (PathBinding == null)
             {
-                ErrorManager.Instance.ShowErrorMessage("SelectSystem has not set", this);
+                MessagingSystem.Instance.ShowErrorMessage("SelectSystem has not set", this);
             }
         }
 
-        public override RectTransform GetFileView(string path, Vector2 cellSize)
+        public override RectTransform GetItemView(RectTransform parent)
         {
-            selector.FilePath = path;
-            label.text = System.IO.Path.GetFileNameWithoutExtension(path);
+            this.selector.FilePath = base.Path;
+            label.text = Path;
 
             selectorRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, cellSize.x);
             selectorRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, cellSize.y * selectorFill);
@@ -60,13 +77,23 @@ namespace UIExtended
             labelRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, cellSize.y * (1 - selectorFill));
             labelRect.anchoredPosition = new Vector2(0, labelRect.rect.height / 2);
 
-            GameObject fileView = GameObject.Instantiate(fileViewPrefab.gameObject);
-            GameObject selectObj = GameObject.Instantiate(selector.gameObject, fileView.transform);
-            GameObject labelObj = GameObject.Instantiate(label.gameObject, fileView.transform);
+            RectTransform fileView = GameObject.Instantiate(fileViewPrefab.gameObject,parent).GetComponent<RectTransform>();
+            fileView.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, cellSize.x);
+            fileView.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, cellSize.y);
+            fileView.localScale = Vector3.one;
+            fileView.anchoredPosition = new Vector2((cellSize.x / 2), -(parent.rect.height / 2));
 
-            FileSelector selectorInstance = selectObj.GetComponent<FileSelector>();
-            selectorInstance.PathBinding = PathBinding;
-            return fileView.GetComponent<RectTransform>();
+            FileSelector selector = GameObject.Instantiate(this.selector.gameObject, fileView.transform).GetComponent<FileSelector>();            
+            selector.PathBinding = PathBinding;
+
+            GameObject.Instantiate(label.gameObject, fileView.transform);
+
+            return fileView;
+        }
+
+        public override object Clone()
+        {
+            return this.MemberwiseClone();
         }
     }
 }

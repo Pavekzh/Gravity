@@ -14,5 +14,13 @@ namespace BasicTools
         {
             return new Vector3(vector.x, 0, vector.y);
         }
+
+        public static void RemoveRange<T>(this List<T> list,IEnumerable<T> range)
+        {
+            foreach(T obj in range)
+            {
+                list.Remove(obj);
+            }
+        }
     }
 }

@@ -19,9 +19,22 @@ namespace Assets.SceneEditor.Controllers
         public event TouchChanged OnTouchRelease;
         public event SeveralTouches OnTwoTouchesDown;
         public event SeveralTouches OnTwoTouchesContinue;
+        public event SeveralTouches OnTwoTouchesRelease;
 
-        public bool IsInputEnabled { get; set; } = true;
+        public bool IsInputEnabled 
+        {
+            get => isInputEnabled;
+            set
+            {
+                if (!isInputReadingLocked)
+                {
+                    isInputEnabled = value;
+                }
+            }
+        }
 
+        bool isInputEnabled = true;
+        bool isInputReadingLocked;
         List<int> UITouches = new List<int>();
 
         //we need to detect touch down and touch release in Update but move or stationary in FixedUpdate
@@ -36,36 +49,48 @@ namespace Assets.SceneEditor.Controllers
                     //UI touch detection
                     if (EventSystem.current.IsPointerOverGameObject(touch.fingerId) && !UITouches.Contains(touch.fingerId))
                     {
+                        IsInputEnabled = false;
                         OnUITouch?.Invoke();
                         UITouches.Add(touch.fingerId);
                     }
+
+                    
+                    if (IsInputEnabled)
+                    {
+                        //messages one-per-one touch
+                        if (touch.phase == TouchPhase.Began && Input.touchCount == 1)
+                            this.OnTouchDown?.Invoke(touch);
+                        if ((touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled) && Input.touchCount == 1)
+                            this.OnTouchRelease?.Invoke(touch);
+                    }
+
                     if (touch.phase == TouchPhase.Ended)
                     {
                         UITouches.Remove(touch.fingerId);
                         if (UITouches.Count == 0)
                         {
+                            IsInputEnabled = true;
                             //All UI touches released
-                            OnUIRelease?.Invoke();
+                            OnUIRelease?.Invoke();                            
                         }
                     }
 
-                    if (IsInputEnabled)
-                    {
-                        //sending messages
-                        if (touch.phase == TouchPhase.Began && Input.touchCount == 1)
-                            this.OnTouchDown?.Invoke(touch);
-                        if ((touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled) && Input.touchCount == 1)
-                            this.OnTouchRelease?.Invoke(touch);
 
-                        if (Input.touchCount == 2 && (Input.GetTouch(0).phase == TouchPhase.Began || Input.GetTouch(1).phase == TouchPhase.Began))
-                            OnTwoTouchesDown?.Invoke(new Touch[] { Input.GetTouch(0), Input.GetTouch(1) });
 
-                    }
+                }
+
+                //messages one-for-several touches
+                if (IsInputEnabled)
+                {
+                    if (Input.touchCount == 2 && (Input.GetTouch(0).phase == TouchPhase.Began || Input.GetTouch(1).phase == TouchPhase.Began))
+                        OnTwoTouchesDown?.Invoke(new Touch[] { Input.GetTouch(0), Input.GetTouch(1) });
+                    if (Input.touchCount == 2 && (Input.GetTouch(0).phase == TouchPhase.Ended || Input.GetTouch(1).phase == TouchPhase.Ended || Input.GetTouch(0).phase == TouchPhase.Canceled || Input.GetTouch(1).phase == TouchPhase.Canceled))
+                        OnTwoTouchesRelease?.Invoke(new Touch[] { Input.GetTouch(0), Input.GetTouch(1) });
                 }
             }
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             if (Input.touchCount > 0)
             {
@@ -73,34 +98,32 @@ namespace Assets.SceneEditor.Controllers
                 {
                     Touch touch = Input.GetTouch(i);
 
-                    //UI touch detection
-                    if (EventSystem.current.IsPointerOverGameObject(touch.fingerId) && !UITouches.Contains(touch.fingerId))
-                    {
-                        OnUITouch?.Invoke();
-                        UITouches.Add(touch.fingerId);
-                    }
-                    if (touch.phase == TouchPhase.Ended)
-                    {
-                        UITouches.Remove(touch.fingerId);
-                        if (UITouches.Count == 0)
-                        {
-                            //All UI touches released
-                            OnUIRelease?.Invoke();
-                        }
-                    }
 
                     if (IsInputEnabled)
                     {
                         //sending messages
                         if ((touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary) && Input.touchCount == 1)
                             this.OnTouchContinues?.Invoke(touch);
-
-                        if (Input.touchCount == 2)
-                            OnTwoTouchesContinue?.Invoke(new Touch[] { Input.GetTouch(0), Input.GetTouch(1) });
                     }
 
                 }
+                if (IsInputEnabled)
+                {
+                    if (Input.touchCount == 2)
+                        OnTwoTouchesContinue?.Invoke(new Touch[] { Input.GetTouch(0), Input.GetTouch(1) });
+                }
             }
+        }
+    
+        public void LockInputReading(bool isInputEnabled)
+        {
+            IsInputEnabled = isInputEnabled;
+            isInputReadingLocked = true;
+        }
+
+        public void UnlockInputReading()
+        {
+            isInputReadingLocked = false;
         }
     }
 }

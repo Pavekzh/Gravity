@@ -2,20 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 using BasicTools;
+using BasicTools.Validation;
 
 namespace Assets.Services
 {
     public class TimeManager : BasicTools.Singleton<TimeManager>
     {
         private float defaultFixedDeltaTime;
+        private string timeLockerName;
 
         public Binding<float> TimeBinding { get; private set; }
-        [SerializeField] private float timeScale = 1;
+
         [SerializeField] private bool simulationState = true;
         [SerializeField] private float maxTimeScale = 2;
 
-        public float TimeScale { get => timeScale; }
+        private bool savedSimulationState;
+
         public bool SimulationState { get => simulationState; }
+        public bool TimeFlowLocked { get; private set; } = false;
 
         private ValueChangedHandler<bool> timeStateChanged;
         public event ValueChangedHandler<bool> TimeStateChanged
@@ -31,43 +35,50 @@ namespace Assets.Services
             }
         }
 
-        //method for external pause game
-        public void StopPhysics()
+        public void SetPhysicsState(bool state)
         {
-            TimeBinding.ChangeValue(0, this);
-            LocalStopPhysics();
-        }
-        //method for external resume game
-        public void ResumePhysics()
-        {
-            TimeBinding.ChangeValue(Time.timeScale, this);
-            LocalResumePhysics();
+            if(state)
+            {
+                TimeBinding.ChangeValue(Time.timeScale, this);
+                SetTimeFlow(true);
+            }
+            else
+            {
+                TimeBinding.ChangeValue(0, this);
+                SetTimeFlow(false);
+            }
         }
 
         public void ChangePhysicsState()
         {
-            if (simulationState)
+            SetPhysicsState(!simulationState);
+        }
+
+        public void LockTimeFlow(string lockerName)
+        {
+            if (!TimeFlowLocked)
             {
-                StopPhysics();
-            }
-            else
-            {
-                ResumePhysics();
+                timeLockerName = lockerName;
+                savedSimulationState = simulationState;
+                SetPhysicsState(false);
+                TimeFlowLocked = true;
             }
         }
 
-        private bool ValidateTimeChanges(float value, object source)
+        public void UnlockTimeFlow()
         {
-            if (value <= maxTimeScale)
+            if (TimeFlowLocked)
             {
-                return true;
+                TimeFlowLocked = false;
+                SetPhysicsState(savedSimulationState);
+                savedSimulationState = simulationState;
             }
-            else
-            {
-                ResetTimeScale(maxTimeScale, null);
-                TimeBinding.ChangeValue(maxTimeScale, this);
-                return false;
-            }
+        }
+
+
+        private bool ValidateTimeChanges(float value)
+        {
+            return value <= maxTimeScale;
         }
 
         protected  override void Awake()
@@ -76,37 +87,34 @@ namespace Assets.Services
             TimeBinding = new Binding<float>();
             defaultFixedDeltaTime = Time.fixedDeltaTime;
             TimeBinding.ValueChanged += ResetTimeScale;
-            TimeBinding.ValidateValue += ValidateTimeChanges;
-            ResetTimeScale(timeScale);
+            TimeBinding.ValidationRules.Add(new ValidationRule<float>(maxTimeScale,ValidateTimeChanges));
 
             if (simulationState == false)
             {
-                LocalStopPhysics();
+                SetTimeFlow(false);
             }
             else
             {
-                LocalResumePhysics();
+                SetTimeFlow(true);
             }
         }
 
         private void ResetTimeScale(float value)
         {
-            if (value != 0 && timeScale != 0)
+            if (Mathf.Approximately(value, 0))
             {
-                timeScale = value;
-                Time.timeScale = value;
-                Time.fixedDeltaTime = defaultFixedDeltaTime * value;
-            }
-            else if (value != 0 && timeScale == 0)
-            {
-                timeScale = value;
-                Time.timeScale = value;
-                Time.fixedDeltaTime = defaultFixedDeltaTime * value;
-                LocalResumePhysics();
+                Time.timeScale = 1;
+                Time.fixedDeltaTime = defaultFixedDeltaTime;
+                SetTimeFlow(false);
             }
             else
-            {
-                LocalStopPhysics();
+            {                    
+                Time.timeScale = value;
+                Time.fixedDeltaTime = defaultFixedDeltaTime * value;
+                if (!simulationState)
+                {
+                    SetTimeFlow(true);
+                }
             }
 
         }
@@ -115,40 +123,30 @@ namespace Assets.Services
         {
             if (source != (System.Object)this)
             {
-                if (value != 0 && timeScale != 0)
-                {
-                    timeScale = value;
-                    Time.timeScale = value;
-                    Time.fixedDeltaTime = defaultFixedDeltaTime * value;
-                }
-                else if (value != 0 && timeScale == 0)
-                {
-                    timeScale = value;
-                    Time.timeScale = value;
-                    Time.fixedDeltaTime = defaultFixedDeltaTime * value;
-                    LocalResumePhysics();
-                }
-                else
-                {
-                    LocalStopPhysics();
-                }
+                ResetTimeScale(value);
             }
         }
 
-        //method used when time stoped by setting TimeScale to 0
-        private void LocalStopPhysics()
+        private void SetTimeFlow(bool state)
         {
-            timeStateChanged?.Invoke(false,this);
-            
-            timeScale = 0;
-            simulationState = false;
+            if (!TimeFlowLocked)
+            {
+                if (simulationState != state)
+                {
+                    timeStateChanged?.Invoke(state, this);
+                    simulationState = state;
+                }
+            }
+            else
+            {
+                if (this.simulationState == true)
+                    TimeBinding.ChangeValue(Time.timeScale, this);
+                else
+                    TimeBinding.ChangeValue(0, this);
+                MessagingSystem.Instance.ShowMessage("Time flow locked by " + timeLockerName,this);
+            }
+
         }
-        //method used when time resume by setting TimeScale not to 0
-        private void LocalResumePhysics()
-        {
-            timeStateChanged?.Invoke(true,this);
-            timeScale = Time.timeScale;
-            simulationState = true;
-        }
+
     }
 }

@@ -6,17 +6,20 @@ namespace Assets.SceneEditor.Controllers
 {
     public class CameraZoomTool : EditorTool
     {
+        [SerializeField] private new CameraController camera;
         [SerializeField] private float zoomSpeed = 1f;
 
         private float touchesDistance;
-
+        private bool isZooming;
         private InputSystem inputSystem;
+
+        public override string ToolName => "Camera zoom tool";
 
         public override void DisableTool()
         {
             if (inputSystem != null)
             {
-                inputSystem.OnTwoTouchesDown -= this.TwoTouchesDown;
+                inputSystem.OnTwoTouchesRelease -= this.ZoomStoped;
                 inputSystem.OnTwoTouchesContinue -= this.ReedZoomInput;
             }
         }
@@ -24,27 +27,33 @@ namespace Assets.SceneEditor.Controllers
         public override void EnableTool(InputSystem inputSystem)
         {
             this.inputSystem = inputSystem;
-            inputSystem.OnTwoTouchesDown += this.TwoTouchesDown;
+            inputSystem.OnTwoTouchesRelease += this.ZoomStoped;
+            inputSystem.OnTwoTouchesDown += this.ZoomStarted;
             inputSystem.OnTwoTouchesContinue += this.ReedZoomInput; 
         }
 
-        private void TwoTouchesDown(Touch[] touches)
-        {            
-            float distance = 0;
-            distance = Vector2.Distance(touches[0].position, touches[1].position);
+        private void ZoomStarted(Touch[] touches)
+        {
+            touchesDistance = Vector2.Distance(touches[0].position, touches[1].position);
+            isZooming = true;
+        }
 
-            touchesDistance = distance;
+        private void ZoomStoped(Touch[] touches)
+        {
+            touchesDistance = 0;
+            isZooming = false;
         }
 
         private void ReedZoomInput(Touch[] touches)
         {
-            float distance = 0;
-            distance = Vector2.Distance(touches[0].position, touches[1].position);
+            if (isZooming)
+            {
+                float distance = Vector2.Distance(touches[0].position, touches[1].position);
+                float deltaDistance = (distance - touchesDistance) * zoomSpeed;
 
-            float deltaDistance = (distance - touchesDistance) * zoomSpeed;
-            touchesDistance = distance;
-            EditorController.Instance.Camera.Zoom(deltaDistance);
-
+                touchesDistance = distance;
+                camera.Model.Zoom(deltaDistance);
+            }
         }
 
     }

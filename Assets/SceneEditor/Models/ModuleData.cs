@@ -13,6 +13,7 @@ namespace Assets.SceneEditor.Models
     public abstract class ModuleData:System.ICloneable
     {
         public virtual bool DisplayOnValuesPanel { get => true; }
+        public virtual int DisplayIndex { get => -1; }
 
         protected bool isDeserialized = false;
 

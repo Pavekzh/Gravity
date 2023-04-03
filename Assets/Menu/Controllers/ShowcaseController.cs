@@ -45,10 +45,13 @@ namespace Assets.Menu.Controllers
             string[] presetsNames = presetsFileNames.Collection.ToArray();
             string[] userNames = System.IO.Directory.GetFiles(UserPlanetsDirectory, "*" + SaveSystem.Extension);
             System.Random rand = new System.Random();
+
             int index;
+            int maxRandom = presetsNames.Length + userNames.Length;
+
             do
             {
-                index = rand.Next(0, (presetsNames.Length + userNames.Length) - 1);
+                index = rand.Next(0, maxRandom);
             }
             while (index == lastShowedPlanet);
 

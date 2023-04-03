@@ -68,6 +68,8 @@ namespace Assets.SceneEditor.Models
             Properties.Add(MassProperty);
         }
 
+        public override int DisplayIndex => 0;
+
         public GravityInteractor Data { get => data; }
         public float Mass
         {

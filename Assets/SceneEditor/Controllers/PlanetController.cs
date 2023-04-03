@@ -11,7 +11,7 @@ namespace Assets.SceneEditor.Controllers
     {
         public PlanetData PlanetData { get; set; }
         private RectTransform planetView;
-        private List<ModuleController> controllers = new List<ModuleController>();
+        private ModuleController[] modules;
 
         private void OnDestroy()
         {
@@ -20,9 +20,14 @@ namespace Assets.SceneEditor.Controllers
             CloseView();
         }
 
-        public void AddModule(ModuleData moduleData)
+        public void InitModules(int modulesCount)
         {
-            controllers.Add(new ModuleController(moduleData));
+            modules = new ModuleController[modulesCount];
+        }
+
+        public void AddModule(ModuleData moduleData,int index)
+        {
+            modules[index] = new ModuleController(moduleData);
         }
 
         public void OpenView(RectTransform setValuesPanel)
@@ -39,7 +44,7 @@ namespace Assets.SceneEditor.Controllers
             nameField.onValueChanged.AddListener(nameChangedAction);
 
             float offset = ValuesPanelTemplate.Instance.StartMargin + nameField.GetComponent<RectTransform>().rect.height;
-            foreach(ModuleController controller in controllers)
+            foreach(ModuleController controller in modules)
             {
                 controller.CreateView(planetView,ref offset);
             }

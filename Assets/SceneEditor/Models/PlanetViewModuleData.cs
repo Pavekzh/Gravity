@@ -61,12 +61,21 @@ namespace Assets.SceneEditor.Models
         {    
             ConvertibleBinding<NoiseSettings,string[]> noiseSettsBinding = new BasicTools.ConvertibleBinding<NoiseSettings, string[]>(new NoiseSetsStringConverter());
             this.NoiseSettsBinding = noiseSettsBinding;
+            this.NoiseSettsBinding.ValidationRules.Add(new BasicTools.Validation.ValidationRule<NoiseSettings>(validateNoiseSetts));
             noiseSettsBinding.ValueChanged += setNoiseSettsBinding; 
             CommonPropertyViewData<NoiseSettings> noiseSettingsProperty = new CommonPropertyViewData<NoiseSettings>();
             noiseSettingsProperty.Binding = noiseSettsBinding;
             noiseSettingsProperty.Name = "Relief settings";
-            noiseSettingsProperty.Components = new string[] {"Scale","Lacunarity","Persistence","OffsetX","OffsetY","OffsetZ","Octaves","LowLevel","Strength" };
+            noiseSettingsProperty.Components = new string[] {"Scale","Lacunarity","Persistence","OffsetX","OffsetY","OffsetZ","Octaves","Sea level","Strength" };
             Properties.Add(noiseSettingsProperty);
+        }
+
+        private bool validateNoiseSetts(NoiseSettings value)
+        {
+            if (value.MinValue != 0.5f)
+                return false;
+
+            return true;
         }
 
         private void setNoiseSettsBinding(NoiseSettings value, object source)
@@ -105,6 +114,11 @@ namespace Assets.SceneEditor.Models
             MeshBinding.ChangeValue(MeshProvider.GetMesh(), this);
             MaterialProvider.UpdateMinMax(new Vector2(PlanetShapeGenerator.ElevationMinMax.Min, PlanetShapeGenerator.ElevationMinMax.Max));
             MaterialBinding.ChangeValue(MaterialProvider.GetMaterial(), this);
+
+            foreach(GradientColorKey c in materialProvider.LandGradient.colorKeys)
+            {
+                Debug.Log(c);
+            }
         }
 
         public ModuleData GetModuleData()

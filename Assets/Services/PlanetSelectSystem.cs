@@ -26,6 +26,9 @@ namespace Assets.Services
 
         private Dictionary<Guid, PlanetController> PlanetControllers { get; set; } = new Dictionary<Guid, PlanetController>();
 
+
+        private bool mustBeSelected;
+
         public PlanetController SelectedPlanet
         {
             get => planet;
@@ -33,16 +36,21 @@ namespace Assets.Services
             {
                 if (!isSelectionLocked)
                 {
-                    bool mustBeSelected = SelectedHighlighted;
                     if (SelectedHighlighted)
                     {
-                        LessenSelected();
+                        mustBeSelected = true;                    
+                        if (planet != null)
+                            LessenSelected();
+                        SelectedHighlighted = false;
                     }
+
+
                     planet = value;
                     SelectedPlanetChanged?.Invoke(this, value);
-                    if (mustBeSelected)
+                    if (mustBeSelected && planet != null)
                     {
                         HighlightSelected();
+                        mustBeSelected = false;
                     }
                 }
             }
@@ -83,15 +91,17 @@ namespace Assets.Services
                 SelectedPlanet.PlanetData.GetModule<ViewModuleData>(ViewModuleData.Key).Highlight();
                 SelectedHighlighted = true;
             }
+           
         }
 
         public void LessenSelected()
         {
             if ((SelectedPlanet != null || FindPlanet() != null) && SelectedHighlighted)
             {
-                SelectedPlanet.PlanetData.GetModule<ViewModuleData>(ViewModuleData.Key).Lessen();
+                SelectedPlanet.PlanetData.GetModule<ViewModuleData>(ViewModuleData.Key).Lessen();            
                 SelectedHighlighted = false;
-            }
+            }   
+
         }
 
         private void Start()

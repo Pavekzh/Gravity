@@ -14,6 +14,15 @@ namespace Assets.Menu.Controllers
         [SerializeField] private int sandboxSceneIndex;
         [SerializeField] private SettingsController settings;
         [SerializeField] private LevelLoader levelLoader;
+        [SerializeField] private ShowElement Panhandle;
+
+        private void Awake()
+        {
+            int MenuEntries = PlayerPrefs.GetInt("MenuEntries",0);
+            PlayerPrefs.SetInt("MenuEntries", MenuEntries + 1);
+            if (MenuEntries == 6)
+                Panhandle.Show();
+        }
 
         public void LoadPuzzle() 
         {
@@ -36,6 +45,12 @@ namespace Assets.Menu.Controllers
             Application.Quit();
         }
 
+        public void OpenRatingPage()
+        {
+            Application.OpenURL("market://details?id=com.Zhukovin.Gravity");
+            Panhandle.Hide();
+        }
+
         float tStart;
         IEnumerator timer()
         {            
@@ -46,5 +61,7 @@ namespace Assets.Menu.Controllers
                 yield return null;
             }
         }
+
+
     }
 }

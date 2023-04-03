@@ -11,6 +11,8 @@ namespace Assets.SceneEditor.Models
         protected float objectScale = 1;
         protected bool isHighlighted = false;
 
+        public override int DisplayIndex => 1;
+
         public float MinVolume { get => CalculateVolume(MinScale); }
         public float MaxVolume { get => CalculateVolume(MaxScale); }
         public const float MinScale = 0.2f;

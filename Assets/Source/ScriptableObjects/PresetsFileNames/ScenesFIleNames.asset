@@ -13,5 +13,9 @@ MonoBehaviour:
   m_Name: ScenesFIleNames
   m_EditorClassIdentifier: 
   fileNames:
-  - One star
-  - Two stars
+  - Start scene
+  - Mirror planet
+  - Almost moon
+  - Planet sling
+  - Third wheel
+  - Third wheel2

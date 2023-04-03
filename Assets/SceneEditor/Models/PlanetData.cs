@@ -49,9 +49,11 @@ namespace Assets.SceneEditor.Models
 
             PlanetController controller = planet.AddComponent<PlanetController>();
             controller.PlanetData = this;
+            controller.InitModules(this.Modules.Count(x => x.Value.DisplayOnValuesPanel == true));
             foreach (KeyValuePair<string, ModuleData> valuePair in this.Modules)
             {
-                controller.AddModule(valuePair.Value);
+                if(valuePair.Value.DisplayOnValuesPanel)
+                    controller.AddModule(valuePair.Value,valuePair.Value.DisplayIndex);
                 valuePair.Value.CreateModule(planet);
             }
 

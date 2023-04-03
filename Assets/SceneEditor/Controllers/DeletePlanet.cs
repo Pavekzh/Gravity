@@ -7,6 +7,7 @@ namespace Assets.SceneEditor.Controllers
     {
         public void Delete()
         {
+            
             Services.PlanetSelectSystem.Instance.SelectedPlanet.DeletePlanet();
         }
     }

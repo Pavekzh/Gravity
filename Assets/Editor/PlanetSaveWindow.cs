@@ -103,6 +103,7 @@ namespace Assets.Editor
             if (!fileNames.Collection.Contains(Selection.activeGameObject.name))
             {
                 fileNames.Collection.Add(Selection.activeGameObject.name);
+                EditorUtility.SetDirty(fileNames);
             }
         }
 
@@ -114,8 +115,9 @@ namespace Assets.Editor
             {
                 string name = System.IO.Path.GetFileNameWithoutExtension(n);
                 fileNames.Collection.Add(name);
-            }
 
+            }
+            EditorUtility.SetDirty(fileNames);
         }
     }
 }

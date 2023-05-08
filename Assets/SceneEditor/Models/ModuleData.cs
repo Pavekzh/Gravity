@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using Assets.Services;
 using Assets.SceneSimulation;
 using System.Xml.Schema;
 using System.Xml;
@@ -19,13 +20,13 @@ namespace Assets.SceneEditor.Models
 
         [XmlIgnore]
         public abstract List<PropertyViewData> Properties { get; }
+        public abstract System.Type ModuleType { get; }
         public abstract string Name { get; }
         [XmlIgnore]
         public abstract PlanetData Planet { get; set; }
 
         public abstract object Clone();
 
-        public abstract void CreateModule(GameObject sceneObject);
         public virtual void OnDeserialized()
         {
             isDeserialized = true;

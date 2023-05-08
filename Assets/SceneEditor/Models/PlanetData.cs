@@ -14,11 +14,10 @@ namespace Assets.SceneEditor.Models
     {
         public PlanetData() { }
 
-        public PlanetData(Dictionary<string, ModuleData> modules, string name,SceneObjectBuilder planetBuilder)
+        public PlanetData(Dictionary<string, ModuleData> modules, string name)
         {
             Modules = modules;
             Name = name;
-            PlanetBuilder = planetBuilder;
         }
 
         [XmlIgnore]
@@ -26,7 +25,6 @@ namespace Assets.SceneEditor.Models
 
         public Guid Guid { get; } = Guid.NewGuid();
         public string Name { get; set; }
-        public SceneObjectBuilder PlanetBuilder { get; set; }
 
         public T GetModule<T>(string key) where T : ModuleData
         {
@@ -43,25 +41,6 @@ namespace Assets.SceneEditor.Models
             throw new Exception("Specified module doesn't exist or has wrong type");
         }
 
-        public PlanetController CreateSceneObject()
-        {
-            GameObject planet = PlanetBuilder.Create(this);
-
-            PlanetController controller = planet.AddComponent<PlanetController>();
-            controller.PlanetData = this;
-            controller.InitModules(this.Modules.Count(x => x.Value.DisplayOnValuesPanel == true));
-            foreach (KeyValuePair<string, ModuleData> valuePair in this.Modules)
-            {
-                if(valuePair.Value.DisplayOnValuesPanel)
-                    controller.AddModule(valuePair.Value,valuePair.Value.DisplayIndex);
-                valuePair.Value.CreateModule(planet);
-            }
-
-            Services.PlanetSelectSystem.Instance.AddPlanet(this.Guid, controller);
-            Services.SceneStateManager.Instance.AddPlanet(this);
-            return controller;
-        }
-
         public XmlSchema GetSchema()
         {
             return null;
@@ -72,9 +51,6 @@ namespace Assets.SceneEditor.Models
             reader.MoveToAttribute("Name");
             this.Name = reader.Value;
             reader.MoveToElement();
-            reader.ReadToDescendant("SceneObjectBuilder");
-            XmlSerializer serializer = new XmlSerializer(typeof(SceneObjectBuilder));
-            this.PlanetBuilder = serializer.Deserialize(reader) as SceneObjectBuilder;
             if (reader.ReadToDescendant("ModuleData"))
             {
                 while (reader.LocalName == "ModuleData")
@@ -93,8 +69,6 @@ namespace Assets.SceneEditor.Models
         public void WriteXml(XmlWriter writer)
         {
             writer.WriteAttributeString("Name", this.Name);
-            XmlSerializer serializer = new XmlSerializer(typeof(SceneObjectBuilder));
-            serializer.Serialize(writer, this.PlanetBuilder);
             writer.WriteStartElement("Modules");
             foreach(KeyValuePair<string,ModuleData> mData in Modules)
             {
@@ -107,8 +81,7 @@ namespace Assets.SceneEditor.Models
         public object Clone()
         {
             PlanetData clonedData = new PlanetData();
-            clonedData.Name = this.Name;
-            clonedData.PlanetBuilder = this.PlanetBuilder.Clone() as SceneObjectBuilder;                
+            clonedData.Name = this.Name;            
             clonedData.Modules = new Dictionary<string, ModuleData>();
             foreach(KeyValuePair<string,ModuleData> mData in Modules)
             {

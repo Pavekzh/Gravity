@@ -12,40 +12,27 @@ namespace Assets.Editor
 {
     public class PlanetSaveWindow : EditorWindow
     {
-        private enum SaveSystemEnum
-        {
-            XmlSaveSystem
-        }
 
-        private SaveSystemEnum saveSystemEnum;
+
+        private SaveSystemFactory saveSystemFactory;
         private string savesDirectory = "Resources/Presets/Planets/";
         private ISaveSystem saveSystem;
         private FileNamesCollectionScriptableObject fileNames;
 
         private Module[] selectedPlanetModules;
 
-        private string Directory { get => Services.SceneStateManager.BaseDirectory + savesDirectory; }
+        private string Directory { get => Services.SceneStateLoader.BaseDirectory + savesDirectory; }
 
         public ISaveSystem SaveSystem
         {
             get
             {
-                if (saveSystem == null)
-                {
-                    switch (saveSystemEnum)
-                    {
-                        case SaveSystemEnum.XmlSaveSystem:
-                            return saveSystem = new XMLSaveSystem();
-                        default:
-                            return saveSystem = new XMLSaveSystem();
-                    }
-                }
-                else return saveSystem;
+                return saveSystemFactory.GetChachedSaveSystem();
 
             }
         }
 
-        [MenuItem("Window/Planet save")]
+        [MenuItem("Tools/Saving/PlanetSave")]
         private static void ShowWindow()
         {
             var window = GetWindow<PlanetSaveWindow>();
@@ -57,7 +44,7 @@ namespace Assets.Editor
         {
             
             savesDirectory = EditorGUILayout.TextField("Saves directory", savesDirectory);
-            saveSystemEnum = (SaveSystemEnum)EditorGUILayout.EnumPopup("Save system",saveSystemEnum);
+            saveSystemFactory = EditorGUILayout.ObjectField("Save system",saveSystemFactory,typeof(SaveSystemFactory),false) as SaveSystemFactory;
             saveSystem = null;
             fileNames = (FileNamesCollectionScriptableObject)EditorGUILayout.ObjectField(new GUIContent("File names"),fileNames, typeof(FileNamesCollectionScriptableObject),false);            
             if (GUILayout.Button("Check file names"))
@@ -96,7 +83,7 @@ namespace Assets.Editor
                     modulesData.Add(moduleData.Name, moduleData);
                 }
 
-                PlanetData planetData = new PlanetData(modulesData, Selection.activeGameObject.name, new DefaultSceneObjectBuilder());
+                PlanetData planetData = new PlanetData(modulesData, Selection.activeGameObject.name);
                 SaveSystem.Save(planetData, Directory + Selection.activeGameObject.name + saveSystem.Extension);
             }
 

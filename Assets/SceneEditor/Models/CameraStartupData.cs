@@ -6,6 +6,8 @@ namespace Assets.SceneEditor.Models
     [Serializable]
     public struct CameraStartupData
     {
+        public Camera Camera;
+        public bool IsSceneCamera;
 
         [Header("Constraints")]
         public bool UseConstraints;
@@ -20,7 +22,9 @@ namespace Assets.SceneEditor.Models
         public Vector2 OrbitAngle;
 
         public CameraStartupData(bool useConstraints)
-        {
+        {           
+            Camera = null;
+            IsSceneCamera = true;
             UseConstraints = useConstraints;
             MaxRotationRadius = 0;
             MinRotationRadius = 0;
@@ -29,6 +33,7 @@ namespace Assets.SceneEditor.Models
             RotationRadius = 1;
             Origin = Vector3.zero;
             OrbitAngle = new Vector2(60,0);
+
         }
     }
 }

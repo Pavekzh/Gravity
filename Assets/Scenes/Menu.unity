@@ -1396,51 +1396,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   toggle: {fileID: 291368543}
---- !u!1 &296204410
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 296204411}
-  - component: {fileID: 296204412}
-  m_Layer: 0
-  m_Name: GravityManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &296204411
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 296204410}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 331025530}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &296204412
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 296204410}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13523af2df9c8c94eaf5452baa0eccd6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gravityRatio: 9
 --- !u!1 &331025529
 GameObject:
   m_ObjectHideFlags: 0
@@ -1451,7 +1406,7 @@ GameObject:
   m_Component:
   - component: {fileID: 331025530}
   m_Layer: 0
-  m_Name: DemoScene
+  m_Name: Demo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1469,11 +1424,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 860947414}
   - {fileID: 2005804666}
-  - {fileID: 1786862732}
-  - {fileID: 296204411}
-  - {fileID: 582627058}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2192,53 +2143,6 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
---- !u!1 &582627057
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 582627058}
-  - component: {fileID: 582627059}
-  m_Layer: 0
-  m_Name: SelectSystem
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &582627058
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 582627057}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 331025530}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &582627059
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 582627057}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 180387621c6fcd74d85cea636444ebc6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  planet: {fileID: 0}
-  planetsLayerName: Planets
-  selectSphereRadius: 1
 --- !u!1 &613483766
 GameObject:
   m_ObjectHideFlags: 0
@@ -2517,6 +2421,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b737337f16a42341893e4591e3f35c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlanetPrefab: {fileID: 4422857410898313939, guid: 24fcf3c1ff14b984585e803d9a309cc7,
+    type: 3}
 --- !u!114 &629324270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2980,88 +2886,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 785679871}
   m_CullTransparentMesh: 1
---- !u!1 &860947412
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 860947414}
-  - component: {fileID: 860947413}
-  - component: {fileID: 860947415}
-  - component: {fileID: 860947416}
-  m_Layer: 0
-  m_Name: SceneManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &860947413
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 860947412}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d7c2da1f4ec54a49a87688663ef5a3b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  saveSystemFactory: {fileID: 860947415}
-  savesDirectory: Saves/
-  defaultName: NewScene
-  loadStartScene: 0
-  startScenePath: 
-  startScene: {fileID: 0}
-  presetsDirectory: Presets/Scenes/
-  presetName: New preset
-  presetsFileNames: {fileID: 0}
---- !u!4 &860947414
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 860947412}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 331025530}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &860947415
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 860947412}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30b57c5bebd62af448a1ea46ce638922, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &860947416
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 860947412}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76f6e0ebf0207bd4292cf3210d37633a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  planetsParent: {fileID: 2005804666}
-  basePlanetPrefab: {fileID: 4422857410898313939, guid: 24fcf3c1ff14b984585e803d9a309cc7,
-    type: 3}
 --- !u!1 &901586098
 GameObject:
   m_ObjectHideFlags: 0
@@ -5856,52 +5680,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1780693657}
   m_CullTransparentMesh: 1
---- !u!1 &1786862731
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1786862732}
-  - component: {fileID: 1786862733}
-  m_Layer: 0
-  m_Name: TimeManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1786862732
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1786862731}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 331025530}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1786862733
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1786862731}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6bbd089466ded2c47891c1f6c9c5217b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  simulationState: 0
-  maxTimeScale: 2
 --- !u!1 &1820504389
 GameObject:
   m_ObjectHideFlags: 0
@@ -6600,7 +6378,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2005804666}
   m_Layer: 0
-  m_Name: Planets
+  m_Name: Planet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6619,7 +6397,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 331025530}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2005868205
 GameObject:
@@ -6888,12 +6666,9 @@ MonoBehaviour:
   presetsFileNames: {fileID: 11400000, guid: 150ef5a9de2ee974b8df4c8ae0f9bb8a, type: 2}
   presetDirectory: Presets/Planets/
   userPlanetsDirectory: Planets/
-  saveSystemFactory: {fileID: 860947415}
-  scale: 1
-  pointerRotationSpeed: 3
-  axisOfRotation: {x: 0.3, y: 1, z: 0.3}
-  angularSpeed: -15
-  smoothness: 0.3
+  saveSystemFactory: {fileID: 11400000, guid: b2543523b8d531048b1cfe590ae38747, type: 2}
+  planetParent: {fileID: 2005804666}
+  planetScale: 1
 --- !u!114 &2038649515
 MonoBehaviour:
   m_ObjectHideFlags: 0

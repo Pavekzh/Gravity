@@ -10,9 +10,22 @@ namespace Assets.SceneEditor.Models
     {
         protected float objectScale = 1;
         protected bool isHighlighted = false;
+        protected bool isViewEnabled = true;
 
         public override int DisplayIndex => 1;
 
+        public bool IsViewEnabled
+        {
+            get
+            {
+                return isViewEnabled;
+            }
+            set
+            {
+                isViewEnabled = value;
+                ViewEnabledBinding.ChangeValue(value,this);
+            }
+        }
         public float MinVolume { get => CalculateVolume(MinScale); }
         public float MaxVolume { get => CalculateVolume(MaxScale); }
         public const float MinScale = 0.2f;
@@ -54,15 +67,19 @@ namespace Assets.SceneEditor.Models
         }
 
         public sealed override string Name => Key;
+        public sealed override Type ModuleType => typeof(SceneSimulation.ViewDefinitionModule);
 
         [XmlIgnore]
         public virtual Binding<Mesh> MeshBinding { get; protected set; } = new Binding<Mesh>();
         [XmlIgnore]
-        public virtual Binding<Material> MaterialBinding { get; protected set; } = new Binding<Material>();
+        public virtual Binding<Material> MaterialBinding { get; protected set; } = new Binding<Material>();        
+        [XmlIgnore]
+        public virtual Binding<bool> ViewEnabledBinding { get; protected set; } = new Binding<bool>();
         [XmlIgnore]
         public virtual Binding<float> ScaleBinding { get; protected set; }
         [XmlIgnore]
         public virtual Binding<float> VolumeBinding { get; protected set; }
+
 
         public static IValidationRule<float>[] ScaleValidationRules { get; protected set; } = new IValidationRule<float>[] 
         {
@@ -72,6 +89,8 @@ namespace Assets.SceneEditor.Models
 
         public ViewModuleData()
         {
+            ViewEnabledBinding.ValueChanged += setViewEnabledValue;
+
             ConvertibleBinding<float, string[]> scaleBinding = new ConvertibleBinding<float, string[]>(new FloatStringConverter());
             this.ScaleBinding = scaleBinding;
             scaleBinding.ValueChanged += setScale;
@@ -95,6 +114,7 @@ namespace Assets.SceneEditor.Models
             volumeProperty.Name = "Volume";
             Properties.Add(volumeProperty);
         }
+
 
         public void Highlight()
         {
@@ -152,9 +172,14 @@ namespace Assets.SceneEditor.Models
             }
         }
 
-        public abstract void DisableView();
+        private void setViewEnabledValue(bool value, object source)
+        {
+            if (source != this)
+            {
+                this.isViewEnabled = value;
+            }
 
-        public abstract void EnableView();
+        }
 
         public abstract void UpdateView();
     }

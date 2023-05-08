@@ -1,6 +1,6 @@
 ﻿using Assets.SceneEditor.Models;
 using BasicTools;
-using UnityEngine;
+using Assets.Services;
 using BasicTools.Validation;
 
 namespace Assets.SceneEditor.Controllers
@@ -45,7 +45,7 @@ namespace Assets.SceneEditor.Controllers
                 if (selectedObject != null) return selectedObject;
                 else
                 {
-                    SelectedObject = Services.PlanetSelectSystem.Instance.SelectedPlanet;
+                    SelectedObject = selector.SelectedPlanet;
                     return selectedObject;
                 }
             }
@@ -56,10 +56,10 @@ namespace Assets.SceneEditor.Controllers
 
         }
 
-        protected override void Awake()
+        protected override void Construct(TimeFlow timeFlow, PlanetSelector selector, EditorController editor)
         {
-            base.Awake();
-            Services.PlanetSelectSystem.Instance.SelectedPlanetChanged += selectedObjectChanged;
+            base.Construct(timeFlow, selector, editor);
+            selector.SelectedPlanetChanged += selectedObjectChanged;
         }
 
         protected virtual void selectedObjectChanged(object sender, PlanetController planet)
@@ -124,20 +124,20 @@ namespace Assets.SceneEditor.Controllers
 
         protected virtual void GetJoystick()
         {
-            joystick = EditorController.Instance.ManipulatorsController.EnableManipulator<ScaleJoystickSystem>(ScaleJoystickSystem.DefaultKey);
+            joystick = editor.ManipulatorsController.EnableManipulator<ScaleJoystickSystem>(ScaleJoystickSystem.DefaultKey);
         }
 
 
         private void dragEnded()
         {
-            EditorController.Instance.ToolsController.EnableSceneControl();
-            Services.PlanetSelectSystem.Instance.UnlockSelection();
+            editor.ToolsController.EnableSceneControl();
+            selector.UnlockSelection();
         }
 
         private void dragStarted()
         {
-            EditorController.Instance.ToolsController.DisableSceneControl();
-            Services.PlanetSelectSystem.Instance.LockSelection();
+            editor.ToolsController.DisableSceneControl();
+            selector.LockSelection();
         }
 
         private void input(float value, object source)

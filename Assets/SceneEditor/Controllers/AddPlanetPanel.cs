@@ -25,7 +25,8 @@ namespace Assets.SceneEditor.Controllers
         private ISaveSystem SaveSystem { get => saveSystemFactory.GetChachedSaveSystem(); }
         private string selectedFile;
         private PlanetPanelTab panelTab = PlanetPanelTab.PresetsTab;
-        
+        private PlanetSelector selector;
+
         public enum PlanetPanelTab
         {            
             PresetsTab,
@@ -33,7 +34,13 @@ namespace Assets.SceneEditor.Controllers
         }
         public BasicTools.Binding<string> userFileBinding { get; private set; } = new BasicTools.Binding<string>();
         public BasicTools.Binding<string> presetBinding { get; private set; } = new BasicTools.Binding<string>();
-        public string UserDirectory { get => Services.SceneStateManager.BaseDirectory + userDirectory; }
+        public string UserDirectory { get => Services.SceneStateLoader.BaseDirectory + userDirectory; }
+
+        [Zenject.Inject]
+        private void Construct(PlanetSelector selector)
+        {
+            this.selector = selector;
+        }
 
         private void Awake()
         {
@@ -109,7 +116,7 @@ namespace Assets.SceneEditor.Controllers
             if(pData != null)
             {
                 this.RestorablePanel = null;
-                PlanetBuildTool buildTool = EditorController.Instance.ToolsController.EnableTool(PlanetBuildTool.StaticKey) as PlanetBuildTool;
+                PlanetBuildTool buildTool = editor.ToolsController.EnableTool(PlanetBuildTool.StaticKey) as PlanetBuildTool;
                 buildTool.Build(pData);                
                 Close();
 
@@ -149,7 +156,7 @@ namespace Assets.SceneEditor.Controllers
 
         public void SavePlanet()
         {
-            SaveSystem.Save(Services.PlanetSelectSystem.Instance.SelectedPlanet.PlanetData,UserDirectory + Services.PlanetSelectSystem.Instance.SelectedPlanet.PlanetData.Name + SaveSystem.Extension);
+            SaveSystem.Save(selector.SelectedPlanet.PlanetData,UserDirectory + selector.SelectedPlanet.PlanetData.Name + SaveSystem.Extension);
             this.Close();
             this.Open();
         }

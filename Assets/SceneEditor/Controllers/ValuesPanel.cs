@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System;
 using UnityEngine;
+using Assets.Services;
 
 namespace Assets.SceneEditor.Controllers
 {
@@ -10,12 +11,19 @@ namespace Assets.SceneEditor.Controllers
         [SerializeField] BasicTools.StateChanger visibleManager;
         [SerializeField] RectTransform containerTransform;
 
+        private PlanetSelector selector;
+
+        [Zenject.Inject]
+        private void Construct(PlanetSelector selector)
+        {
+            this.selector = selector;           
+            selector.SelectedPlanetChanged += SelectedPlanetChanged;
+        }
+
         private void Start()
         {
             if(containerTransform == null)
                 containerTransform = this.GetComponent<RectTransform>();
-
-            Services.PlanetSelectSystem.Instance.SelectedPlanetChanged += SelectedPlanetChanged;
         }
 
         private void SelectedPlanetChanged(object sender,PlanetController planet)
@@ -42,14 +50,14 @@ namespace Assets.SceneEditor.Controllers
                 GameObject.Destroy(child.gameObject);
             }
             visibleManager.State = BasicTools.State.Default;
-            Assets.Services.PlanetSelectSystem.Instance.LessenSelected();
+            selector.LessenSelected();
         }
 
         protected override void DoOpen()
         {
             visibleManager.State = BasicTools.State.Changed;
-            Assets.Services.PlanetSelectSystem.Instance.HighlightSelected();
-            Services.PlanetSelectSystem.Instance.SelectedPlanet.OpenView(this.containerTransform);
+            selector.HighlightSelected();
+            selector.SelectedPlanet.OpenView(this.containerTransform);
         }
     }
 }

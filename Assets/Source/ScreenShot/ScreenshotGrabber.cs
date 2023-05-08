@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ScreenshotGrabber
 {
-    [MenuItem("Screenshot/Grab")]
+    [MenuItem("Tools/Screenshot/Grab")]
     public static void Grab()
     {
         ScreenCapture.CaptureScreenshot("Screenshot.png", 1);

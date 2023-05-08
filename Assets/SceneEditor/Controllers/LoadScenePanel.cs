@@ -31,12 +31,19 @@ namespace Assets.SceneEditor.Controllers
         private LoadSceneTab tab = LoadSceneTab.Presets;
         private string fileName;
         private bool loadFromResources;
+        private SceneStateLoader sceneLoader;
+
+        [Zenject.Inject]
+        private void Construct(SceneStateLoader sceneLoader)
+        {
+            this.sceneLoader = sceneLoader;
+        }
 
         private void Awake()
         {
             userFileNameBinding.ValueChanged += SelectUsersPath;
-            userTabPresenter.Directory = Services.SceneStateManager.Instance.Directory;
-            userTabPresenter.FileExtension = Services.SceneStateManager.Instance.Extension;
+            userTabPresenter.Directory = sceneLoader.Directory;
+            userTabPresenter.FileExtension = sceneLoader.Extension;
             userTabPresenter.FilePresenter = this.usersFilePresenter;
             usersFilePresenter.PathBinding = userFileNameBinding;
 
@@ -101,9 +108,9 @@ namespace Assets.SceneEditor.Controllers
             if(fileName != "")
             {
                 if (loadFromResources)
-                    Assets.Services.SceneStateManager.Instance.LoadPreset(fileName);
+                    sceneLoader.LoadPreset(fileName);
                 else
-                    Assets.Services.SceneStateManager.Instance.Load(fileName);
+                    sceneLoader.Load(fileName);
 
                 PanelController panelBeforeMenu = RestorablePanel.RestorablePanel;                
                 this.RestorablePanel.RestorablePanel = null;
@@ -115,7 +122,7 @@ namespace Assets.SceneEditor.Controllers
 
         public void Delete() 
         {
-            Services.SceneStateManager.Instance.Delete(fileName);
+            sceneLoader.Delete(fileName);
             userTabPresenter.OpenPanel();
         }
     }

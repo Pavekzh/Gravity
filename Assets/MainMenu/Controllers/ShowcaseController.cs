@@ -13,20 +13,25 @@ namespace Assets.Menu.Controllers
         [SerializeField] FileNamesCollectionScriptableObject presetsFileNames;
         [SerializeField] string presetDirectory = "Presets/Planets/";
         [SerializeField] string userPlanetsDirectory = "Planets/";
-        [SerializeField] SaveSystemFactory saveSystemFactory;
+        [SerializeField] SaveSystemFactory saveSystemFactory;        
         [Header("Planet")]
-        [SerializeField] float scale = 1;
-        [SerializeField] float pointerRotationSpeed = 1;
-        [SerializeField] Vector3 axisOfRotation = Vector3.up;
-        [SerializeField] float angularSpeed = 1;
-        [SerializeField] float smoothness = 0.3f;
+        [SerializeField] Transform planetParent;
+        [SerializeField] float planetScale = 1;
+
 
         public ISaveSystem SaveSystem { get => saveSystemFactory.GetChachedSaveSystem(); }
 
-        protected string UserPlanetsDirectory { get => SceneStateManager.BaseDirectory + userPlanetsDirectory; }
+        protected string UserPlanetsDirectory { get => SceneStateLoader.BaseDirectory + userPlanetsDirectory; }
 
         protected int lastShowedPlanet = -1;
         protected GameObject planet;
+        protected IPlanetFactory planetFactory;
+
+        [Zenject.Inject]
+        protected void Construct(IPlanetFactory planetFactory)
+        {
+            this.planetFactory = planetFactory;
+        }
 
         protected void Start()
         {
@@ -89,16 +94,13 @@ namespace Assets.Menu.Controllers
 
         protected void BuildPlanet(PlanetData pData)
         {       
-            pData.GetModule<PlanetViewModuleData>(PlanetViewModuleData.Key).Scale = scale;
-            planet = pData.CreateSceneObject().gameObject;
+            pData.GetModule<ViewModuleData>(ViewModuleData.Key).Scale = planetScale;
+
+            planet = planetFactory.CreatePlanet(pData);
+
+            planet.transform.parent = planetParent;
             planet.transform.position = Vector3.zero;
             planetLabel.text = pData.Name;
-
-            ShowcaseRotation rotation =  planet.AddComponent<ShowcaseRotation>();
-            rotation.AngularSpeed = this.angularSpeed;
-            rotation.Axis = this.axisOfRotation;
-            rotation.PointerRotationSpeed = this.pointerRotationSpeed;
-            rotation.Smoothness = this.smoothness;
 
         }
     }

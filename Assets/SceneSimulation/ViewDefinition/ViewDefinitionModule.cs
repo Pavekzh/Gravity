@@ -49,6 +49,7 @@ namespace Assets.SceneSimulation
                     this.moduleData.MeshBinding.ValueChanged -= setMesh;
                     this.moduleData.MaterialBinding.ValueChanged -= setMaterial;
                     this.moduleData.ScaleBinding.ValueChanged -= setScale;
+                    this.moduleData.ViewEnabledBinding.ValueChanged -= setEnabled;
                 }
 
                 this.moduleData = value;
@@ -57,6 +58,7 @@ namespace Assets.SceneSimulation
                     value.MeshBinding.ValueChanged += setMesh;
                     value.MaterialBinding.ValueChanged += setMaterial;
                     value.ScaleBinding.ValueChanged += setScale;
+                    value.ViewEnabledBinding.ValueChanged += setEnabled;
                     value.ScaleBinding.ForceUpdate();
                     value.MeshBinding.ForceUpdate();
                     value.MaterialBinding.ForceUpdate();
@@ -101,16 +103,6 @@ namespace Assets.SceneSimulation
             return ModuleData;
         }
 
-        public void DisableView()
-        {
-            this.meshRenderer.enabled = false;
-        }
-
-        public void EnableView()
-        {
-            meshRenderer.enabled = true;
-        }
-
         private void setMesh(Mesh mesh,object sender)
         {
             if(this.meshFilter != null)
@@ -126,6 +118,20 @@ namespace Assets.SceneSimulation
         private void setScale(float value, object source)
         {
             this.transform.localScale = new Vector3(value,value,value);
+        }
+
+        private void setEnabled(bool value, object source)
+        {
+            this.meshRenderer.enabled = value;
+        }
+
+        public override void SetModuleData(ModuleData data)
+        {
+            ViewModuleData viewModuleData = data as ViewModuleData;
+            if(viewModuleData != null)
+            {
+                this.ModuleData = viewModuleData;
+            }
         }
     }
 }

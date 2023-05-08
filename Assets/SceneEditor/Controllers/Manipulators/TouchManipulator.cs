@@ -19,11 +19,18 @@ namespace Assets.SceneEditor.Controllers
         public event Action InputReadingEnded;
 
         private Camera mainCamera;
+        private EditorController editor;
+
+        [Zenject.Inject]
+        private void Construct(EditorController editor)
+        {
+            this.editor = editor;
+            editor.ManipulatorsController.Manipulators.Add(ManipulatorKey, this);
+        }
 
         protected void Start()
         {
-            mainCamera = Camera.main;
-            EditorController.Instance.ManipulatorsController.Manipulators.Add(ManipulatorKey, this);
+            mainCamera = Camera.main;      
         }
 
         public void DisableManipulator()

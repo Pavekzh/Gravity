@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Assets.Services
 {
-    class MassEstimator : IPlanetEstimator<float>
+    public class MassEstimator : IPlanetEstimator<float>
     {
         public float Estimate(PlanetData planet)
         {

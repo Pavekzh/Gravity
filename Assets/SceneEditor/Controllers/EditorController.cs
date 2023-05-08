@@ -5,9 +5,8 @@ using BasicTools;
 
 namespace Assets.SceneEditor.Controllers
 {
-    public class EditorController : Singleton<EditorController>
+    public class EditorController : MonoBehaviour
     {
-        [SerializeField] private new CameraController camera;
         [SerializeField] private InputSystem inputSystem;
 
         [SerializeField] private ToolsController toolsController;
@@ -15,8 +14,6 @@ namespace Assets.SceneEditor.Controllers
 
         private PanelController panelToRestore;
         private PanelController panel;
-
-        public Models.CameraModel CameraModel { get => camera.Model; }
        
         public ToolsController ToolsController { get => toolsController; }
         public ManipulatorsController ManipulatorsController { get => manipulatorsController; }
@@ -55,22 +52,9 @@ namespace Assets.SceneEditor.Controllers
                 Services.CommonMessagingSystem.Instance.ShowErrorMessage("Input system not set", this);
             }
 
-            //inputSystem.OnUITouch += LockInputControl;
-            //inputSystem.OnUIRelease += UnlockInputControl;
 
             toolsController.InputSystem = this.inputSystem;
             manipulatorsController.InputSystem = this.inputSystem;
-        }
-
-        private void LockInputControl()
-        {
-            inputSystem.IsInputEnabled = false;
-        }
-
-        private void UnlockInputControl()
-        {
-            if(inputSystem.IsInputEnabled == false)
-                inputSystem.IsInputEnabled = true;
         }
 
     }

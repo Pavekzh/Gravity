@@ -9,6 +9,9 @@ namespace Assets.SceneEditor.Controllers
 {
     public class PropertyController
     {
+        private Zenject.IInstantiator instantiator;
+        private ValuesPanelConfig config;
+
         private PropertyViewData propertyData;
         private RectTransform parentContainer;
 
@@ -48,8 +51,10 @@ namespace Assets.SceneEditor.Controllers
         private bool inputEntering = false;
 
 
-        public PropertyController(PropertyViewData propertyData)
-        {            
+        public PropertyController(PropertyViewData propertyData,ValuesPanelConfig config,Zenject.IInstantiator instantiator)
+        {
+            this.config = config;
+            this.instantiator = instantiator;
             this.propertyData = propertyData;
             this.propertyData.ValueChanged += ValueChanged;
 
@@ -69,41 +74,41 @@ namespace Assets.SceneEditor.Controllers
 
             this.parentContainer = parentContainer;
 
-            RectTransform propertyElement = GameObject.Instantiate(ValuesPanelTemplate.Instance.EmptyPrefab, parentContainer.transform);
+            RectTransform propertyElement = instantiator.InstantiatePrefabForComponent<RectTransform>(config.EmptyPrefab, parentContainer.transform);
             propertyElement.name = "Property";
 
-            TMP_Text propertyLabel = GameObject.Instantiate(ValuesPanelTemplate.Instance.PropertyLabelPrefab, propertyElement);
+            TMP_Text propertyLabel = instantiator.InstantiatePrefabForComponent<TMP_Text>(config.PropertyLabelPrefab, propertyElement);
             propertyLabel.text = propertyData.Name;
             propertyLabel.name = "PropertyLabel";
 
             if (propertyData.Components != null && ((propertyData.Components.Length == 1 && propertyData.Components[0] != "") || (propertyData.Components.Length > 1)))
             {
                 uint i = 0;
-                float offset = propertyLabel.rectTransform.rect.height + ValuesPanelTemplate.Instance.LineMargin;
+                float offset = propertyLabel.rectTransform.rect.height + config.LineMargin;
                 foreach (string valueLine in propertyData.Components)
                 {
-                    TMP_Text lineText = GameObject.Instantiate(ValuesPanelTemplate.Instance.LineLabelPrefab, propertyElement.transform);
+                    TMP_Text lineText = instantiator.InstantiatePrefabForComponent<TMP_Text>(config.LineLabelPrefab, propertyElement.transform);
                     lineText.text = valueLine;
                     lineText.rectTransform.anchoredPosition = new Vector2(lineText.rectTransform.anchoredPosition.x, -(offset + (lineText.rectTransform.rect.height / 2)));
 
-                    TMP_InputField lineInput = GameObject.Instantiate(ValuesPanelTemplate.Instance.InputFieldPrefab, propertyElement.transform);
+                    TMP_InputField lineInput = instantiator.InstantiatePrefabForComponent<TMP_InputField>(config.InputFieldPrefab, propertyElement.transform);
                     lineInput.text = savedData[i];
                     RectTransform inputRect = lineInput.GetComponent<RectTransform>();
                     inputRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, lineText.rectTransform.rect.height);
                     inputRect.anchoredPosition = new Vector2(inputRect.anchoredPosition.x, -(offset + (lineText.rectTransform.rect.height / 2)));
 
-                    offset += inputRect.rect.height + ValuesPanelTemplate.Instance.LineMargin;
+                    offset += inputRect.rect.height + config.LineMargin;
                     inputFields[i] = lineInput;
                     AddListeners(lineInput);
                     i++;
                 }
                 propertyElement.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, offset);
                 propertyElement.anchoredPosition -= new Vector2(0, (propertyElement.rect.height / 2) + viewOffset);
-                viewOffset += offset + ValuesPanelTemplate.Instance.PropertiesMargin;
+                viewOffset += offset + config.PropertiesMargin;
             }
             else
             {
-                TMP_InputField valueInput = GameObject.Instantiate(ValuesPanelTemplate.Instance.InputFieldPrefab, propertyElement);
+                TMP_InputField valueInput = instantiator.InstantiatePrefabForComponent<TMP_InputField>(config.InputFieldPrefab, propertyElement);
                 valueInput.text = savedData[0];
                 RectTransform valueInputRect = valueInput.gameObject.GetComponent<RectTransform>();
                 valueInputRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, propertyLabel.rectTransform.rect.height);
@@ -113,7 +118,7 @@ namespace Assets.SceneEditor.Controllers
 
                 propertyElement.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, propertyLabel.rectTransform.rect.height);
                 propertyElement.anchoredPosition -= new Vector2(0, (propertyElement.rect.height / 2) + viewOffset);
-                viewOffset += propertyLabel.rectTransform.rect.height + ValuesPanelTemplate.Instance.PropertiesMargin;
+                viewOffset += propertyLabel.rectTransform.rect.height + config.PropertiesMargin;
             }
         }
 

@@ -3,6 +3,7 @@ using UnityEngine;
 using BasicTools;
 using UIExtended;
 
+
 namespace Assets.SceneEditor.Controllers
 {
     public abstract class ScalarJoystickSystem:JoystickSystem<float>
@@ -63,6 +64,7 @@ namespace Assets.SceneEditor.Controllers
 
         protected float input;
         protected float currentValue;
+        protected new Models.CameraModel camera;
 
         private Binding<Vector2> originBinding;
         public Binding<Vector2> OriginBinding
@@ -88,10 +90,17 @@ namespace Assets.SceneEditor.Controllers
             }
         }
 
-        protected override void Start()
+        [Zenject.Inject]
+        protected void Construct(Models.CameraModel camera)
         {
-            base.Start();
-            EditorController.Instance.CameraModel.ZoomChanged += zoomChanged;
+            this.camera = camera;
+            this.camera.ZoomChanged += zoomChanged;
+        }
+
+
+
+        protected void Start()
+        {   
             this.InputBinding.ValueChanged += externalValueChanged;
         }
 
@@ -118,7 +127,7 @@ namespace Assets.SceneEditor.Controllers
         {
             if (isEnabled && InputBinding != null)
             {
-                DragManipulator.ScaleFactor = EditorController.Instance.CameraModel.ScaleFactor;
+                DragManipulator.ScaleFactor = camera.ScaleFactor;
             }
         }
 
@@ -154,7 +163,7 @@ namespace Assets.SceneEditor.Controllers
         {
             if (OriginBinding != null && isEnabled)
             {
-                DragManipulator.ScaleFactor = EditorController.Instance.CameraModel.ScaleFactor;
+                DragManipulator.ScaleFactor = camera.ScaleFactor;
                 DragManipulator.Enable(OriginBinding);
                 DragInputStarted += dragInputStarted;
                 DragInputEnded += dragInputEnded;

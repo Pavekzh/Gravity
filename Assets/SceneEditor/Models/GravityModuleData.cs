@@ -105,17 +105,12 @@ namespace Assets.SceneEditor.Models
 
         [XmlIgnore]
         public override List<PropertyViewData> Properties { get; } = new List<PropertyViewData>();
+        public override Type ModuleType => typeof(GravityModule);
         public override string Name { get => Key; }
         [XmlIgnore]
         public override PlanetData Planet  { get; set; }
 
         public static string Key { get => "Gravity"; }
-
-        public override void CreateModule(GameObject planetObject)
-        {
-            Assets.SceneSimulation.GravityModule gravityModule = planetObject.AddComponent<SceneSimulation.GravityModule>();
-            gravityModule.SetModuleData(this);
-        }
 
         public override object Clone()
         {

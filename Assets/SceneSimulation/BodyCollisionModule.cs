@@ -2,12 +2,20 @@
 using System;
 using UnityEngine;
 using Assets.SceneEditor.Controllers;
+using Assets.Services;
 
 namespace Assets.SceneSimulation
 {
     public class BodyCollisionModule : Module
     {
-        LayerMask coreLayer;
+        private LayerMask coreLayer;
+        private TimeFlow timeFlow;
+
+        [Zenject.Inject]
+        private void Construct(TimeFlow timeFlow)
+        {
+            this.timeFlow = timeFlow;
+        }
 
         private void Start()
         {
@@ -19,9 +27,14 @@ namespace Assets.SceneSimulation
             return new BodyCollisionModuleData();
         }
 
+        public override void SetModuleData(ModuleData data)
+        {
+            
+        }
+
         private void OnTriggerEnter(Collider other)
         {
-            if (Services.TimeManager.Instance.SimulationState == true && other.gameObject.layer == coreLayer)
+            if (timeFlow.SimulationState == true && other.gameObject.layer == coreLayer)
             {
                 PlanetData planet1 = this.GetComponent<PlanetController>().PlanetData;                
                 
@@ -55,6 +68,7 @@ namespace Assets.SceneSimulation
             }
 
         }
+
 
     }
 }

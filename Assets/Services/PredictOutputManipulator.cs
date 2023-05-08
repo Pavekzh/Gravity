@@ -23,6 +23,15 @@ namespace Assets.Services
         private float deltaTime = 0;
         private int predictIterationsNumber;
         private bool isVisible;
+        private GravityComputer gravityComputer;
+        private PlanetSelector selector;
+
+        [Zenject.Inject]
+        private void Construct(GravityComputer gravityComputer,PlanetSelector selector)
+        {
+            this.gravityComputer = gravityComputer;
+            this.selector = selector;
+        }
 
         private void Awake()
         {
@@ -46,15 +55,15 @@ namespace Assets.Services
 
         public override void UpdateManipulatorView(Vector3 origin, Vector3 directPoint, float scaleFactor)
         {
-            if(Services.PlanetSelectSystem.Instance.SelectedPlanet != null)
+            if(selector.SelectedPlanet != null)
             {
-                Guid selectedGravityInteractor = (Services.PlanetSelectSystem.Instance.SelectedPlanet.PlanetData.GetModule<GravityModuleData>(GravityModuleData.Key) as GravityModuleData).Planet.Guid;
+                Guid selectedGravityInteractor = (selector.SelectedPlanet.PlanetData.GetModule<GravityModuleData>(GravityModuleData.Key) as GravityModuleData).Planet.Guid;
                 StateCurve<StateCurvePoint3D> curve;
 
                 if (limitType == LimitType.Length)
-                    curve = GravityManager.Instance.PredictPositions((float)predictLimit, selectedGravityInteractor,deltaTime);
+                    curve = gravityComputer.PredictPositions((float)predictLimit, selectedGravityInteractor,deltaTime);
                 else
-                    curve = GravityManager.Instance.PredictPositions(predictIterationsNumber, selectedGravityInteractor,deltaTime);
+                    curve = gravityComputer.PredictPositions(predictIterationsNumber, selectedGravityInteractor,deltaTime);
 
                 curveDrawer.Draw(curve);
             }

@@ -1,7 +1,7 @@
 ﻿using BasicTools;
 using UnityEngine;
 using Assets.SceneEditor.Models;
-using UIExtended;
+using Assets.Services;
 
 namespace Assets.SceneEditor.Controllers
 {
@@ -24,7 +24,7 @@ namespace Assets.SceneEditor.Controllers
                 if (selectedObject != null) return selectedObject;
                 else
                 {
-                    SelectedObject = Services.PlanetSelectSystem.Instance.SelectedPlanet;
+                    SelectedObject = selector.SelectedPlanet;
                     return selectedObject;
                 }
             }
@@ -41,10 +41,10 @@ namespace Assets.SceneEditor.Controllers
 
         }
 
-        protected override void Awake()
+        protected override void Construct(TimeFlow timeFlow, PlanetSelector selector, EditorController editor)
         {
-            base.Awake();
-            Services.PlanetSelectSystem.Instance.SelectedPlanetChanged += selectedObjectChanged;
+            base.Construct(timeFlow, selector, editor);
+            selector.SelectedPlanetChanged += selectedObjectChanged;
         }
 
         private void selectedObjectChanged(object sender, PlanetController planet)
@@ -59,8 +59,8 @@ namespace Assets.SceneEditor.Controllers
                 joystickSystem.InputBinding.ValueChanged -= TouchInput;
                 touchReading = false;
 
-                Services.PlanetSelectSystem.Instance.UnlockSelection();
-                EditorController.Instance.ToolsController.EnableSceneControl();
+                selector.UnlockSelection();
+                editor.ToolsController.EnableSceneControl();
             }else
             {
                 joystickSystem.InputBinding.ValueChanged -= JoystickInput;
@@ -76,7 +76,7 @@ namespace Assets.SceneEditor.Controllers
 
         protected override void DoEnable(InputSystem inputSystem)
         {
-            joystickSystem = EditorController.Instance.ManipulatorsController.EnableManipulator<PositioningJoystickSystem>(PositioningJoystickSystem.DefaultKey);
+            joystickSystem = editor.ManipulatorsController.EnableManipulator<PositioningJoystickSystem>(PositioningJoystickSystem.DefaultKey);
             joystickSystem.InputBinding.ValueChanged += JoystickInput;
             joystickSystem.TouchInputReadingStarted += TouchInputEnabled;
             joystickSystem.TouchInputReadingEnded += TouchInputDisabled;
@@ -90,8 +90,8 @@ namespace Assets.SceneEditor.Controllers
             joystickSystem.InputBinding.ValueChanged -= TouchInput;
             touchReading = false;
 
-            Services.PlanetSelectSystem.Instance.UnlockSelection();
-            EditorController.Instance.ToolsController.EnableSceneControl();
+            selector.UnlockSelection();
+            editor.ToolsController.EnableSceneControl();
         }
 
         private void TouchInputEnabled()
@@ -101,8 +101,8 @@ namespace Assets.SceneEditor.Controllers
             joystickSystem.InputBinding.ValueChanged += TouchInput;
             touchReading = true;
 
-            Services.PlanetSelectSystem.Instance.LockSelection();
-            EditorController.Instance.ToolsController.DisableSceneControl();
+            selector.LockSelection();
+            editor.ToolsController.DisableSceneControl();
         }
 
         private void TouchInput(Vector3 value, object source)

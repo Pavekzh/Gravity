@@ -1,7 +1,8 @@
-﻿
+﻿using UnityEngine;
 
 namespace Assets.Services
 {
+    [CreateAssetMenu(fileName = "XMLSaveSystemFactory", menuName = "ScriptableObjects/XMLSaveSystemFactory")]
     class XMLSaveSystemFactory : SaveSystemFactory
     {
         private XMLSaveSystem cachedSaveSystem;

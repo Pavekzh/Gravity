@@ -7,11 +7,19 @@ using UnityEngine;
 using BasicTools;
 using System.Xml.Schema;
 using System.Xml;
+using Assets.Services;
 
 namespace Assets.SceneEditor.Models
 {
     public class PlanetViewModuleData : ViewModuleData
     {
+
+        private PlanetMeshProvider meshProvider;
+        private PlanetMaterialProvider materialProvider;
+
+        [XmlIgnore]
+        public Binding<NoiseSettings> NoiseSettsBinding { get; private set; }        
+
         public PlanetMeshProvider MeshProvider 
         {
             get
@@ -45,20 +53,14 @@ namespace Assets.SceneEditor.Models
             }
         }
 
-        private PlanetMeshProvider meshProvider;
-        private PlanetMaterialProvider materialProvider;
-        private ViewDefinitionModule viewModule;
-
-        [XmlIgnore]
-        public Binding<NoiseSettings> NoiseSettsBinding { get; private set; }
-
         [XmlIgnore]
         public override List<PropertyViewData> Properties { get; } = new List<PropertyViewData>();
         [XmlIgnore]
         public override PlanetData Planet { get; set; }
 
+
         public PlanetViewModuleData():base()
-        {    
+        {
             ConvertibleBinding<NoiseSettings,string[]> noiseSettsBinding = new BasicTools.ConvertibleBinding<NoiseSettings, string[]>(new NoiseSetsStringConverter());
             this.NoiseSettsBinding = noiseSettsBinding;
             this.NoiseSettsBinding.ValidationRules.Add(new BasicTools.Validation.ValidationRule<NoiseSettings>(validateNoiseSetts));
@@ -97,12 +99,6 @@ namespace Assets.SceneEditor.Models
             return moduleData;
         }
 
-        public override void CreateModule(GameObject sceneObject)
-        {
-            viewModule = sceneObject.AddComponent<ViewDefinitionModule>();
-            viewModule.ModuleData = this;
-        }
-
         public override void OnDeserialized()
         {
             base.OnDeserialized();
@@ -124,16 +120,6 @@ namespace Assets.SceneEditor.Models
         public ModuleData GetModuleData()
         {
             return this;
-        }
-
-        public override void DisableView()
-        {
-            viewModule.DisableView();
-        }
-
-        public override void EnableView()
-        {
-            viewModule.EnableView();
         }
 
         protected override float CalculateScale(float volume)

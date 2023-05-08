@@ -2,21 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Assets.SceneEditor.Models;
+using Assets.Services;
 
 namespace Assets.SceneEditor.Controllers
 {
     class PlanetBuildTool : ObjectTool
     {
-        private InputSystem inputSystem;
         [SerializeField] private MoveObjectTool MoveTool;
-
-        protected override bool HighlightSelectedObjectOnEnable => false;
-
-        public override string DefaultKey => StaticKey;
 
         public static string StaticKey => "BuildTool";
 
+        public override string DefaultKey => StaticKey;
         public override string ToolName => "Object build tool";
+
+        protected override bool HighlightSelectedObjectOnEnable => false;
+        private InputSystem inputSystem;
+        private SceneInstance scene;
+
+        [Zenject.Inject]
+        private void Construct(Services.SceneInstance scene)
+        {
+            this.scene = scene;
+        }
 
         protected override void DoDisable()
         {
@@ -35,8 +42,9 @@ namespace Assets.SceneEditor.Controllers
         public void Build(PlanetData planetData)
         {
             this.inputSystem.LockInputReading(true);
-            PlanetController controller = (planetData.Clone() as PlanetData).CreateSceneObject();
-            Services.PlanetSelectSystem.Instance.ForceSelect(controller);
+
+            scene.AddPlanet(planetData.Clone() as PlanetData);
+
             MoveTool.EnableTool(inputSystem);
             MoveTool.EnableImmediatelyInputReading();            
             MoveTool.DisableToolUI();

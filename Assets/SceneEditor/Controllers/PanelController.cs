@@ -5,6 +5,8 @@ namespace Assets.SceneEditor.Controllers
 {
     public abstract class PanelController : MonoBehaviour
     {
+        protected EditorController editor;
+
         /// <summary>
         /// Mark the panel as such that will automatically restored after closing the blocker panel
         /// </summary>
@@ -17,7 +19,7 @@ namespace Assets.SceneEditor.Controllers
         {
             if (!IsOpened)
             {
-                EditorController.Instance.OpenPanel(this);
+                editor.OpenPanel(this);
                 DoOpen();
                 IsOpened = true;
             }
@@ -39,10 +41,16 @@ namespace Assets.SceneEditor.Controllers
         {
             if (IsOpened)
             {
-                EditorController.Instance.ClosePanel();
+                editor.ClosePanel();
                 DoClose();
                 IsOpened = false;
             }
+        }
+
+        [Zenject.Inject]
+        protected virtual void Construct(EditorController editor)
+        {
+            this.editor = editor;
         }
 
         protected abstract void DoOpen();

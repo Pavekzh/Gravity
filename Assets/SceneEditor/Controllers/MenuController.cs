@@ -2,6 +2,7 @@
 using UnityEngine;
 using UIExtended;
 using BasicTools;
+using Assets.Services;
 
 namespace Assets.SceneEditor.Controllers
 {
@@ -15,8 +16,15 @@ namespace Assets.SceneEditor.Controllers
         [SerializeField] LevelLoader levelLoader;
 
         protected bool restorePanel = false;
+        protected SceneStateLoader sceneLoader;
 
         public override bool RestorePanel => restorePanel;
+
+        [Zenject.Inject]
+        private void Construct(SceneStateLoader sceneLoader)
+        {
+            this.sceneLoader = sceneLoader;
+        }
 
         protected override void DoOpen()
         {
@@ -39,7 +47,7 @@ namespace Assets.SceneEditor.Controllers
 
         public void Save()
         {
-            Assets.Services.SceneStateManager.Instance.SaveState();
+            sceneLoader.SaveState();
         }
 
         public void SaveAs()

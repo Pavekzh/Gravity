@@ -98,6 +98,13 @@ namespace Assets.SceneEditor.Models
             }
         }
 
+        private bool isSceneCamera;
+        public bool IsSceneCamera 
+        {
+            get { Debug.Log(isSceneCamera); return isSceneCamera; }
+            set { isSceneCamera = value; } 
+        }
+
         [XmlIgnore]
         public bool ControlLocked { get; set; }
 
@@ -115,9 +122,10 @@ namespace Assets.SceneEditor.Models
         public float DefaultRadius { get => rotationRadius / (SpaceRectOfView.x / Screen.width); }
         public float ScaleFactor { get => rotationRadius / DefaultRadius; }
 
-        public CameraModel(Camera camera,CameraStartupData StartupData)
+        public CameraModel(CameraStartupData StartupData)
         {
-            this.Camera = camera;
+            this.Camera = StartupData.Camera;
+            this.IsSceneCamera = StartupData.IsSceneCamera;
             this.StartupData = StartupData;
 
 #if UNITY_EDITOR
@@ -133,9 +141,6 @@ namespace Assets.SceneEditor.Models
             this.Origin = StartupData.Origin;
             this.OrbitAngle = StartupData.OrbitAngle;
             this.RotationRadius = StartupData.RotationRadius;
-
-            Debug.LogWarning("Adding to dataStorage: CameraModel.122");
-            DataStorage.Instance.SaveData(Key, this);
         }
 
         public CameraModel()

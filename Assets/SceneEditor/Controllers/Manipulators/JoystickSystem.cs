@@ -17,12 +17,14 @@ namespace Assets.SceneEditor.Controllers
         public abstract string ManipulatorKey { get; }
         public Binding<T> InputBinding { get; } = new Binding<T>();
 
-        protected virtual void Start()
+        protected override void Construct(EditorController editor)
         {
+            base.Construct(editor);
+
             if (manipulatorName != "")
-                EditorController.Instance.ManipulatorsController.Manipulators.Add(manipulatorName, this);
+                editor.ManipulatorsController.Manipulators.Add(manipulatorName, this);
             else
-                EditorController.Instance.ManipulatorsController.Manipulators.Add(ManipulatorKey, this);
+                editor.ManipulatorsController.Manipulators.Add(ManipulatorKey, this);
         }
 
         protected abstract void DoDisable();

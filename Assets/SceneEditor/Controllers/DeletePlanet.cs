@@ -1,14 +1,22 @@
-﻿using System;
+﻿using Assets.Services;
+using System;
 using UnityEngine;
 
 namespace Assets.SceneEditor.Controllers
 {
     class DeletePlanet:MonoBehaviour
     {
-        public void Delete()
+        private PlanetSelector selector;
+
+        [Zenject.Inject]
+        private void Construct(PlanetSelector selector)
         {
-            
-            Services.PlanetSelectSystem.Instance.SelectedPlanet.DeletePlanet();
+            this.selector = selector;
+        }
+
+        public void Delete()
+        {            
+            selector.SelectedPlanet.DeletePlanet();
         }
     }
 }

@@ -12,8 +12,22 @@ namespace Assets.SceneEditor.Controllers
 
         protected virtual bool HighlightSelectedObjectOnEnable => true;
         protected bool IsToolEnabled;
+        protected TimeFlow timeFlow;
+        protected PlanetSelector selector;
+        protected EditorController editor;
 
         public abstract string DefaultKey { get; }
+
+        [Zenject.Inject]
+        protected virtual void Construct(TimeFlow timeFlow,PlanetSelector selector,EditorController editor)
+        {
+            this.timeFlow = timeFlow;
+            this.selector = selector;
+            this.editor = editor;
+            
+            toolsController = editor.ToolsController;
+            toolsController.Tools.Add(Key, this);
+        }
 
         public sealed override void DisableTool()
         {
@@ -23,7 +37,7 @@ namespace Assets.SceneEditor.Controllers
                 IsToolEnabled = false;
 
                 if (HighlightSelectedObjectOnEnable)
-                    PlanetSelectSystem.Instance.LessenSelected();
+                    selector.LessenSelected();
             }
 
         }
@@ -36,7 +50,7 @@ namespace Assets.SceneEditor.Controllers
                 DoEnable(inputSystem);
 
                 if (HighlightSelectedObjectOnEnable)
-                    PlanetSelectSystem.Instance.HighlightSelected();
+                    selector.HighlightSelected();
             }
         }
 
@@ -54,21 +68,17 @@ namespace Assets.SceneEditor.Controllers
 
         protected virtual void Awake()
         {
-            if (toolsController == null)
-                toolsController = EditorController.Instance.ToolsController;
-
-            toolsController.Tools.Add(Key, this);
             this.DisableTool();
         }
 
         protected virtual void DoEnable(InputSystem inputSystem)
         {
-            TimeManager.Instance.LockTimeFlow(ToolName);
+            timeFlow.LockTimeFlow(ToolName);
         }
 
         protected virtual void DoDisable()
         {
-            TimeManager.Instance.UnlockTimeFlow();
+           timeFlow.UnlockTimeFlow();
         }
 
         public virtual void SwitchActiveState()

@@ -13,11 +13,14 @@ namespace Assets.SceneEditor.Controllers
         public override string DefaultKey => "ObjectMassTool";
         public override string ToolName => "Mass set tool";
 
-        protected SphericalViewPlanetsArrangementManager arrangementManager;
+        protected MassEstimator planetEstimator;
+        protected IPlanetsArrangementTool<float> planetsArrangementTool;
 
-        protected override void Awake()
+        [Zenject.Inject]
+        protected void Construct(IPlanetsArrangementTool<float> planetsArrangementTool)
         {
-            base.Awake();
+            this.planetsArrangementTool = planetsArrangementTool;            
+            planetEstimator = new MassEstimator();
         }
 
         protected override IValidationRule<float>[] ScaleValidationRule => null;
@@ -52,39 +55,40 @@ namespace Assets.SceneEditor.Controllers
         {
             base.DoDisable();
 
-            ScalePropertyBinding.ValueChanged -= InputChanged;
-            arrangementManager.ClearArrangement();
+            if(ScalePropertyBinding != null)
+                ScalePropertyBinding.ValueChanged -= InputChanged;
+            planetsArrangementTool.HideArrangement();
         }
 
         protected override void DoEnable(InputSystem inputSystem)
         {                      
             base.DoEnable(inputSystem); 
-            ScalePropertyBinding.ValueChanged += InputChanged;
-            arrangementManager = new SphericalViewPlanetsArrangementManager(new MassEstimator(), 1, 5, x => x * 10);
-            arrangementManager.ShowArrangement();
+            if(ScalePropertyBinding != null)
+                ScalePropertyBinding.ValueChanged += InputChanged;
+            planetsArrangementTool.ShowArrangement(planetEstimator);
         }
 
         protected override void GetJoystick()
         {
-            joystick = EditorController.Instance.ManipulatorsController.EnableManipulator<RelativeScaleJoystickSystem>(RelativeScaleJoystickSystem.DefaultKey);
+            joystick = editor.ManipulatorsController.EnableManipulator<RelativeScaleJoystickSystem>(RelativeScaleJoystickSystem.DefaultKey);
         }
 
         private void InputChanged(float value, object source)
         {
             if (IsToolEnabled)
             {
-                if (arrangementManager.IsShowing)
-                    arrangementManager.ShowArrangement();
+                if (planetsArrangementTool.IsShowing)
+                    planetsArrangementTool.ShowArrangement(planetEstimator);
             }
 
         }
 
         public void ChangePropertyArrangementState()
         {
-            if (arrangementManager.IsShowing)
-                arrangementManager.ClearArrangement();
+            if (planetsArrangementTool.IsShowing)
+                planetsArrangementTool.HideArrangement();
             else
-                arrangementManager.ShowArrangement();
+                planetsArrangementTool.ShowArrangement(planetEstimator);
         }
     }
 }

@@ -60,10 +60,8 @@ namespace Assets.SceneEditor.Controllers
             roundJoystick.Enable(null);
         }
 
-
-        protected override void Start()
+        protected void Start()
         {
-            base.Start();
             InputBinding.ValueChanged += BindingExternalChanged;
         }
 

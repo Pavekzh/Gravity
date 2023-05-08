@@ -3,6 +3,7 @@ using UnityEngine;
 using UIExtended;
 using BasicTools;
 using Assets.SceneEditor.Models;
+using Assets.Services;
 
 namespace Assets.SceneEditor.Controllers
 {
@@ -18,7 +19,7 @@ namespace Assets.SceneEditor.Controllers
             get
             {
                 if (selectedPlanet == null)
-                    return SelectedPlanet = Services.PlanetSelectSystem.Instance.SelectedPlanet;
+                    return SelectedPlanet = selector.SelectedPlanet;
                 else
                     return selectedPlanet;
             }
@@ -34,14 +35,23 @@ namespace Assets.SceneEditor.Controllers
         private GravityModuleData selectedGravityInteractor;
         private Binding<Vector2> velocityBinding;
 
+        protected new CameraModel camera;
+
         public override string DefaultKey { get => "PlanetKickTool"; }
 
         public override string ToolName => "Velocity set tool";
 
-        protected override void Awake()
+
+        protected override void Construct(TimeFlow timeFlow, PlanetSelector selector,EditorController editor)
         {
-            base.Awake();
-            Services.PlanetSelectSystem.Instance.SelectedPlanetChanged += SelectedPlanetChanged;
+            base.Construct(timeFlow, selector, editor);
+            selector.SelectedPlanetChanged += SelectedPlanetChanged;
+        }
+
+        [Zenject.Inject]
+        protected void Construct(CameraModel camera)
+        {
+            this.camera = camera;
         }
 
 
@@ -54,7 +64,7 @@ namespace Assets.SceneEditor.Controllers
                     SelectedPlanet = planet;
 
                     outputManipulator.IsVisible = true;
-                    outputManipulator.UpdateManipulatorView(selectedGravityInteractor.Data.Position, selectedGravityInteractor.Data.Velocity, EditorController.Instance.CameraModel.ScaleFactor);
+                    outputManipulator.UpdateManipulatorView(selectedGravityInteractor.Data.Position, selectedGravityInteractor.Data.Velocity, camera.ScaleFactor);
                 }
                 else
                     SelectedPlanet = planet;
@@ -87,7 +97,7 @@ namespace Assets.SceneEditor.Controllers
         protected override void DoEnable(InputSystem inputSystem)
         {
             IsToolEnabled = true;
-            this.joystickSystem = EditorController.Instance.ManipulatorsController.EnableManipulator<VariableMagnitudeVectorJoystickSystem>(VariableMagnitudeVectorJoystickSystem.DefaultKey);
+            this.joystickSystem = editor.ManipulatorsController.EnableManipulator<VariableMagnitudeVectorJoystickSystem>(VariableMagnitudeVectorJoystickSystem.DefaultKey);
             joystickSystem.InputReadingStarted += ManipulatorActivates;
             joystickSystem.InputReadingStoped += ManipulatorDeactivates;
             joystickSystem.InputBinding.ValueChanged += InputChanged;
@@ -95,7 +105,7 @@ namespace Assets.SceneEditor.Controllers
             if (SelectedPlanet != null)
             {            
                 outputManipulator.IsVisible = true;
-                outputManipulator.UpdateManipulatorView(selectedGravityInteractor.Data.Position, selectedGravityInteractor.Data.Velocity, EditorController.Instance.CameraModel.ScaleFactor);
+                outputManipulator.UpdateManipulatorView(selectedGravityInteractor.Data.Position, selectedGravityInteractor.Data.Velocity, camera.ScaleFactor);
             }
             this.inputSystem = inputSystem;
             base.DoEnable(inputSystem);
@@ -107,7 +117,7 @@ namespace Assets.SceneEditor.Controllers
             if(selectedGravityInteractor != null)
             {
                 selectedGravityInteractor.VelocityProperty.Binding.ChangeValue(outputVector.GetVectorXZ(), this);
-                outputManipulator.UpdateManipulatorView(selectedGravityInteractor.Position.GetVector3(), outputVector, EditorController.Instance.CameraModel.ScaleFactor);
+                outputManipulator.UpdateManipulatorView(selectedGravityInteractor.Position.GetVector3(), outputVector, camera.ScaleFactor);
             }
         }
 
@@ -125,12 +135,12 @@ namespace Assets.SceneEditor.Controllers
 
         private void ManipulatorActivates()
         {
-            EditorController.Instance.ToolsController.DisableSceneControl();
+            editor.ToolsController.DisableSceneControl();
         }
 
         private void ManipulatorDeactivates()
         {
-            EditorController.Instance.ToolsController.EnableSceneControl();
+            editor.ToolsController.EnableSceneControl();
         }
     }
 

@@ -58,6 +58,7 @@ GameObject:
   - component: {fileID: 2692575803616425487}
   - component: {fileID: 9176977102359814394}
   - component: {fileID: 6918816733119432787}
+  - component: {fileID: -5451251309046977440}
   m_Layer: 8
   m_Name: DemoPlanet
   m_TagString: Untagged
@@ -160,3 +161,19 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-5451251309046977440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4422857410898313939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0c56740217c0824ebea024340acb27f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  axis: {x: 0.3, y: 1, z: 0.3}
+  pointerRotationSpeed: 3
+  angularSpeed: -15
+  smoothness: 0.3

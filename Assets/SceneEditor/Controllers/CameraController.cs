@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using Assets.SceneEditor.Models;
+using Assets.Services;
 
 namespace Assets.SceneEditor.Controllers
 {
@@ -11,6 +12,7 @@ namespace Assets.SceneEditor.Controllers
         [SerializeField] private bool isSceneCamera;
 
         private CameraModel model;
+        private SceneInstance sceneInstance;
 
         public CameraModel Model 
         {
@@ -28,20 +30,24 @@ namespace Assets.SceneEditor.Controllers
             }
         }
 
-        private void Awake()
+        [Zenject.Inject]
+        private void Construct(Services.SceneInstance sceneInstance,CameraModel cameraModel)
         {
-            model = new CameraModel(camera, startupData);            
-            if (isSceneCamera)
-                Services.SceneStateManager.Instance.SceneChanged += OnSceneChanged;
+            model = cameraModel;  
+            this.sceneInstance = sceneInstance;  
+            
+            if (model.IsSceneCamera)
+                sceneInstance.SceneSet += OnSceneChanged;
         }
 
-        private void OnSceneChanged()
+
+        private void OnSceneChanged(SceneState state,bool isChangedLocal)
         {
-            CameraModel model = Services.SceneStateManager.Instance.CurrentScene.Camera;
+            CameraModel model = state.Camera;
             if (model != null)
                 this.Model = model;
             else
-                Services.SceneStateManager.Instance.CurrentScene.Camera = Model;
+                state.Camera = Model;
         }
 
         public void ResetRotation()

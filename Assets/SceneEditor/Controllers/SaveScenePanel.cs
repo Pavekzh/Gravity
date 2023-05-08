@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UIExtended;
+using Assets.Services;
 
 namespace Assets.SceneEditor.Controllers
 {
@@ -8,6 +9,14 @@ namespace Assets.SceneEditor.Controllers
     {
         [SerializeField] private TMPro.TMP_InputField inputField;
         [SerializeField] private ShowElement visibleManager;
+
+        private SceneStateLoader sceneLoader;
+
+        [Zenject.Inject]
+        private void Construct(SceneStateLoader sceneLoader)
+        {
+            this.sceneLoader = sceneLoader;
+        }
 
         protected override void DoOpen()
         {
@@ -22,7 +31,7 @@ namespace Assets.SceneEditor.Controllers
         public void Save()
         {
             this.RestorablePanel = null;
-            Assets.Services.SceneStateManager.Instance.SaveState(inputField.text);
+            sceneLoader.SaveState(inputField.text);
             Close();
         }
     }

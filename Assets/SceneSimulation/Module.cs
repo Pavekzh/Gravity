@@ -7,5 +7,6 @@ namespace Assets.SceneSimulation
     public abstract class Module : MonoBehaviour
     {
         public abstract ModuleData InstatiateModuleData();
+        public abstract void SetModuleData(ModuleData data);
     }
 }

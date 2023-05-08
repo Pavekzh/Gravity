@@ -2,7 +2,7 @@
 
 namespace Assets.Services
 {
-    public abstract class SaveSystemFactory:MonoBehaviour
+    public abstract class SaveSystemFactory:ScriptableObject
     {
         public abstract ISaveSystem GetSaveSystem();
 

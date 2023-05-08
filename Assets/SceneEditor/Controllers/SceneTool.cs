@@ -6,9 +6,13 @@ namespace Assets.SceneEditor.Controllers
     {
         [SerializeField] [Tooltip("Value used only for display state")] protected bool IsToolActive;
 
-        protected virtual void Awake()
+        private EditorController editor;
+
+        [Zenject.Inject]
+        private void Construct(EditorController editor)
         {
-            EditorController.Instance.ToolsController.AddSceneTool(this);
+            this.editor = editor;
+            editor.ToolsController.AddSceneTool(this);
         }
     }
 }

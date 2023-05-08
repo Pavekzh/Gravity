@@ -12,14 +12,26 @@ namespace Assets.SceneEditor.Controllers
         [SerializeField] private ChangeImage buttonImage;
         [SerializeField] private UnityEngine.UI.Button button;
 
+        private TimeFlow timeFlow;
+
+        [Zenject.Inject]
+        private void Construct(TimeFlow timeFlow)
+        {
+            SetTimeFlow(timeFlow);
+        }
+
+        private void SetTimeFlow(TimeFlow timeFlow)
+        {            
+            timeSet.Binding = timeFlow.TimeBinding;
+            timeSlider.Binding = timeFlow.TimeBinding;
+            timeFlow.TimeBinding.ForceUpdate();
+            timeFlow.TimeStateChanged += SimulationFlowChanged;
+            this.timeFlow = timeFlow;
+        }
+
         private void Awake()
         {
-            timeSet.Binding = TimeManager.Instance.TimeBinding;
-            timeSlider.Binding = TimeManager.Instance.TimeBinding;
-            TimeManager.Instance.TimeBinding.ForceUpdate();
             button.onClick.AddListener(ChangeSimulationFlow);
-
-            TimeManager.Instance.TimeStateChanged += SimulationFlowChanged;
         }
 
         private void SimulationFlowChanged(bool value, object source)
@@ -32,7 +44,7 @@ namespace Assets.SceneEditor.Controllers
 
         private void ChangeSimulationFlow()
         {
-            TimeManager.Instance.ChangePhysicsState();
+            timeFlow.ChangePhysicsState();
         }
 
 

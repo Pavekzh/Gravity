@@ -1,13 +1,11 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace Assets.UIComponents
+namespace Assets.UIAnimate
 {
     [CreateAssetMenu(fileName ="ScaleAnimationConfig", menuName ="ScriptableObjects/ScaleAnimation" )]
-    public class ScaleAnimationConfig : ScriptableObject
+    public class ScaleAnimationConfig : AnimationConfig
     {
         public float ScaleFactor = 1.1f;
-        public float Duration = 0.5f;
-        public DG.Tweening.Ease EaseFunction = DG.Tweening.Ease.OutElastic;
     }
 }

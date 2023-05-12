@@ -55,18 +55,16 @@ namespace Assets.Services
         private void Construct(SceneInstance sceneInstance)
         {
             this.sceneInstance = sceneInstance;
+            Initialize();
         }
 
-        protected void Awake()
+        private void Initialize()
         {
             if (!System.IO.Directory.Exists(Directory))
                 System.IO.Directory.CreateDirectory(Directory);
 
             currentFilePath = Directory + defaultName + SaveSystem.Extension;
-        }
 
-        private void Start()
-        {
             if (loadStartScene)
             {
                 SetScene(LoadStartScene());

@@ -7,7 +7,7 @@ namespace Assets.SceneEditor.Controllers
 {
     public abstract class JoystickSystem<T> : PanelController, IManipulator
     {
-        [SerializeField] protected CombinedInteraction visibleStateManager;
+        [SerializeField] protected InstantStateChangerList visibleStateManager;
         [SerializeField] protected string manipulatorName;
 
         protected InputSystem inputSystem;

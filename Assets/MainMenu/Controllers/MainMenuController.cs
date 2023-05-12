@@ -14,14 +14,20 @@ namespace Assets.Menu.Controllers
         [SerializeField] private int sandboxSceneIndex;
         [SerializeField] private SettingsController settings;
         [SerializeField] private LevelLoader levelLoader;
-        [SerializeField] private ShowElement Panhandle;
+        [SerializeField] private RateProposalController rateProposal;
+        [SerializeField] private StateChanger menuOpener;
 
         private void Awake()
         {
             int MenuEntries = PlayerPrefs.GetInt("MenuEntries",0);
             PlayerPrefs.SetInt("MenuEntries", MenuEntries + 1);
             if (MenuEntries == 6)
-                Panhandle.Show();
+                rateProposal.Open();
+        }
+
+        private void Start()
+        {
+            menuOpener.State = State.Changed;    
         }
 
         public void LoadPuzzle() 
@@ -43,12 +49,6 @@ namespace Assets.Menu.Controllers
         public void Quit() 
         {
             Application.Quit();
-        }
-
-        public void OpenRatingPage()
-        {
-            Application.OpenURL("market://details?id=com.Zhukovin.Gravity");
-            Panhandle.Hide();
         }
 
         float tStart;

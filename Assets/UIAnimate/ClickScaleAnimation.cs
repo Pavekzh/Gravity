@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 using DG.Tweening;
 using System;
 
-namespace Assets.UIComponents
+namespace Assets.UIAnimate
 {
     public class ClickScaleAnimation : MonoBehaviour, IPointerClickHandler
     {
@@ -36,9 +36,9 @@ namespace Assets.UIComponents
         private void Animate()
         {
             transform.localScale = scale * animationConfig.ScaleFactor;
-            transform.DOScaleX(scale.x, animationConfig.Duration).SetEase(animationConfig.EaseFunction);
-            transform.DOScaleY(scale.y, animationConfig.Duration).SetEase(animationConfig.EaseFunction);
-            transform.DOScaleZ(scale.z, animationConfig.Duration).SetEase(animationConfig.EaseFunction);
+            transform.DOScaleX(scale.x, animationConfig.Duration).SetEase(animationConfig.EaseFunction).SetUpdate(true);
+            transform.DOScaleY(scale.y, animationConfig.Duration).SetEase(animationConfig.EaseFunction).SetUpdate(true);
+            transform.DOScaleZ(scale.z, animationConfig.Duration).SetEase(animationConfig.EaseFunction).SetUpdate(true);
         }
     }
 }

@@ -2,22 +2,23 @@
 using UnityEngine;
 using Assets.Services;
 using UIExtended;
+using BasicTools;
 
 namespace Assets.SceneEditor.Controllers
 {
     public class SettingsPanel : PanelController
     {
-        [SerializeField] ShowElement visibleManager;
+        [SerializeField] StateChanger visibleManager;
         [SerializeField] Services.AudioSettings settings;
 
         protected override void DoClose()
         {
-            visibleManager.Hide();
+            visibleManager.State = State.Default;
         }
 
         protected override void DoOpen()
         {
-            visibleManager.Show();
+            visibleManager.State = State.Changed;
         }
 
         public void ToggleMusic()

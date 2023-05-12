@@ -8,7 +8,7 @@ namespace Assets.SceneEditor.Controllers
 {
     public class MenuController : PanelController
     {
-        [SerializeField] ShowElement visibleManager;
+        [SerializeField] StateChanger visibleManager;
         [SerializeField] LoadScenePanel loadScenePanel;
         [SerializeField] SaveScenePanel saveScenePanel;
         [SerializeField] SettingsPanel audioSettingPanel;
@@ -29,12 +29,12 @@ namespace Assets.SceneEditor.Controllers
         protected override void DoOpen()
         {
             restorePanel = false;
-            visibleManager.Show();
+            visibleManager.State = State.Changed;
         }
 
         protected override void DoClose()
         {
-            visibleManager.Hide();
+            visibleManager.State = State.Default;
         }
 
         public void ChangeVisibleState()

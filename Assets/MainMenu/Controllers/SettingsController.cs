@@ -25,12 +25,14 @@ namespace Assets.Menu.Controllers
 
         public void Open()
         {
+            if(opener.State == State.Default)
             opener.State = State.Changed;
         }
 
         public void Close()
         {
-            opener.State = State.Default;
+            if(opener.State == State.Changed)
+                opener.State = State.Default;
         }
 
         public void ChangeState()

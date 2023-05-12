@@ -6,7 +6,7 @@ namespace Assets.SceneEditor.Controllers
 {
     public class ToolsController:MonoBehaviour
     {
-        public InputSystem InputSystem {get; set;}        
+        public InputSystem InputSystem {get; private set;}        
         public Dictionary<string, EditorTool> Tools { get; set; } = new Dictionary<string, EditorTool>();
 
         [SerializeField] private int selectedSceneTool = 0;
@@ -15,8 +15,9 @@ namespace Assets.SceneEditor.Controllers
         private List<EditorTool> sceneManageTools = new List<EditorTool>();
         private EditorTool objectTool;
 
-        void Start()
+        public virtual void Initialize(InputSystem inputSystem)
         {
+            this.InputSystem = inputSystem;
             SwitchSceneTool(selectedSceneTool);
         }
 

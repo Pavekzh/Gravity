@@ -51,10 +51,8 @@ namespace Assets.SceneEditor.Controllers
             {
                 Services.CommonMessagingSystem.Instance.ShowErrorMessage("Input system not set", this);
             }
-
-
-            toolsController.InputSystem = this.inputSystem;
-            manipulatorsController.InputSystem = this.inputSystem;
+            toolsController.Initialize(this.inputSystem);
+            manipulatorsController.Initialize(this.inputSystem);
         }
 
     }

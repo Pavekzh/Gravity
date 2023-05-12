@@ -7,9 +7,8 @@ namespace Assets.SceneEditor.Controllers
 {
     public class CameraController:MonoBehaviour
     {
-        [SerializeField] private CameraStartupData startupData;
-        [SerializeField] private new Camera camera;
-        [SerializeField] private bool isSceneCamera;
+        private new Camera camera;
+        private CameraStartupData startupData;
 
         private CameraModel model;
         private SceneInstance sceneInstance;
@@ -33,7 +32,9 @@ namespace Assets.SceneEditor.Controllers
         [Zenject.Inject]
         private void Construct(Services.SceneInstance sceneInstance,CameraModel cameraModel)
         {
-            model = cameraModel;  
+            model = cameraModel;
+            camera = cameraModel.Camera;
+            startupData = cameraModel.StartupData;
             this.sceneInstance = sceneInstance;  
             
             if (model.IsSceneCamera)

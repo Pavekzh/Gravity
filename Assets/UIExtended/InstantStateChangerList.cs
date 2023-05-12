@@ -5,7 +5,7 @@ using BasicTools;
 
 namespace UIExtended
 {
-    public class CombinedInteraction : StateChanger
+    public class InstantStateChangerList : StateChanger
     {
         [SerializeField] List<StateChanger> interactors;
 

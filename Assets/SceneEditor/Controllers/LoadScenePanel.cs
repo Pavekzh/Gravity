@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UIExtended;
 using Assets.Services;
+using BasicTools;
 
 namespace Assets.SceneEditor.Controllers
 {
     public class LoadScenePanel : PanelController
     {
-        [SerializeField] private ShowElement visibleManager;
+        [SerializeField] private StateChanger visibleManager;
 
         [Header("Users scenes")]
         [SerializeField] private DirectoryPresenter userTabPresenter;
@@ -59,7 +60,7 @@ namespace Assets.SceneEditor.Controllers
 
         protected override void DoOpen()
         {
-            visibleManager.Show();
+            visibleManager.State = State.Changed;
             OpenTab(tab);
         }
 
@@ -67,7 +68,7 @@ namespace Assets.SceneEditor.Controllers
         {
             userTabPresenter.ClosePanel();
             presetsTabPresenter.ClosePanel();
-            visibleManager.Hide();
+            visibleManager.State = State.Default;
         }
 
         public void OpenTab(LoadSceneTab tab)

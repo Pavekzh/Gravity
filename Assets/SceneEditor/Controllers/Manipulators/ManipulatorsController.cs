@@ -7,7 +7,12 @@ namespace Assets.SceneEditor.Controllers
     public class ManipulatorsController : MonoBehaviour
     {
         public Dictionary<string, IManipulator> Manipulators { get; private set; } = new Dictionary<string, IManipulator>();
-        public InputSystem InputSystem { get; set; }
+        public InputSystem InputSystem { get; private set; }
+
+        public virtual void Initialize(InputSystem inputSystem)
+        {
+            this.InputSystem = inputSystem;
+        }
 
         private List<IManipulator> enabledManipulators = new List<IManipulator>();
 

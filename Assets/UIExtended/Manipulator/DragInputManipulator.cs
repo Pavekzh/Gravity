@@ -12,7 +12,7 @@ namespace UIExtended
     {
         [SerializeField] [Tooltip("Line object must be aligned along the z axis")] private MeshFilter line;
         [SerializeField] [Tooltip("Object must be aligned along the z axis")] private MeshFilter touchPointer;
-        [SerializeField] private CombinedInteraction UIVisibleStateManager;
+        [SerializeField] private InstantStateChangerList UIVisibleStateManager;
         [SerializeField] private Vector3 originPosition = Vector3.zero;
         [SerializeField] private float lineWidth = 1f;
         [SerializeField] private float manipulatorScale = 10f;

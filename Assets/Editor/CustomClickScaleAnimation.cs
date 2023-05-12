@@ -1,6 +1,6 @@
 ﻿using UnityEditor;
 using UnityEngine;
-using Assets.UIComponents;
+using Assets.UIAnimate;
 
 namespace Assets.Editor
 {

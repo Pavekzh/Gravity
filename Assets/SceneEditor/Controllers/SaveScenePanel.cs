@@ -2,13 +2,14 @@
 using UnityEngine;
 using UIExtended;
 using Assets.Services;
+using BasicTools;
 
 namespace Assets.SceneEditor.Controllers
 {
     public class SaveScenePanel : PanelController
     {
         [SerializeField] private TMPro.TMP_InputField inputField;
-        [SerializeField] private ShowElement visibleManager;
+        [SerializeField] private StateChanger visibleManager;
 
         private SceneStateLoader sceneLoader;
 
@@ -20,12 +21,12 @@ namespace Assets.SceneEditor.Controllers
 
         protected override void DoOpen()
         {
-            visibleManager.Show();
+            visibleManager.State = State.Changed;
         }
 
         protected override void DoClose()
         {
-            visibleManager.Hide();
+            visibleManager.State = State.Default;
         }
 
         public void Save()

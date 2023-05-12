@@ -70,7 +70,7 @@ namespace Assets.Services
         {
             Container.Bind<SceneEditor.Controllers.EditorController>().FromInstance(editorController).AsSingle();
         }
-        
+
         private void InstallPlanetsArrangementTools()
         {
             ColorInterval[] intervals = new ColorInterval[5]
